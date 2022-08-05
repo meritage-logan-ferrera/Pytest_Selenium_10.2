@@ -1,11 +1,7 @@
 import pytest
 import page as page
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
-import time
-from time import sleep
-import sys
+
 
 @pytest.mark.usefixtures("driver_firefox_init")
 class BasicTest:
