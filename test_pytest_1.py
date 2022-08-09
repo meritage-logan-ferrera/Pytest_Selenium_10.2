@@ -17,11 +17,11 @@ class Test_URL_Chrome(BasicTest):
     title = "Arizona"
     assert title == self.driver.title
 
-  def test_header_arizona2(self):
-    self.driver.get('https://www.meritagehomes.com/')
-    self.driver.set_window_position(0,0)
-    self.driver.set_window_size(1920,1080)
-    home_page = page.MainPage(self.driver)
-    home_page.click_state("az")
-    title = "Arizona"
-    assert title == self.driver.title
+  # def test_header_arizona2(self):
+  #   self.driver.get('https://www.meritagehomes.com/')
+  #   self.driver.set_window_position(0,0)
+  #   self.driver.set_window_size(1920,1080)
+  #   home_page = page.MainPage(self.driver)
+  #   home_page.click_state("az")
+  #   title = "Arizona"
+  #   assert title == self.driver.title

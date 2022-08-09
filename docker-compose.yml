@@ -21,7 +21,7 @@ services:
       - SE_EVENT_BUS_HOST=selenium-hub
       - SE_EVENT_BUS_PUBLISH_PORT=4442
       - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
-      - SE_NODE_MAX_SESSIONS=2
+      - SE_NODE_MAX_SESSIONS=1
 
   firefox:
     image: selenium/node-firefox:4.3.0-20220726
@@ -40,3 +40,18 @@ services:
       - "4442:4442"
       - "4443:4443"
       - "4444:4444"
+
+  android-node:
+    image: selenium/node-docker:4.3.0-20220726
+    shm_size: 2gb
+    volumes:
+      - "C:/Users/logan.ferrera/Desktop/Grid Docker Test/config.toml:/opt/bin/config.toml"
+    depends_on:
+      - selenium-hub 
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_HOST=selenium-hub
+      - GENERATE_CONFIG=false
+      - CONFIG_FILE=/opt/bin/config.toml
