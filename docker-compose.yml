@@ -42,8 +42,9 @@ services:
       - "4444:4444"
 
   android-node:
-    image: selenium/node-docker:4.3.0-20220726
+    image: selenium/node-base:4.3.0-20220726
     shm_size: 2gb
+    # Source for volume will be the path on your machine to the config.toml file. Destination stays the same.
     volumes:
       - "C:/Users/logan.ferrera/Desktop/Grid Docker Test/config.toml:/opt/bin/config.toml"
     depends_on:
@@ -52,6 +53,8 @@ services:
       - SE_EVENT_BUS_HOST=selenium-hub
       - SE_EVENT_BUS_PUBLISH_PORT=4442
       - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
-      - SE_NODE_HOST=selenium-hub
       - GENERATE_CONFIG=false
       - CONFIG_FILE=/opt/bin/config.toml
+    network_mode: host
+    extra_hosts:
+        - "host.docker.internal:host-gateway"

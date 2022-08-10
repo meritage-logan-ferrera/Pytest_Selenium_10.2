@@ -15,6 +15,10 @@ class BasePage(object):
   def __init__(self, driver):
     self.driver = driver
 
+class BasePageAndroid(object):
+  def __init__(self, driver):
+    self.driver = driver
+
 class MainPage(BasePage):
   def click_state(self, state):
     state_selected = self.driver.find_element(By.XPATH, f"//a[@href='/state/{state}']")
@@ -22,7 +26,7 @@ class MainPage(BasePage):
     WebDriverWait(self.driver, timeout=3).until(EC.invisibility_of_element(state_selected)) # Wait until the page is changed (this way is dumb I will try to find a better one) before we end this function to make sure the driver has time to be aware of the new page
 #     return TexasPage(self.driver)
 
-class MainPageAndroid(BasePage):
+class MainPageAndroid(BasePageAndroid):
   def exit_cookies(self):
     # wait = WebDriverWait(self.driver, 1)
     # close_cookie_button = self.driver.find_element(MobileBy.XPATH, "//a[@aria-label='Close Banner Button']")

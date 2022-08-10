@@ -1,0 +1,19 @@
+[node]
+session-timeout = "30"
+override-max-sessions = false
+detect-drivers = false
+drain-after-session-count = 0
+max-sessions = 1
+
+[relay]
+# Default Appium server endpoint
+url = "http://host.docker.internal:4723/wd/hub"
+status-endpoint = "/status"
+# Stereotypes supported by the service
+configs = [
+  "1", "{\"browserName\": \"Chrome\", \"platformName\": \"android\", \"appium:platformVersion\": \"11\"}"
+]
+##################################################IMPORTANT####################################################
+# In configs you NEED "Chrome" NOT "chrome" or else when you set_capability("browserName", "Chrome")
+# in the Appium web driver set-up code (see conftest.py), Selenium Grid will not view the session as valid!!!!!
+###############################################################################################################
