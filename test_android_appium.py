@@ -1,7 +1,5 @@
-from appium import webdriver
-from appium.webdriver.common.appiumby import AppiumBy
+import pageAndroid as page
 import pytest
-import page as page
 
 @pytest.mark.usefixtures("driver_android_init")
 class BasicTest:

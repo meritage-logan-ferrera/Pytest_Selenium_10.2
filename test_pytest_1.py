@@ -1,7 +1,5 @@
-import pytest
 import page as page
-from selenium.webdriver.common.keys import Keys
-
+import pytest
 
 @pytest.mark.usefixtures("init__driver")
 class BasicTest:

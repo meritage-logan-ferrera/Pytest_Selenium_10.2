@@ -1,20 +1,14 @@
 #Run Selenium tests in parallel with Python for Selenium Python tutorial
-from re import S
-from dotenv import load_dotenv
-import pytest
-import os
-from appium import webdriver as appium_webdriver
-from appium.webdriver.common.appiumby import AppiumBy
 from appium.options.android import UiAutomator2Options
-from appium.options.android import EspressoOptions
+from appium import webdriver as appium_webdriver
 from selenium import webdriver
+import pytest
 
 @pytest.fixture(params=["firefox", "chrome", "edge"], scope="class")
 def init__driver(request):
   url = "http://localhost:4444/wd/hub"
   
   if request.param == "firefox":
-    os.environ["Path"] += os.pathsep + 'C:\\Users\\logan.ferrera\\Desktop\\geckodriver-v0.27.0-win64\\geckodriver.exe'
     browser_options = webdriver.FirefoxOptions()
   if request.param == "chrome":
     browser_options = webdriver.ChromeOptions()
