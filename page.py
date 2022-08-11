@@ -1,19 +1,47 @@
+from argparse import Action
 from selenium.webdriver.support.relative_locator import locate_with
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
+import time
+import pytest
 
 class BasePage(object):
   def __init__(self, driver):
     self.driver = driver
+  def get_html(self): # get the DOM of the current page, use when testing links and navigation
+    return self.driver.find_element(By.TAG_NAME, 'html')
+  def get_title(self):
+    return self.driver.title
+
+class MetroPage(BasePage): 
+  def header_main_items(self, item):
+    return self.driver.find_element(By.XPATH, f"//a[@href='/{item}']")
+    
+  def header_main_items_click(self, item):
+    html = self.get_html()
+    header_main_item = self.header_main_items(item)
+    header_main_item.click()
+    WebDriverWait(self.driver, timeout=15).until(EC.staleness_of(html)) # wait until the entire old webpage is not present until we assert for the title of the new page
+    
+  def header_level2_homes_items(self, item):
+    html = self.get_html()
+    header_main_item = self.header_main_items(item)
+    sub_item = self.driver.find_element(By.XPATH, f"//a[@href='/state/{item}']")
+    action = ActionChains(self.driver)
+    action.move_to_element(header_main_item).move_by_offset(0, 50).move_to_element_with_offset(sub_item, 5, -5).click().perform()
+    WebDriverWait(self.driver, timeout=15).until(EC.staleness_of(html))
+  
 
 class MainPage(BasePage):
   def click_state(self, state):
+    html = self.get_html()
     state_selected = self.driver.find_element(By.XPATH, f"//a[@href='/state/{state}']")
     state_selected.click()
-    WebDriverWait(self.driver, timeout=3).until(EC.invisibility_of_element(state_selected)) # Wait until the page is changed (this way is dumb I will try to find a better one) before we end this function to make sure the driver has time to be aware of the new page
+    WebDriverWait(self.driver, timeout=15).until(EC.staleness_of(html)) 
 #     return TexasPage(self.driver)
 
 # class TexasPage(BasePage):
