@@ -46,3 +46,7 @@ def init__driver(request):
 #   request.cls.driver = web_driver
 #   yield
 #   web_driver.quit()
+
+# def pytest_generate_tests(metafunc):
+#   if "item" in metafunc.fixturenames:
+#     metafunc.parametrize("item", ['homes', 'why-meritage', 'buyer-resources', 'my-home'])
