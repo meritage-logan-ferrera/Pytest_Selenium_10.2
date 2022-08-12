@@ -1,9 +1,6 @@
 import page as page
 import pytest
 
-metro = ('homes', 'why-meritage', 'buyer-resources', 'my-home')
-states = ('az', 'ca', 'co', 'fl', 'ga', 'nc', 'sc', 'tn', 'tx')
-
 class Test_Header_Element_Visibility():
   def __init__(self, driver):
     self.driver = driver
@@ -34,10 +31,10 @@ class Test_Header_Navigation():
   # etc....
   # For now it has taken me too much time to think of a workable and clean solution so instead I am taking the easy and lazy route and copy-pasting
   #################################################################################
-  def header_main(self, item):  
-    metro_page = page.MetroPage(self.driver)
-    metro_page.click_header_main_item(item)
-    match item:
+  def header_main(self, element):  
+    base_page = page.BasePage(self.driver)
+    base_page.click_header_main_element(element)
+    match element:
       case 'homes':
         assert 'Find a Home | Meritage Homes' == self.driver.title
       case 'why-meritage':
@@ -50,31 +47,31 @@ class Test_Header_Navigation():
 #   def test_header_main_homes(self):
 #     #self.driver_settings()
 #     metro_page = page.MetroPage(self.driver)
-#     metro_page.header_main_items_click('homes')
+#     metro_page.header_main_elements_click('homes')
 #     assert 'Find a Home | Meritage Homes' == self.driver.title
 
 #   def test_header_main_why_meritage(self):
 #     #self.driver_settings()
 #     metro_page = page.MetroPage(self.driver)
-#     metro_page.header_main_items_click('why-meritage')
+#     metro_page.header_main_elements_click('why-meritage')
 #     assert 'Why Meritage? Energy Efficient Homes | Meritage Homes' == self.driver.title
   
 #   def test_header_main_buyer_resources(self):
 #     #self.driver_settings()
 #     metro_page = page.MetroPage(self.driver)
-#     metro_page.header_main_items_click('buyer-resources')
+#     metro_page.header_main_elements_click('buyer-resources')
 #     assert 'Buyer Resources & Tools For New Homeowners | Meritage Homes' == self.driver.title
 
 #   def test_header_main_my_home(self):
 #     #self.driver_settings()
 #     metro_page = page.MetroPage(self.driver)
-#     metro_page.header_main_items_click('my-home')
+#     metro_page.header_main_elements_click('my-home')
 #     assert 'My Meritage Portal' or 'Loading...' == self.driver.title 
 
-  def header_level2_homes(self, state):
-    metro_page = page.MetroPage(self.driver)
-    metro_page.click_header_level2_homes_item(state)
-    match state:
+  def header_level2_homes(self, level2_element):
+    base_page = page.BasePage(self.driver)
+    base_page.click_header_level2_homes_element(level2_element)
+    match level2_element:
       case 'az':
         assert 'Arizona' == self.driver.title
       case 'ca':
@@ -93,4 +90,26 @@ class Test_Header_Navigation():
         assert 'Tennessee' == self.driver.title
       case 'tx':
         assert 'Texas' == self.driver.title
+      case 'why-meritage':
+        assert 'Why Meritage? Energy Efficient Homes | Meritage Homes' == self.driver.title
+      case 'testimonials':
+        assert 'Meritage Homes Testimonials | Meritage Homes' == self.driver.title
+      case 'reviews':
+        assert 'Meritage Homes Reviews | Meritage Homes' == self.driver.title
+      case 'energy-efficiency':
+        assert 'Best Home Builders for Energy Efficient Homes | Meritage Homes' == self.driver.title
+      case 'how-we-design':
+        assert 'How We Design | Meritage Homes' == self.driver.title
+      case 'how-we-build':
+        assert 'How We Build New Home Communities | Meritage Homes' == self.driver.title
+      case 'awards':
+        assert 'Meritage Homes Awards and Accolades | Meritage Homes' == self.driver.title
+      case _:
+        assert True == False
+      
+      
+
+def header_level2_why_meritage(self, why_meritage_nav_element):
+  base_page = page.BasePage(self.driver)
+  base_page.click_header_level2_homes_element
 
