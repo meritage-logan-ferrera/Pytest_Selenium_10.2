@@ -5,6 +5,16 @@ class Test_Header_Element_Visibility():
   def __init__(self, driver):
     self.driver = driver
 
+  def meritage_image_translucent(self):
+    base_page = page.BasePage(self.driver)
+    meritage_logo_translucent = base_page.get_element_meritage_image_translucent()
+    # Need to find a better script that does not just show that the width of the elemnt isgreater than 0 but that it is displayed currently. Scrolling on the website changes the image, I want this to assert false if the webstie is crolled down to the other meritage image. 
+    result = self.driver.execute_script("return arguments[0].complete && "+
+    "typeof arguments[0].width != \"undefined\" && "+
+    "arguments[0].width > 0", meritage_logo_translucent)
+    loaded = False
+    loaded = bool(result)
+    assert loaded, "result: " + str(result) + "loaded: " + str(type(loaded))
 
 class Test_Header_Navigation():
   def __init__(self, driver):
@@ -70,7 +80,7 @@ class Test_Header_Navigation():
 
   def header_level2_homes(self, level2_element):
     base_page = page.BasePage(self.driver)
-    base_page.click_header_level2_homes_element(level2_element)
+    base_page.click_header_level2_element(page.BasePage.MAIN_NAV_ELEMENTS[0], level2_element)
     match level2_element:
       case 'az':
         assert 'Arizona' == self.driver.title
@@ -90,6 +100,13 @@ class Test_Header_Navigation():
         assert 'Tennessee' == self.driver.title
       case 'tx':
         assert 'Texas' == self.driver.title
+      case _:
+        assert False
+      
+  def header_level2_why_meritage(self, level2_element):
+    base_page = page.BasePage(self.driver)
+    base_page.click_header_level2_element(page.BasePage.MAIN_NAV_ELEMENTS[1], level2_element)
+    match level2_element:
       case 'why-meritage':
         assert 'Why Meritage? Energy Efficient Homes | Meritage Homes' == self.driver.title
       case 'testimonials':
@@ -97,7 +114,7 @@ class Test_Header_Navigation():
       case 'reviews':
         assert 'Meritage Homes Reviews | Meritage Homes' == self.driver.title
       case 'energy-efficiency':
-        assert 'Best Home Builders for Energy Efficient Homes | Meritage Homes' == self.driver.title
+        assert 'Best Home Builders for Energy Efficient Homes | Meritage Homes' == self.driver.title, 'current title' + self.driver.title
       case 'how-we-design':
         assert 'How We Design | Meritage Homes' == self.driver.title
       case 'how-we-build':
@@ -105,11 +122,23 @@ class Test_Header_Navigation():
       case 'awards':
         assert 'Meritage Homes Awards and Accolades | Meritage Homes' == self.driver.title
       case _:
-        assert True == False
-      
-      
+        assert False
+  
+  def header_level2_buyer_resources(self, level2_element):
+    base_page = page.BasePage(self.driver)
+    base_page.click_header_level2_element(page.BasePage.MAIN_NAV_ELEMENTS[2],level2_element)
+    match level2_element:
+      case 'buyer-resources':
+        assert 'Buyer Resources & Tools For New Homeowners | Meritage Homes' == self.driver.title
+      case 'homebuying':
+        assert 'First-Time Homebuying Information & Guides | Meritage Homes' == self.driver.title
+      case 'home-financing':
+        assert 'New Home Financing Guides & Resources | Meritage Homes' == self.driver.title
+      case 'energy-efficiency':
+        assert 'Energy Efficiency & Green Energy Resources | Meritage Homes' == self.driver.title
+      case 'home-design':
+        assert 'New Home Design Inspiration | Meritage Homes' == self.driver.title
+      case _:
+        assert False
 
-def header_level2_why_meritage(self, why_meritage_nav_element):
-  base_page = page.BasePage(self.driver)
-  base_page.click_header_level2_homes_element
 
