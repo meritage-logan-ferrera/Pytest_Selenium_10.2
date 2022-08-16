@@ -25,41 +25,41 @@ class BasePage(object):
   def get_title(self):
     return self.driver.title
 
-  def get_element_meritage_image_container(self):
+  def header_get_element_meritage_image_container(self):
     return self.driver.find_element(By.CSS_SELECTOR, "body > nav > div.row.full-width.diff.nav--bottom > div > a > div.logo--dark")
 
-  def get_element_meritage_image_translucent(self):
+  def header_get_element_meritage_image_translucent(self):
     return self.driver.find_element(By.CSS_SELECTOR, ".logo--dark > img:nth-child(1)")
 
-  def get_element_search_button(self):
+  def header_get_element_search_button(self):
     return self.driver.find_element(By.CSS_SELECTOR, "#button--search")
 
-  def get_element_site_search_overlay(self):
+  def header_get_element_site_search_overlay(self):
     return self.driver.find_element(By.CSS_SELECTOR, "#site-search--overlay")
   
-  def click_search_button(self):
-    self.get_element_search_button().click()
+  def header_click_search_button(self):
+    self.header_get_element_search_button().click()
 
-  def get_element_top_bar_info(self, element):
+  def header_get_element_top_bar_info(self, element):
     return self.driver.find_element(By.XPATH, f"//a[@href='/{element}']")
   
-  def click_header_top_bar_element(self, element):
+  def header_click_top_bar_element(self, element):
     html = self.get_html()
-    header_top_bar_element = self.get_element_top_bar_info(element)
+    header_top_bar_element = self.header_get_element_top_bar_info(element)
     header_top_bar_element.click()
     WebDriverWait(self.driver, timeout=15).until(EC.staleness_of(html))
   
-  def get_element_header_main(self, element):
+  def header_get_element_header_main(self, element):
     return self.driver.find_element(By.XPATH, f"//a[@href='/{element}']")
 
-  def click_header_main_element(self, element):
+  def header_click_main_element(self, element):
     html = self.get_html()
-    header_main_element = self.get_element_header_main(element)
+    header_main_element = self.header_get_element_header_main(element)
     header_main_element.click()
     WebDriverWait(self.driver, timeout=15).until(EC.staleness_of(html)) # wait until the entire old webpage is not present until we assert for the title of the new page
 
-  def get_element_header_level2(self, level1_element, level2_element):
-    level1 = self.get_element_header_main(level1_element)
+  def header_get_element_header_level2(self, level1_element, level2_element):
+    level1 = self.header_get_element_header_main(level1_element)
     if level1_element != level2_element:
       if level1_element == 'homes':
         if level2_element == 'map':
@@ -71,16 +71,31 @@ class BasePage(object):
     else:
       return level1.find_element(By.XPATH, f"//a[@href='/{level1_element}']")
 
-  def click_header_level2_element(self, level1_element, level2_element):
+  def header_click_level2_element(self, level1_element, level2_element):
     html = self.get_html()
-    header_main_element = self.get_element_header_main(level1_element)
-    header_level2_element = self.get_element_header_level2(level1_element, level2_element)
+    header_main_element = self.header_get_element_header_main(level1_element)
+    header_level2_element = self.header_get_element_header_level2(level1_element, level2_element)
     
     action = ActionChains(self.driver)
     action.move_to_element(header_main_element).move_by_offset(0, 50).move_to_element(header_level2_element).click().perform()
     WebDriverWait(self.driver, timeout=15).until(EC.staleness_of(html))
     if self.driver.title == '':
       time.sleep(5) # Firefox takes longer to load the title for some reason
+    
+  def footer_get_element_footer(self):
+    return self.driver.find_element(By.XPATH, "/html/body/footer")
+  
+  def footer_get_element_company_nav_block(self):
+    return self.driver.find_element(By.XPATH, "/html/body/footer/div[1]/div/div/div[1]")
+
+  def footer_get_element_contact_nav_block(self):
+    return self.driver.find_element(By.XPATH, "/html/body/footer/div[1]/div/div/div[2]")
+  
+  def footer_click_element_company_element(self, element):
+    html = self.get_html()
+    contact_block = self.footer_get_element_company_nav_block() 
+    contact_block.find_element(By.XPATH, f"/html/body/footer/div[1]/div/div/div[1]/ul/li[{element}]/a").click()
+    WebDriverWait(self.driver, timeout=15).until(EC.staleness_of(html))
 
 
 class MetroPage(BasePage): 

@@ -2,6 +2,7 @@ from email import header
 from page import MainPage
 import pytest
 import header_tests
+import footer_tests
 
 URL = 'https://www.meritagehomes.com/'
 
@@ -45,7 +46,6 @@ class Test_Main_Page(BasicTest):
 
   
   why_meritage_nav_elements = MainPage.WHY_MERITAGE_NAV_ELEMENTS
-  @pytest.mark.blogan
   @pytest.mark.parametrize('why_meritage_nav_element', why_meritage_nav_elements)
   def test_header_level2_why_meritage_navigation(self, why_meritage_nav_element):
     self.driver_settings()
@@ -56,3 +56,10 @@ class Test_Main_Page(BasicTest):
   def test_header_level2_buyer_resources_navigation(self, buyer_resources_nav_element):
     self.driver_settings()
     header_tests.Test_Header_Navigation(self.driver).header_level2_buyer_resources(buyer_resources_nav_element)
+  
+  # Cookies banner is blocking this. Need to create browser profile with cookies or something...
+  @pytest.mark.blogan
+  @pytest.mark.parametrize('element', ['1', '2', '3', '4', '5'])
+  def test_footer_company_elements(self, element):
+    self.driver_settings()
+    footer_tests.Test_Footer_Element_Visibility(self.driver).footer_company_element(element)

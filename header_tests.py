@@ -9,8 +9,8 @@ class Test_Header_Element_Visibility():
   # Test that when the page is not scrolled, the translucent meritage logo is visible (as opposed to the opaque one that is displayed after scroll)
   def meritage_image_translucent(self):
     base_page = page.BasePage(self.driver)
-    meritage_logo_container = base_page.get_element_meritage_image_container()
-    meritage_logo_translucent = base_page.get_element_meritage_image_translucent()
+    meritage_logo_container = base_page.header_get_element_meritage_image_container()
+    meritage_logo_translucent = base_page.header_get_element_meritage_image_translucent()
     
     result = self.driver.execute_script("return arguments[0].complete && "+
     "typeof arguments[0].width != \"undefined\" && "+
@@ -22,8 +22,8 @@ class Test_Header_Element_Visibility():
   # Clicking the search button pops of the search overlay
   def search_button(self):
     base_page = page.BasePage(self.driver)
-    search_site_overlay = base_page.get_element_site_search_overlay()
-    base_page.click_search_button()
+    search_site_overlay = base_page.header_get_element_site_search_overlay()
+    base_page.header_click_search_button()
     
     result = self.driver.execute_script("return arguments[0].className != \"hidden\"", search_site_overlay)
     assert bool(result)
@@ -55,7 +55,7 @@ class Test_Header_Navigation():
   # Test the naviagtion of the elements in the very top bar on the site (ie My Account, Agents, etc)
   def header_top_bar_info(self, element):
     base_page = page.BasePage(self.driver)
-    base_page.click_header_top_bar_element(element)
+    base_page.header_click_top_bar_element(element)
     match element:
       case 'myaccount':
         assert "Meritage Account Registration – Create an Account | Meritage Homes" == self.driver.title
@@ -69,7 +69,7 @@ class Test_Header_Navigation():
   # Test the main navigation links in the header
   def header_main(self, element):  
     base_page = page.BasePage(self.driver)
-    base_page.click_header_main_element(element)
+    base_page.header_click_main_element(element)
     match element:
       case 'homes':
         assert 'Find a Home | Meritage Homes' == self.driver.title
@@ -83,7 +83,7 @@ class Test_Header_Navigation():
   # Test the navigaton links in the homes dropdown
   def header_level2_homes(self, level2_element):
     base_page = page.BasePage(self.driver)
-    base_page.click_header_level2_element(page.BasePage.MAIN_NAV_ELEMENTS[0], level2_element)
+    base_page.header_click_level2_element(page.BasePage.MAIN_NAV_ELEMENTS[0], level2_element)
     match level2_element:
       case 'az':
         assert 'Arizona' == self.driver.title
@@ -111,7 +111,7 @@ class Test_Header_Navigation():
   # Test the navigation links in the why-meritage dropdown
   def header_level2_why_meritage(self, level2_element):
     base_page = page.BasePage(self.driver)
-    base_page.click_header_level2_element(page.BasePage.MAIN_NAV_ELEMENTS[1], level2_element)
+    base_page.header_click_level2_element(page.BasePage.MAIN_NAV_ELEMENTS[1], level2_element)
     match level2_element:
       case 'why-meritage':
         assert 'Why Meritage? Energy Efficient Homes | Meritage Homes' == self.driver.title
@@ -133,7 +133,7 @@ class Test_Header_Navigation():
   # Test the navigation links in the buyer-resources dropdown
   def header_level2_buyer_resources(self, level2_element):
     base_page = page.BasePage(self.driver)
-    base_page.click_header_level2_element(page.BasePage.MAIN_NAV_ELEMENTS[2],level2_element)
+    base_page.header_click_level2_element(page.BasePage.MAIN_NAV_ELEMENTS[2],level2_element)
     match level2_element:
       case 'buyer-resources':
         assert 'Buyer Resources & Tools For New Homeowners | Meritage Homes' == self.driver.title
