@@ -11,9 +11,10 @@ import time
 
 class BasePage(object):
   MAIN_NAV_ELEMENTS = ('homes', 'why-meritage', 'buyer-resources', 'my-home')
-  STATES = ('az', 'ca', 'co', 'fl', 'ga', 'nc', 'sc', 'tn', 'tx')
+  STATES = ('az', 'ca', 'co', 'fl', 'ga', 'nc', 'sc', 'tn', 'tx', 'map')
   WHY_MERITAGE_NAV_ELEMENTS = ('why-meritage', 'testimonials', 'reviews', 'energy-efficiency', 'how-we-design', 'how-we-build', 'awards')
   BUYER_RESOURCES_NAV_ELEMENTS = ('buyer-resources', 'homebuying', 'home-financing', 'energy-efficiency', 'home-design')
+  TOP_BAR_ELEMENTS = ('myaccount', 'agents', 'contact')
   
   def __init__(self, driver):
     self.driver = driver
@@ -24,15 +25,33 @@ class BasePage(object):
   def get_title(self):
     return self.driver.title
 
+  def get_element_meritage_image_container(self):
+    return self.driver.find_element(By.CSS_SELECTOR, "body > nav > div.row.full-width.diff.nav--bottom > div > a > div.logo--dark")
+
   def get_element_meritage_image_translucent(self):
-    return self.driver.find_element(By.CSS_SELECTOR, "img[src='//mthcdn.azureedge.net/-/media/corporate/navigation/logo-meritage-green-svg.ashx?h=74&la=en&w=335&rev=0ab3a3e8ac2c4762b58841066960c970&hash=7D5E7C8753CE3B810CC16D0F3EA6B093CCD10493']")
+    return self.driver.find_element(By.CSS_SELECTOR, ".logo--dark > img:nth-child(1)")
 
   def get_element_search_button(self):
     return self.driver.find_element(By.CSS_SELECTOR, "#button--search")
-    
-  def get_element_header_main(self, element):
+
+  def get_element_site_search_overlay(self):
+    return self.driver.find_element(By.CSS_SELECTOR, "#site-search--overlay")
+  
+  def click_search_button(self):
+    self.get_element_search_button().click()
+
+  def get_element_top_bar_info(self, element):
     return self.driver.find_element(By.XPATH, f"//a[@href='/{element}']")
   
+  def click_header_top_bar_element(self, element):
+    html = self.get_html()
+    header_top_bar_element = self.get_element_top_bar_info(element)
+    header_top_bar_element.click()
+    WebDriverWait(self.driver, timeout=15).until(EC.staleness_of(html))
+  
+  def get_element_header_main(self, element):
+    return self.driver.find_element(By.XPATH, f"//a[@href='/{element}']")
+
   def click_header_main_element(self, element):
     html = self.get_html()
     header_main_element = self.get_element_header_main(element)
@@ -42,7 +61,13 @@ class BasePage(object):
   def get_element_header_level2(self, level1_element, level2_element):
     level1 = self.get_element_header_main(level1_element)
     if level1_element != level2_element:
-      return level1.find_element(By.XPATH, f"//a[@href='/{level1_element}/{level2_element}']")
+      if level1_element == 'homes':
+        if level2_element == 'map':
+          return level1.find_element(By.XPATH, f"//a[@href='/{level1_element}']")
+        else:
+          return level1.find_element(By.XPATH, f"//a[@href='/state/{level2_element}']")
+      else:
+        return level1.find_element(By.XPATH, f"//a[@href='/{level1_element}/{level2_element}']")
     else:
       return level1.find_element(By.XPATH, f"//a[@href='/{level1_element}']")
 

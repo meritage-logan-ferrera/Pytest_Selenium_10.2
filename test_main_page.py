@@ -15,10 +15,20 @@ class Test_Main_Page(BasicTest):
     self.driver.set_window_position(0,0)
     self.driver.set_window_size(1920,1080)
   
-  @pytest.mark.blogan
-  def test_meritage_logo_translucent(self):
+  # For all the below tests with test_header_* see header_tests for documentation on what they do...
+  def test_header_meritage_logo_translucent(self):
     self.driver_settings()
     header_tests.Test_Header_Element_Visibility(self.driver).meritage_image_translucent()
+
+  def test_header_search_button(self):
+    self.driver_settings()
+    header_tests.Test_Header_Element_Visibility(self.driver).search_button()
+  
+  top_bar_elements = MainPage.TOP_BAR_ELEMENTS
+  @pytest.mark.parametrize('element', top_bar_elements)
+  def test_header_top_bar_navigation(self, element):
+    self.driver_settings()
+    header_tests.Test_Header_Navigation(self.driver).header_top_bar_info(element)
 
   main_nav_elements = MainPage.MAIN_NAV_ELEMENTS
   @pytest.mark.parametrize('element', main_nav_elements)
@@ -33,7 +43,9 @@ class Test_Main_Page(BasicTest):
     self.driver_settings()
     header_tests.Test_Header_Navigation(self.driver).header_level2_homes(state)
 
+  
   why_meritage_nav_elements = MainPage.WHY_MERITAGE_NAV_ELEMENTS
+  @pytest.mark.blogan
   @pytest.mark.parametrize('why_meritage_nav_element', why_meritage_nav_elements)
   def test_header_level2_why_meritage_navigation(self, why_meritage_nav_element):
     self.driver_settings()

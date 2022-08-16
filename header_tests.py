@@ -1,27 +1,39 @@
 import page as page
 import pytest
+import time
 
 class Test_Header_Element_Visibility():
   def __init__(self, driver):
     self.driver = driver
 
+  # Test that when the page is not scrolled, the translucent meritage logo is visible (as opposed to the opaque one that is displayed after scroll)
   def meritage_image_translucent(self):
     base_page = page.BasePage(self.driver)
+    meritage_logo_container = base_page.get_element_meritage_image_container()
     meritage_logo_translucent = base_page.get_element_meritage_image_translucent()
-    # Need to find a better script that does not just show that the width of the elemnt isgreater than 0 but that it is displayed currently. Scrolling on the website changes the image, I want this to assert false if the webstie is crolled down to the other meritage image. 
+    
     result = self.driver.execute_script("return arguments[0].complete && "+
     "typeof arguments[0].width != \"undefined\" && "+
-    "arguments[0].width > 0", meritage_logo_translucent)
+    "arguments[0].width > 0 && " + "arguments[1].style.display != \"none\"", meritage_logo_translucent, meritage_logo_container)
     loaded = False
     loaded = bool(result)
     assert loaded, "result: " + str(result) + "loaded: " + str(type(loaded))
+  
+  # Clicking the search button pops of the search overlay
+  def search_button(self):
+    base_page = page.BasePage(self.driver)
+    search_site_overlay = base_page.get_element_site_search_overlay()
+    base_page.click_search_button()
+    
+    result = self.driver.execute_script("return arguments[0].className != \"hidden\"", search_site_overlay)
+    assert bool(result)
 
 class Test_Header_Navigation():
   def __init__(self, driver):
     self.driver = driver
-  
-  # With the code below, this is how the tests run:
-  # -------------------CURRENT (when code below is uncommented)--------------------
+  ########################################################################
+  # With the code below, this is how the tests run when called by a paramaterized pytest test function in of the test_* files:
+  # ------------------------ CURRENT --------------------------
   # Homes, Why-meritage,buyer-resources, my-home tests on Firefox
   # then
   # Homes, Why-meritage, etc.. on Chrome
@@ -32,15 +44,29 @@ class Test_Header_Navigation():
   # atleast 95% of the time) to  
   # be filled with an Edge tet, then a chrome test, 
   # then a Firefox test to give us the greatest amount of parallel testing.
-  # ----------------------NEEDED (working for a fix)-------------------------------
+  # --------------------- IDEAL -------------------------------
   # This is how I want the test to run:
   # Homes test on Firefox, Chrome, Edge
   # then 
   # Why-meritage test on Firefox, Chrome, Edge
   # then
   # etc....
-  # For now it has taken me too much time to think of a workable and clean solution so instead I am taking the easy and lazy route and copy-pasting
   #################################################################################
+  # Test the naviagtion of the elements in the very top bar on the site (ie My Account, Agents, etc)
+  def header_top_bar_info(self, element):
+    base_page = page.BasePage(self.driver)
+    base_page.click_header_top_bar_element(element)
+    match element:
+      case 'myaccount':
+        assert "Meritage Account Registration – Create an Account | Meritage Homes" == self.driver.title
+      case 'agents':
+        assert "Agent Rocks Rewards Program | Meritage Homes" == self.driver.title
+      case 'contact':
+        assert "" == self.driver.title
+      case _:
+        assert False, str(self.driver.title)
+  
+  # Test the main navigation links in the header
   def header_main(self, element):  
     base_page = page.BasePage(self.driver)
     base_page.click_header_main_element(element)
@@ -53,31 +79,8 @@ class Test_Header_Navigation():
         assert 'Buyer Resources & Tools For New Homeowners | Meritage Homes' == self.driver.title
       case 'my-home':
         assert 'My Meritage Portal' or 'Loading...' == self.driver.title
- ################################################################################
-#   def test_header_main_homes(self):
-#     #self.driver_settings()
-#     metro_page = page.MetroPage(self.driver)
-#     metro_page.header_main_elements_click('homes')
-#     assert 'Find a Home | Meritage Homes' == self.driver.title
-
-#   def test_header_main_why_meritage(self):
-#     #self.driver_settings()
-#     metro_page = page.MetroPage(self.driver)
-#     metro_page.header_main_elements_click('why-meritage')
-#     assert 'Why Meritage? Energy Efficient Homes | Meritage Homes' == self.driver.title
   
-#   def test_header_main_buyer_resources(self):
-#     #self.driver_settings()
-#     metro_page = page.MetroPage(self.driver)
-#     metro_page.header_main_elements_click('buyer-resources')
-#     assert 'Buyer Resources & Tools For New Homeowners | Meritage Homes' == self.driver.title
-
-#   def test_header_main_my_home(self):
-#     #self.driver_settings()
-#     metro_page = page.MetroPage(self.driver)
-#     metro_page.header_main_elements_click('my-home')
-#     assert 'My Meritage Portal' or 'Loading...' == self.driver.title 
-
+  # Test the navigaton links in the homes dropdown
   def header_level2_homes(self, level2_element):
     base_page = page.BasePage(self.driver)
     base_page.click_header_level2_element(page.BasePage.MAIN_NAV_ELEMENTS[0], level2_element)
@@ -100,9 +103,12 @@ class Test_Header_Navigation():
         assert 'Tennessee' == self.driver.title
       case 'tx':
         assert 'Texas' == self.driver.title
+      case 'map':
+        assert "Find a Home | Meritage Homes" == self.driver.title
       case _:
         assert False
-      
+  
+  # Test the navigation links in the why-meritage dropdown
   def header_level2_why_meritage(self, level2_element):
     base_page = page.BasePage(self.driver)
     base_page.click_header_level2_element(page.BasePage.MAIN_NAV_ELEMENTS[1], level2_element)
@@ -124,6 +130,7 @@ class Test_Header_Navigation():
       case _:
         assert False
   
+  # Test the navigation links in the buyer-resources dropdown
   def header_level2_buyer_resources(self, level2_element):
     base_page = page.BasePage(self.driver)
     base_page.click_header_level2_element(page.BasePage.MAIN_NAV_ELEMENTS[2],level2_element)
