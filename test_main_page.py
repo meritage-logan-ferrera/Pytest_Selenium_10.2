@@ -58,8 +58,32 @@ class Test_Main_Page(BasicTest):
     header_tests.Test_Header_Navigation(self.driver).header_level2_buyer_resources(buyer_resources_nav_element)
   
   # Cookies banner is blocking this. Need to create browser profile with cookies or something...
-  @pytest.mark.blogan
   @pytest.mark.parametrize('element', ['1', '2', '3', '4', '5'])
   def test_footer_company_elements(self, element):
     self.driver_settings()
+    MainPage(self.driver).close_cookies()
     footer_tests.Test_Footer_Element_Visibility(self.driver).footer_company_element(element)
+  
+  @pytest.mark.parametrize('element', ['1', '2', '3', '4'])
+  def test_footer_contact_elements(self, element):
+    self.driver_settings()
+    MainPage(self.driver).close_cookies()
+    footer_tests.Test_Footer_Element_Visibility(self.driver).footer_contact_element(element)
+  
+  def test_optin_signup_error_image_on_wrong_email(self):
+    self.driver_settings()
+    MainPage(self.driver).close_cookies()
+    footer_tests.Test_Footer_Element_Visibility(self.driver).footer_enter_email_error_image()
+
+  
+  def test_optin_signup_error_field_on_wrong_email(self):
+    self.driver_settings()
+    MainPage(self.driver).close_cookies()
+    footer_tests.Test_Footer_Element_Visibility(self.driver).footer_enter_email_error_field()
+
+  @pytest.mark.blogan
+  @pytest.mark.parametrize('element', ['1', '2', '3', '4', '5'])
+  def test_footer_social_media_links(self, element):
+    self.driver_settings()
+    MainPage(self.driver).close_cookies()
+    footer_tests.Test_Footer_Element_Visibility(self.driver).footer_social_media(element)

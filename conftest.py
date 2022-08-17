@@ -12,7 +12,6 @@ def init__driver(request):
     browser_options = webdriver.FirefoxOptions()
   if request.param == "chrome":
     browser_options = webdriver.ChromeOptions()
-    browser_options.platform_name = "LINUX"
     # We use the below when we are doing normal selenium tests not on the grid
     ##################################################################################
     # web_driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))

@@ -1,11 +1,12 @@
 from argparse import Action
+from curses import window
 from email import header
 from selenium.webdriver.support.relative_locator import locate_with
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.keys import Keys
+import selenium.webdriver.common.keys
 from selenium.webdriver.common.by import By
 import time
 
@@ -24,6 +25,16 @@ class BasePage(object):
   
   def get_title(self):
     return self.driver.title
+  
+  def close_cookies(self):
+    cookies_bottom_banner = self.driver.find_element(By.ID, "onetrust-banner-sdk")
+    WebDriverWait(self.driver, timeout=2).until(EC.visibility_of(cookies_bottom_banner))
+    result = self.driver.execute_script("return arguments[0].style.display != \"none\"", cookies_bottom_banner)
+    if result:
+      close_cookies = self.driver.find_element(By.XPATH, "//*[@id='onetrust-close-btn-container']/a")
+      WebDriverWait(self.driver, timeout=2).until(EC.element_to_be_clickable(close_cookies))
+      close_cookies.click()
+      WebDriverWait(self.driver, timeout=2).until(EC.invisibility_of_element(cookies_bottom_banner))
 
   def header_get_element_meritage_image_container(self):
     return self.driver.find_element(By.CSS_SELECTOR, "body > nav > div.row.full-width.diff.nav--bottom > div > a > div.logo--dark")
@@ -92,10 +103,67 @@ class BasePage(object):
     return self.driver.find_element(By.XPATH, "/html/body/footer/div[1]/div/div/div[2]")
   
   def footer_click_element_company_element(self, element):
+    if element != '5':
+      html = self.get_html()
+      contact_block = self.footer_get_element_company_nav_block() 
+      contact_block.find_element(By.XPATH, f"/html/body/footer/div[1]/div/div/div[1]/ul/li[{element}]/a").click()
+      WebDriverWait(self.driver, timeout=15).until(EC.staleness_of(html))
+    else: # Clicking the fith element opens the window in a new tab
+      original_window = self.driver.current_window_handle
+      contact_block = self.footer_get_element_company_nav_block() 
+      contact_block.find_element(By.XPATH, f"/html/body/footer/div[1]/div/div/div[1]/ul/li[{element}]/a").click()
+      WebDriverWait(self.driver, timeout=3).until(EC.number_of_windows_to_be(2))
+      for window_handle in self.driver.window_handles:
+        if window_handle != original_window:
+          self.driver.switch_to.window(window_handle)
+          break
+    if self.driver.title == '':
+      time.sleep(3)
+    
+  def footer_click_element_contact_element(self, element):
     html = self.get_html()
-    contact_block = self.footer_get_element_company_nav_block() 
-    contact_block.find_element(By.XPATH, f"/html/body/footer/div[1]/div/div/div[1]/ul/li[{element}]/a").click()
+    contact_block = self.footer_get_element_contact_nav_block() 
+    contact_block.find_element(By.XPATH, f"/html/body/footer/div[1]/div/div/div[2]/ul/li[{element}]/a").click()
     WebDriverWait(self.driver, timeout=15).until(EC.staleness_of(html))
+  
+  def footer_get_element_optin_signup(self):
+    return self.driver.find_element(By.XPATH, "/html/body/footer/div[1]/div/div/div[4]/div")
+  
+  def footer_get_element_email_form_input(self):
+    return self.driver.find_element(By.ID, "footer-open-modal-email")
+  
+  def footer_get_element_email_form_enter(self):
+    return self.driver.find_element(By.ID, "footer-open-modal-trigger")
+  
+  def footer_get_element_email_form_error_image(self):
+    return self.driver.find_element(By.XPATH, "/html/body/footer/div[1]/div/div/div[4]/div/form/div[1]/div[2]")
+  
+  def footer_get_element_error_message(self):
+    return self.driver.find_element(By.XPATH, "/html/body/footer/div[1]/div/div/div[4]/div/form/div[2]")
+  
+  def footer_enter_keys_email_form_input(self):
+    email_input = self.footer_get_element_email_form_input()
+    email_input.send_keys('NotAValidEmail')
+  
+  def footer_click_element_email_form_enter(self):
+    email_enter = self.footer_get_element_email_form_enter()
+    email_enter.click()
+  
+  def footer_get_element_socials(self):
+    return self.driver.find_element(By.XPATH, "/html/body/footer/div[1]/div/div/div[5]/div[2]")
+  
+  def footer_click_element_social_media_link(self, element):
+    original_window = self.driver.current_window_handle
+    socials = self.footer_get_element_socials()
+    social_media_link = socials.find_element(By.XPATH, f"/html/body/footer/div[1]/div/div/div[5]/div[2]/a[{element}]")  
+    social_media_link.click()
+    WebDriverWait(self.driver, timeout=3).until(EC.number_of_windows_to_be(2))
+    for window_handle in self.driver.window_handles:
+      if window_handle != original_window:
+        self.driver.switch_to.window(window_handle)
+        break
+    if self.driver.title == '':
+      time.sleep(3)
 
 
 class MetroPage(BasePage): 
