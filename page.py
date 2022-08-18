@@ -28,13 +28,13 @@ class BasePage(object):
   
   def close_cookies(self):
     cookies_bottom_banner = self.driver.find_element(By.ID, "onetrust-banner-sdk")
-    WebDriverWait(self.driver, timeout=2).until(EC.visibility_of(cookies_bottom_banner))
+    WebDriverWait(self.driver, timeout=5).until(EC.visibility_of(cookies_bottom_banner))
     result = self.driver.execute_script("return arguments[0].style.display != \"none\"", cookies_bottom_banner)
     if result:
       close_cookies = self.driver.find_element(By.XPATH, "//*[@id='onetrust-close-btn-container']/a")
-      WebDriverWait(self.driver, timeout=2).until(EC.element_to_be_clickable(close_cookies))
+      WebDriverWait(self.driver, timeout=5).until(EC.element_to_be_clickable(close_cookies))
       close_cookies.click()
-      WebDriverWait(self.driver, timeout=2).until(EC.invisibility_of_element(cookies_bottom_banner))
+      WebDriverWait(self.driver, timeout=5).until(EC.invisibility_of_element(cookies_bottom_banner))
 
   def header_get_element_meritage_image_container(self):
     return self.driver.find_element(By.CSS_SELECTOR, "body > nav > div.row.full-width.diff.nav--bottom > div > a > div.logo--dark")
@@ -164,7 +164,53 @@ class BasePage(object):
         break
     if self.driver.title == '':
       time.sleep(3)
-
+  
+  def footer_click_element_privacy_policy_links(self, element):
+    original_window = self.driver.current_window_handle
+    privacy_element = self.driver.find_element(By.XPATH, f"/html/body/footer/div[2]/div/div/div[1]/div[1]/ul/li[{element}]/a")
+    privacy_element.click()
+    if element == '4': # My Meritage Portal opens in a new tab
+      WebDriverWait(self.driver, timeout=3).until(EC.number_of_windows_to_be(2))
+      for window_handle in self.driver.window_handles:
+        if window_handle != original_window:
+          self.driver.switch_to.window(window_handle)
+          break
+      if self.driver.title == '':
+        time.sleep(3)
+      
+  def footer_get_element_uncollapsable_disclaimer(self):
+    return self.driver.find_element(By.XPATH, "/html/body/footer/div[2]/div/div/div[2]/div/div/p[1]")
+  
+  def footer_get_text_uncollapsable_disclaimer(self):
+    uncollapse_disclaimer = self.footer_get_element_uncollapsable_disclaimer()
+    return uncollapse_disclaimer.text
+  
+  def footer_get_element_read_more(self):
+    return self.driver.find_element(By.ID, "FooterReadMore")
+  
+  def footer_click_element_read_more(self):
+    read_more = self.footer_get_element_read_more()
+    read_more.click()
+  
+  def footer_get_element_read_more_wrapper(self):
+    return self.driver.find_element(By.ID, "FooterReadMoreWrapper")
+  
+  def footer_get_element_green_read_more_button(self):
+    return self.driver.find_element(By.ID, "ot-sdk-btn")
+  
+  def footer_click_element_green_read_more_button(self):
+    green_read_more = self.footer_get_element_green_read_more_button()
+    green_read_more.click()
+  
+  def footer_get_element_onetrust_overlay_on_green_press(self):
+    return self.driver.find_element(By.ID, "onetrust-pc-sdk")
+  
+  def footer_get_element_eho_image(self):
+    return self.driver.find_element(By.XPATH, "/html/body/footer/div[2]/div/div/div[1]/div[2]/ul/li[1]/img")
+  
+  def footer_get_element_energy_star_image(self):
+    return self.driver.find_element(By.XPATH, "/html/body/footer/div[2]/div/div/div[1]/div[2]/ul/li[2]/img")
+  
 
 class MetroPage(BasePage): 
   def placeholder(self):

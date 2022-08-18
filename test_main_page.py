@@ -44,7 +44,6 @@ class Test_Main_Page(BasicTest):
     self.driver_settings()
     header_tests.Test_Header_Navigation(self.driver).header_level2_homes(state)
 
-  
   why_meritage_nav_elements = MainPage.WHY_MERITAGE_NAV_ELEMENTS
   @pytest.mark.parametrize('why_meritage_nav_element', why_meritage_nav_elements)
   def test_header_level2_why_meritage_navigation(self, why_meritage_nav_element):
@@ -61,29 +60,51 @@ class Test_Main_Page(BasicTest):
   @pytest.mark.parametrize('element', ['1', '2', '3', '4', '5'])
   def test_footer_company_elements(self, element):
     self.driver_settings()
-    MainPage(self.driver).close_cookies()
     footer_tests.Test_Footer_Element_Visibility(self.driver).footer_company_element(element)
   
   @pytest.mark.parametrize('element', ['1', '2', '3', '4'])
   def test_footer_contact_elements(self, element):
     self.driver_settings()
-    MainPage(self.driver).close_cookies()
     footer_tests.Test_Footer_Element_Visibility(self.driver).footer_contact_element(element)
   
   def test_optin_signup_error_image_on_wrong_email(self):
     self.driver_settings()
-    MainPage(self.driver).close_cookies()
     footer_tests.Test_Footer_Element_Visibility(self.driver).footer_enter_email_error_image()
 
-  
   def test_optin_signup_error_field_on_wrong_email(self):
     self.driver_settings()
-    MainPage(self.driver).close_cookies()
     footer_tests.Test_Footer_Element_Visibility(self.driver).footer_enter_email_error_field()
 
   @pytest.mark.blogan
   @pytest.mark.parametrize('element', ['1', '2', '3', '4', '5'])
   def test_footer_social_media_links(self, element):
     self.driver_settings()
-    MainPage(self.driver).close_cookies()
     footer_tests.Test_Footer_Element_Visibility(self.driver).footer_social_media(element)
+  
+  @pytest.mark.parametrize('element', ['1', '2', '3', '4'])
+  def test_footer_social_media_links(self, element):
+    self.driver_settings()
+    footer_tests.Test_Footer_Element_Visibility(self.driver).footer_privacy_links(element)
+  
+  def test_footer_uncollapsable_text(self):
+    self.driver_settings()
+    footer_tests.Test_Footer_Element_Visibility(self.driver).footer_uncollapsable_text()
+  
+  def test_footer_read_more(self):
+    self.driver_settings()
+    footer_tests.Test_Footer_Element_Visibility(self.driver).footer_read_more()
+
+  def test_onetrust_overlay_on_green_read_more_press(self):
+    self.driver_settings()
+    footer_tests.Test_Footer_Element_Visibility(self.driver).footer_onetrust_overlay_on_green_read_more_click()
+  
+  @pytest.mark.blogan
+  def test_eho_image(self):
+    self.driver_settings()
+    footer_tests.Test_Footer_Element_Visibility(self.driver).footer_eho_image()
+
+  @pytest.mark.blogan
+  def test_energy_star_image(self):
+    self.driver_settings()
+    footer_tests.Test_Footer_Element_Visibility(self.driver).footer_energy_star_image()
+    
