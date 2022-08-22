@@ -5,7 +5,8 @@ import pytest
 import time
 
 class Test_Footer_Element_Visibility: 
-  @pytest.mark.blogan
+  # @pytest.mark.blogan
+  # Test that the elements under the Company banner in the footer navigate to the correct page
   @pytest.mark.parametrize('element', ['1', '2', '3', '4', '5'])
   def test_footer_company_element(self, element, driver_settings):
     base_page = page.BasePage(self.driver)
@@ -25,6 +26,7 @@ class Test_Footer_Element_Visibility:
       case _:
         assert False
   
+  # Test that the elements under the contact banner in the footer navigate to the correct page
   @pytest.mark.parametrize('element', ['1', '2', '3', '4'])
   def test_footer_contact_element(self, element, driver_settings):
     base_page = page.BasePage(self.driver)
@@ -42,6 +44,7 @@ class Test_Footer_Element_Visibility:
       case _:
         assert False
 
+  # Test that the error triangle image appears in the email form when an invalid email is entered
   def test_footer_enter_email_error_image(self, driver_settings):
     base_page = page.BasePage(self.driver)
     base_page.close_cookies()
@@ -51,6 +54,7 @@ class Test_Footer_Element_Visibility:
     result = self.driver.execute_script("return arguments[0].classList.contains('is-visible')", error_image)
     assert result
   
+  # Test that the error message appears in the email form when an invalid email is entered
   def test_footer_enter_email_error_field(self, driver_settings):
     base_page = page.BasePage(self.driver)
     base_page.close_cookies()
@@ -60,6 +64,7 @@ class Test_Footer_Element_Visibility:
     result = self.driver.execute_script("return arguments[0].style.display != \"none\"", error_field)
     assert result
   
+  # Test that all of the social media navigable images all navigate to the correct pages when clicked
   @pytest.mark.parametrize('element', ['1', '2', '3', '4', '5'])
   def test_footer_social_media(self, element, driver_settings):
     base_page = page.BasePage(self.driver)
@@ -79,6 +84,7 @@ class Test_Footer_Element_Visibility:
       case _:
         assert False
   
+  # Test the help link navigable elements in the footer all navigate to the correct page when clicked
   @pytest.mark.parametrize('element', ['1', '2', '3', '4'])
   def test_footer_privacy_links(self, element, driver_settings):
     base_page = page.BasePage(self.driver)
@@ -94,12 +100,14 @@ class Test_Footer_Element_Visibility:
       case '4': 
         assert "My Meritage Portal" or "Loading..." == self.driver.title, str(self.driver.title)
   
+  # Test that the block disclaimer text appears when the page is loaded
   def test_footer_uncollapsable_text(self, driver_settings):
     base_page = page.BasePage(self.driver)
     base_page.close_cookies()
     text = base_page.footer_get_text_uncollapsable_disclaimer()
     assert "Pictures and other images are modified or edited representative" in text
   
+  # Test that clicking the read more arrow opens up the rest of the disclaimer message
   def test_footer_read_more(self, driver_settings):
     base_page = page.BasePage(self.driver)
     base_page.close_cookies()
@@ -110,6 +118,7 @@ class Test_Footer_Element_Visibility:
     result = self.driver.execute_script("return arguments[0].style.display != \"none\"", read_more_wrapper)
     assert result
   
+  # Test that pressing the green Read More button at the bottom of the footer opens up the OneTrust overlay
   def test_footer_onetrust_overlay_on_green_read_more_click(self, driver_settings):
     base_page = page.BasePage(self.driver)
     base_page.close_cookies()
@@ -120,6 +129,7 @@ class Test_Footer_Element_Visibility:
     result = self.driver.execute_script("return arguments[0].style.visibility != \"hidden\"", onetrust_overlay)
     assert result
   
+  # Test that the Equal Housing Opportunity image appears on the page in the footer
   def test_footer_eho_image(self, driver_settings):
     base_page = page.BasePage(self.driver)
     base_page.close_cookies()
@@ -127,6 +137,7 @@ class Test_Footer_Element_Visibility:
     result = self.driver.execute_script("return arguments[0].complete && " + "arguments[0].width > 0", eho_image)
     assert result
   
+  # Test that the Energy Star image appears on the page in the footer
   def test_footer_energy_star_image(self, driver_settings):
     base_page = page.BasePage(self.driver)
     base_page.close_cookies()
