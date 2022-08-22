@@ -1,12 +1,7 @@
-from email import header
-# from lib2to3.pgen2 import driver
-from wsgiref.handlers import BaseCGIHandler
 from page import MainPage
 import pytest
 import header_tests
 import footer_tests
-
-# I want to be able to pass a URL into this file. For instance, when I make a test_metro_page file similar to this, I can just pass in the different metropage url's to all use the tests from the one file. But I cannot use __init__ in these classes... Need to find a solution. Pytest probably provides one but I am still looking...
 
 @pytest.mark.usefixtures("init__driver")
 class BasicTest(footer_tests.Test_Footer_Element_Visibility, header_tests.Test_Header_Element_Visibility):
@@ -26,3 +21,135 @@ class Test_Metro_Tucson(BasicTest):
     self.driver.set_window_position(0,0)
     self.driver.set_window_size(1920,1080)
   
+class Test_Metro_Bay_Area(BasicTest):
+  @pytest.fixture()
+  def driver_settings(self):
+    self.driver.get('https://www.meritagehomes.com/state/ca/bay-area')
+    self.driver.set_window_position(0,0)
+    self.driver.set_window_size(1920,1080)
+
+class Test_Metro_Bay_Area(BasicTest):
+  @pytest.fixture()
+  def driver_settings(self):
+    self.driver.get('https://www.meritagehomes.com/state/ca/bay-area')
+    self.driver.set_window_position(0,0)
+    self.driver.set_window_size(1920,1080)
+  
+class Test_Metro_Sacramento(BasicTest):
+  @pytest.fixture()
+  def driver_settings(self):
+    self.driver.get('https://www.meritagehomes.com/state/ca/sacramento')
+    self.driver.set_window_position(0,0)
+    self.driver.set_window_size(1920,1080)
+  
+class Test_Metro_Southern_CA(BasicTest):
+  @pytest.fixture()
+  def driver_settings(self):
+    self.driver.get('https://www.meritagehomes.com/state/ca/southern-ca')
+    self.driver.set_window_position(0,0)
+    self.driver.set_window_size(1920,1080)
+
+class Test_Metro_Denver(BasicTest):
+  @pytest.fixture()
+  def driver_settings(self):
+    self.driver.get('https://www.meritagehomes.com/state/co/denver')
+    self.driver.set_window_position(0,0)
+    self.driver.set_window_size(1920,1080)
+
+class Test_Metro_Orlando(BasicTest):
+  @pytest.fixture()
+  def driver_settings(self):
+    self.driver.get('https://www.meritagehomes.com/state/fl/orlando')
+    self.driver.set_window_position(0,0)
+    self.driver.set_window_size(1920,1080)
+
+class Test_Metro_Tampa(BasicTest):
+  @pytest.fixture()
+  def driver_settings(self):
+    self.driver.get('https://www.meritagehomes.com/state/fl/tampa')
+    self.driver.set_window_position(0,0)
+    self.driver.set_window_size(1920,1080)
+
+class Test_Metro_South_Florida(BasicTest):
+  @pytest.fixture()
+  def driver_settings(self):
+    self.driver.get('https://www.meritagehomes.com/state/fl/south-florida')
+    self.driver.set_window_position(0,0)
+    self.driver.set_window_size(1920,1080)
+
+class Test_Metro_Atlanta(BasicTest):
+  @pytest.fixture()
+  def driver_settings(self):
+    self.driver.get('https://www.meritagehomes.com/state/ga/atlanta')
+    self.driver.set_window_position(0,0)
+    self.driver.set_window_size(1920,1080)
+
+class Test_Metro_Charlotte(BasicTest):
+  @pytest.fixture()
+  def driver_settings(self):
+    self.driver.get('https://www.meritagehomes.com/state/nc/charlotte')
+    self.driver.set_window_position(0,0)
+    self.driver.set_window_size(1920,1080)
+
+class Test_Metro_Raleigh(BasicTest):
+  @pytest.fixture()
+  def driver_settings(self):
+    self.driver.get('https://www.meritagehomes.com/state/nc/raleigh')
+    self.driver.set_window_position(0,0)
+    self.driver.set_window_size(1920,1080)
+
+class Test_Metro_Greenville(BasicTest):
+  @pytest.fixture()
+  def driver_settings(self):
+    self.driver.get('https://www.meritagehomes.com/state/sc/greenville')
+    self.driver.set_window_position(0,0)
+    self.driver.set_window_size(1920,1080)
+
+class Test_Metro_York_County(BasicTest):
+  @pytest.fixture()
+  def driver_settings(self):
+    self.driver.get('https://www.meritagehomes.com/state/sc/york-county')
+    self.driver.set_window_position(0,0)
+    self.driver.set_window_size(1920,1080)
+
+class Test_Metro_Myrtle_Beach(BasicTest):
+  @pytest.fixture()
+  def driver_settings(self):
+    self.driver.get('https://www.meritagehomes.com/state/sc/myrtle-beach')
+    self.driver.set_window_position(0,0)
+    self.driver.set_window_size(1920,1080)
+
+class Test_Metro_Nashville(BasicTest):
+  @pytest.fixture()
+  def driver_settings(self):
+    self.driver.get('https://www.meritagehomes.com/state/tn/nashville')
+    self.driver.set_window_position(0,0)
+    self.driver.set_window_size(1920,1080)
+
+class Test_Metro_Austin(BasicTest):
+  @pytest.fixture()
+  def driver_settings(self):
+    self.driver.get('https://www.meritagehomes.com/state/tx/austin')
+    self.driver.set_window_position(0,0)
+    self.driver.set_window_size(1920,1080)
+
+class Test_Metro_Dallas_Ft_Worth(BasicTest):
+  @pytest.fixture()
+  def driver_settings(self):
+    self.driver.get('https://www.meritagehomes.com/state/tx/dallasft-worth')
+    self.driver.set_window_position(0,0)
+    self.driver.set_window_size(1920,1080)
+
+class Test_Metro_Houston(BasicTest):
+  @pytest.fixture()
+  def driver_settings(self):
+    self.driver.get('https://www.meritagehomes.com/state/tx/houston')
+    self.driver.set_window_position(0,0)
+    self.driver.set_window_size(1920,1080)
+
+class Test_Metro_San_Antonio(BasicTest):
+  @pytest.fixture()
+  def driver_settings(self):
+    self.driver.get('https://www.meritagehomes.com/state/tx/san-antonio')
+    self.driver.set_window_position(0,0)
+    self.driver.set_window_size(1920,1080)

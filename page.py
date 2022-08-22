@@ -211,21 +211,211 @@ class BasePage(object):
   def footer_get_element_energy_star_image(self):
     return self.driver.find_element(By.XPATH, "/html/body/footer/div[2]/div/div/div[1]/div[2]/ul/li[2]/img")
   
+class MainPage(BasePage):
+  def get_element_meritage_video(self):
+    return self.driver.find_element(By.XPATH, "/html/body/header/div[3]/video")
+  
+  def get_text_life_built_better(self):
+    life_built_better = self.driver.find_element(By.XPATH, "/html/body/header/div[1]/div/div/div/h1")
+    return life_built_better.text
+  
+  def get_text_let_us_find(self):
+    let_us_find = self.driver.find_element(By.XPATH, "/html/body/header/div[1]/div/div/div/p")
+    return let_us_find.text
 
-class MetroPage(BasePage): 
+  def get_element_scroll_down_arrow(self):
+    return self.driver.find_element(By.XPATH, "/html/body/header/div[2]/a/img")
+    
+  def click_element_scroll_down_arrow(self):
+    scroll_down_arrow = self.get_element_scroll_down_arrow()
+    scroll_down_arrow.click()
+  
+  def get_element_save_the_rate_image(self):
+    return self.driver.find_element(By.XPATH, "/html/body/main/div/div/div/div/div/ul/li/figure/img")
+  
+  def get_text_save_the_rate_h2(self):
+    save_the_rate = self.driver.find_element(By.XPATH, "/html/body/main/aside[1]/div/div/div[1]/h2")
+    return save_the_rate.text
+  
+  def click_element_save_the_rate_button(self):
+    save_the_rate_button = self.driver.find_element(By.XPATH, "/html/body/main/aside[1]/div/div/div[2]/a")
+    save_the_rate_button.click()
+  
+  def get_element_article_1_not_all_new(self):
+    return self.driver.find_element(By.XPATH, "/html/body/main/article[1]")
+    # arguments[0].clientHeight > 0
+
+  def get_element_article_1_video_image(self):
+    return self.driver.find_element(By.XPATH, "/html/body/main/article[1]/div/div[2]/div/img")
+
+  def click_element_article_1_play_button(self):
+    play_button = self.driver.find_element(By.XPATH, "/html/body/main/article[1]/div/div[2]/div/div/a/i")
+    play_button.click()
+
+  def get_element_article_1_video_overlay(self):
+    return self.driver.find_element(By.XPATH, "/html/body/div[4]")
+  
+  def get_text_article_1_header(self):
+    return self.driver.find_element(By.XPATH, "/html/body/main/article[1]/div/div[1]/h4").text
+  
+  def get_text_article_1_subtext(self):
+    return self.driver.find_element(By.XPATH, "/html/body/main/article[1]/div/div[1]/p[1]").text
+  
+  def get_element_article_2_communities(self):
+    return self.driver.find_element(By.XPATH, "/html/body/main/article[2]")
+  
+  def get_element_article_2_header(self):
+    return self.driver.find_element(By.XPATH, "/html/body/main/article[2]/div/div/div[1]/div/h2")
+  
+  def get_element_article_2_subtext(self):
+    return self.driver.find_element(By.XPATH, "/html/body/main/article[2]/div/div/div[1]/div/p")
+  
+  def get_element_article_2_state_container(self, row, column):
+    return self.driver.find_element(By.XPATH, f"/html/body/main/article[2]/div/div/div[{row}]/div[{column}]")
+  # For not not checking dymanic elements of these containers
+  
+  def get_element_article_2_state_container_button(self, row, column):
+    state_container = self.get_element_article_2_state_container(row, column)
+    return state_container.find_element(By.CSS_SELECTOR, "a:nth-child(1)")
+
+  def click_element_article_2_state(self, row, column):
+    state_container_button = self.get_element_article_2_state_container_button(row, column)
+    state_container_button.click()
+  
+  def get_element_article_3_military(self):
+    return self.driver.find_element(By.XPATH, "/html/body/main/article[3]")
+  
+  def click_element_article_3_a_look_back(self):
+    a_look_back_container = self.driver.find_element(By.XPATH, "/html/body/main/article[3]/div/div[1]/div/div[1]")
+    a_look_back_container.click()
+  
+  def click_element_article_3_frame_signing(self):
+    frame_signing_container = self.driver.find_element(By.XPATH, "/html/body/main/article[3]/div/div[1]/div/div[2]")
+    frame_signing_container.click()
+  
+  def get_text_article_3_header(self):
+    return self.driver.find_element(By.XPATH, "/html/body/main/article[3]/div/div[2]/p/span").text
+
+  def click_element_article_3_button(self):
+    article_3_button = self.driver.find_element(By.XPATH, "/html/body/main/article[3]/div/div[2]/a")
+    article_3_button.click()
+  
+  def get_element_article_4_expect_more(self):
+    return self.driver.find_element(By.XPATH, "/html/body/main/article[4]")
+  
+  def get_text_article_4_header(self):
+    return self.driver.find_element(By.XPATH, "/html/body/main/article[4]/div/div/div[1]/div/h2").text
+  
+  def get_text_article_4_subtext(self):
+    return self.driver.find_element(By.XPATH, "/html/body/main/article[4]/div/div/div[1]/div/p").text
+  
+  def get_element_article_4_container(self, element):
+    return self.driver.find_element(By.XPATH, f"/html/body/main/article[4]/div/div/div[2]/div[{element}]")
+
+  def get_element_article_4_container_image(self, element):
+    container = self.get_element_article_4_container(element)
+    return container.find_element(By.TAG_NAME, "img")
+  
+  def get_text_article_4_container_pre_heading(self, element):
+    container = self.get_element_article_4_container(element)
+    return container.find_element(By.CLASS_NAME, "pre-heading")
+
+  def get_text_article_4_container_header(self, element):
+    container = self.get_element_article_4_container(element)
+    return container.find_element(By.TAG_NAME, "h3")
+  
+  def get_text_article_4_container_description(self, element):
+    container = self.get_element_article_4_container(element)
+    return container.find_element(By.TAG_NAME, "p")
+  
+  def click_element_article_4_button(self):
+    article_4_button = self.driver.find_element(By.XPATH, "/html/body/main/article[4]/div/div/div[3]/div/a")
+    article_4_button.click()
+
+  def get_element_article_5_welcome_home(self):
+    return self.driver.find_element(By.XPATH, "/html/body/main/article[5]")
+  
+  def get_element_article_5_image_carousel(self):
+    return self.driver.find_element(By.XPATH, "/html/body/main/article[5]/div/div[1]")
+  
+  def get_element_article_5_image_in_carousel(self, number):
+    carousel = self.get_element_article_5_image_carousel()
+    return carousel.find_element(By.XPATH, f"//div[@data-slide='{number}']")
+
+  def get_text_article_5_header(self):
+    article_5 = self.get_element_article_5_welcome_home()
+    return article_5.find_element(By.TAG_NAME, "h2")
+  
+  def get_element_article_5_orbit_container(self):
+    article_5 = self.get_element_article_5_welcome_home()
+    return article_5.find_element(By.CLASS_NAME, "orbit-container")
+  
+  def get_element_article_5_orbit_slide(self, number):
+    orbit_container = self.get_element_article_5_orbit_container()
+    return orbit_container.find_element(By.XPATH, f"//li[@data-slide='{number}']")
+  
+  def click_element_article_5_orbit_video(self, number):
+    orbit_slide = self.get_element_article_5_orbit_slide(number)
+    orbit_video = orbit_slide.find_element(By.CLASS_NAME, "video-trigger plain")
+    orbit_video.click()
+  
+  # Need to find out how the site knows which youtube video to put in the overlay between the different slides
+  def get_element_article_5_youtube_overlay(self):
+    return self.driver.find_element(By.XPATH, "/html/body/div[4]")
+  
+  def click_element_article_5_right_button(self):
+    right_button = self.driver.find_element(By.XPATH, "/html/body/main/article[5]/div/div[2]/div/div[3]/button")
+    right_button.click()
+
+  def get_element_article_6_awards(self):
+    return self.driver.find_element(By.XPATH, "/html/body/main/article[6]")
+  
+  def get_element_article_6_header(self):
+    article_6 = self.get_element_article_6_awards()
+    return article_6.find_element(By.TAG_NAME, "h2")
+  
+  def get_element_article_6_partner_image(self):
+    article_6 = self.get_element_article_6_awards()
+    return article_6.find_element(By.XPATH, "/div/div/div[2]/div[1]/img")
+  
+  def get_element_article_6_avid_image(self):
+    article_6 = self.get_element_article_6_awards()
+    return article_6.find_element(By.XPATH, "/div/div/div[2]/div[2]/img")
+
+  def get_element_article_7_search_smarter(self):
+    return self.driver.find_element(By.XPATH, "/html/body/main/article[7]")
+
+  def get_element_article_7_h2(self):
+    article_7 = self.get_element_article_7_search_smarter()
+    return article_7.find_element(By.TAG_NAME, "h2")
+
+  def get_element_article_7_image_container_1(self):
+    article_7 = self.get_element_article_7_search_smarter()
+    return article_7.find_element(By.XPATH, "/div/div[2]/div/div[1]")
+
+  def get_element_article_7_image_container_2(self):
+    article_7 = self.get_element_article_7_search_smarter()
+    return article_7.find_element(By.XPATH, "/div/div[2]/div/div[2]")
+  
+  # Should I paramaterize the above two functions into one???
+  def get_text_article_7_image_container_header(self):
+    container = self.get_element_article_7_image_container_1()
+    return container.find_element(By.TAG_NAME, "h4")
+
+  def click_element_article_7_image_container_1(self):
+    self.get_element_article_7_image_container_1().click()
+
+  def click_element_article_7_image_container_2(self):
+    self.get_element_article_7_image_container_2().click()
+
+  def get_element_aside_2_ready_to_find(self):
+    return self.driver.find_element(By.XPATH, "/html/body/main/aside[2]")
+
+class MetroPage(BasePage):
   def placeholder(self):
     return 'placeholder'
   
 
-class MainPage(BasePage):
-  def click_state(self, state):
-    html = self.get_html()
-    state_selected = self.driver.find_element(By.XPATH, f"//a[@href='/state/{state}']")
-    state_selected.click()
-    WebDriverWait(self.driver, timeout=15).until(EC.staleness_of(html)) 
-#     return TexasPage(self.driver)
 
-# class TexasPage(BasePage):
-#   def something(self):
-#     print("temp")
+
 

@@ -1,4 +1,3 @@
-from email import header
 from page import MainPage
 import pytest
 import header_tests
@@ -16,4 +15,7 @@ class Test_Main_Page(BasicTest):
     self.driver.get(URL)
     self.driver.set_window_position(0,0)
     self.driver.set_window_size(1920,1080)
+  
+  # Test that the Meritage video is playing
+
   

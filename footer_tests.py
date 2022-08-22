@@ -1,11 +1,9 @@
-from email.mime import base
-from operator import contains
 import page as page
 import pytest
 import time
 
 class Test_Footer_Element_Visibility: 
-  # @pytest.mark.blogan
+  @pytest.mark.blogan
   # Test that the elements under the Company banner in the footer navigate to the correct page
   @pytest.mark.parametrize('element', ['1', '2', '3', '4', '5'])
   def test_footer_company_element(self, element, driver_settings):
@@ -80,7 +78,7 @@ class Test_Footer_Element_Visibility:
       case '4':
         assert "https://www.youtube.com/meritagehomes" == self.driver.current_url
       case '5':
-        assert "https://www.instagram.com/accounts/login/?next=/meritagehomes/" == self.driver.current_url, "current_url " + str(self.driver.current_url)
+        assert "https://www.instagram.com/meritagehomes/" or "https://www.instagram.com/accounts/login/?next=/meritagehomes/" == self.driver.current_url, "current_url " + str(self.driver.current_url)
       case _:
         assert False
   

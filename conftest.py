@@ -1,10 +1,11 @@
-#Run Selenium tests in parallel with Python for Selenium Python tutorial
+#Run Selenium tests in parellel on Selenium Grid using Pytest
 from appium.options.android import UiAutomator2Options
 from appium import webdriver as appium_webdriver
 from selenium import webdriver
 import pytest
 
 # @pytest.fixture(params=["firefox", "chrome", "edge"])
+# @pytest.fixture(params=["firefox", "chrome"])
 @pytest.fixture(params=["firefox"])
 def init__driver(request):
   url = "http://localhost:4444/wd/hub"
@@ -13,10 +14,6 @@ def init__driver(request):
     browser_options = webdriver.FirefoxOptions()
   if request.param == "chrome":
     browser_options = webdriver.ChromeOptions()
-    # We use the below when we are doing normal selenium tests not on the grid
-    ##################################################################################
-    # web_driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-    ##################################################################################
   if request.param == "edge":
     browser_options = webdriver.EdgeOptions()
 
@@ -46,7 +43,3 @@ def init__driver(request):
 #   request.cls.driver = web_driver
 #   yield
 #   web_driver.quit()
-
-# def pytest_generate_tests(metafunc):
-#   if "item" in metafunc.fixturenames:
-#     metafunc.parametrize("item", ['homes', 'why-meritage', 'buyer-resources', 'my-home'])
