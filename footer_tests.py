@@ -3,7 +3,6 @@ import pytest
 import time
 
 class Test_Footer_Element_Visibility: 
-  @pytest.mark.blogan
   # Test that the elements under the Company banner in the footer navigate to the correct page
   @pytest.mark.parametrize('element', ['1', '2', '3', '4', '5'])
   def test_footer_company_element(self, element, driver_settings):
