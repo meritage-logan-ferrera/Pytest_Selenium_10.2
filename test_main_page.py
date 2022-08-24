@@ -1,4 +1,3 @@
-from unittest.main import MAIN_EXAMPLES
 from page import BasePage, MainPage
 import pytest
 import header_tests
@@ -8,7 +7,7 @@ import time
 URL = 'https://www.meritagehomes.com/'
 
 @pytest.mark.usefixtures("init__driver")
-class BasicTest(footer_tests.Test_Footer_Element_Visibility, header_tests.Test_Header_Element_Visibility):
+class BasicTest():
   pass
 
 class Test_Main_Page(BasicTest):
@@ -29,7 +28,7 @@ class Test_Main_Page(BasicTest):
   def test_life_built_better(self, driver_settings):
     main_page = MainPage(self.driver)
     life_built_better = main_page.get_text_life_built_better()
-    assert "Life. Built. Better" == life_built_better
+    assert "Life. Built. Better." in life_built_better
 
   # Test that the sub header with the value "Let us help.." is present
   def test_let_us_find(self, driver_settings):
@@ -37,19 +36,20 @@ class Test_Main_Page(BasicTest):
     let_us_find = main_page.get_text_let_us_find()
     assert "Let us help you find your perfect home" in let_us_find
   
-  # Test that the scroll down arrow is on the page
+  # Test that clicking the scroll down arrow scrolls the page down to the top of the next section (aside/article)
   def test_scroll_down_arrow(self, driver_settings):
     html = BasePage(self.driver).get_html()
     main_page = MainPage(self.driver)
+    main_page.close_cookies()
     main_page.click_element_scroll_down_arrow()
     result = self.driver.execute_script("return arguments[0].scrollTop > 100", html)
     assert result
   
-  # Test that the save the rate image is present in aside 1
+  # Test that the save the rate image is present 
   def test_save_the_rate_image(self, driver_settings):
     main_page = MainPage(self.driver)
-    time.sleep(5)
-    save_the_rate_image = main_page.get_element_aside_1_save_the_rate_image()
+    main_page.close_cookies()
+    save_the_rate_image = main_page.get_element_save_the_rate_image()
     result = self.driver.execute_script("return arguments[0].complete && " + "arguments[0].width > 0", save_the_rate_image)
     assert result
 
@@ -62,6 +62,7 @@ class Test_Main_Page(BasicTest):
   # Test that the see details button in aside 1 navigates to correct page
   def test_aside_1_button(self, driver_settings):
     main_page = MainPage(self.driver)
+    main_page.close_cookies()
     main_page.click_element_aside_1_save_the_rate_button()
     assert "Save the Rate | Meritage Homes" == self.driver.title
   
@@ -75,6 +76,7 @@ class Test_Main_Page(BasicTest):
   # Test that the video overlay pops up on pressing the play button
   def test_article_1_overlay_on_play_button_click(self, driver_settings):
     main_page = MainPage(self.driver)
+    main_page.close_cookies()
     main_page.click_element_article_1_play_button()
     video_overlay = main_page.get_element_article_1_video_overlay()
     result = self.driver.execute_script("return arguments[0].style.display != \"none\"", video_overlay)
@@ -98,7 +100,7 @@ class Test_Main_Page(BasicTest):
     header_text = main_page.get_text_article_2_header()
     assert "The search starts here:" in header_text
   
-  # Test that the correct header is displayed in article 2
+  # Test that the correct sub-header is displayed in article 2
   def test_article_2_sub_header(self, driver_settings):
     main_page = MainPage(self.driver)
     sub_header_text = main_page.get_text_article_2_subtext()
@@ -106,7 +108,7 @@ class Test_Main_Page(BasicTest):
   
   # Test that all the state containers take you to the correct page
   @pytest.mark.parametrize('row, column', [(2,1), (2,2), (3,1), (4,1), (4,2), (5,1), (5,2), (6,1), (6,2)])
-  def test_state_containers(self, row, column, driver_settings):
+  def test_article_2_state_containers(self, row, column, driver_settings):
     main_page = MainPage(self.driver)
     main_page.close_cookies()
     main_page.click_element_article_2_state_container_button(row, column)
@@ -134,12 +136,14 @@ class Test_Main_Page(BasicTest):
   # Test that clicking the look back container takes user to correct page
   def test_article_3_look_back(self, driver_settings):
     main_page = MainPage(self.driver)
+    main_page.close_cookies()
     main_page.click_element_article_3_a_look_back()
     assert "Operation Homefront 2021 | The Johnson Family - YouTube" == self.driver.title
   
   # Test that clicking the frame signing container takes user to correct page
   def test_article_3_frame_signing(self, driver_settings):
     main_page = MainPage(self.driver)
+    main_page.close_cookies()
     main_page.click_element_article_3_frame_signing()
     assert "Operation Homefront | Meritage Homes" == self.driver.title
   
@@ -150,11 +154,12 @@ class Test_Main_Page(BasicTest):
     assert "Supporting Military Families" in header_text
 
   # Test that the button in article 3 navigates to correct page
-  def test_article_3_frame_signing(self, driver_settings):
+  def test_article_3_button(self, driver_settings):
     main_page = MainPage(self.driver)
+    main_page.close_cookies()
     main_page.click_element_article_3_button()
     assert "Operation Homefront | Meritage Homes" == self.driver.title
-  
+
   # Test that the correct header is displayed in article 4
   def test_article_4_header(self, driver_settings):
     main_page = MainPage(self.driver)
@@ -165,7 +170,7 @@ class Test_Main_Page(BasicTest):
   def test_article_4_header(self, driver_settings):
     main_page = MainPage(self.driver)
     sub_header_text = main_page.get_text_article_4_subtext()
-    assert "We're setting the new standard for" in sub_header_text
+    assert 'setting the new standard for' in sub_header_text
   
   # Test that each container in article 4 has the correct image
   @pytest.mark.parametrize('element', ['1', '2', '3', '4'])
@@ -212,18 +217,19 @@ class Test_Main_Page(BasicTest):
       case '3':
         assert 'Because your home is a cozy' in container_description
       case '4':
-        assert 'Becuase you have an industry' in container_description
+        assert 'Because you have an industry' in container_description
       case _:
         assert False
       
   # Test that the button in article 4 navigates to the correct page
   def test_article_4_button(self, driver_settings):
     main_page = MainPage(self.driver)
+    main_page.close_cookies()
     main_page.click_element_article_4_button()
     assert "Why Meritage? Energy Efficient Homes | Meritage Homes" == self.driver.title
 
   # Test that the Alex image appears. This is supposed to be dynamic but is BROKEN right now.
-  @pytest.mark.parametrize('number', ['1'])
+  @pytest.mark.parametrize('number', ['0'])
   def test_article_5_image_in_carousel(self, number, driver_settings):
     main_page = MainPage(self.driver)
     carousel_image = main_page.get_element_article_5_image_in_carousel(number)
@@ -231,22 +237,24 @@ class Test_Main_Page(BasicTest):
     assert result
   
   # Test that the correct header is displayed in article 5
-  def test_article_5_header(self):
+  def test_article_5_header(self, driver_settings):
     main_page = MainPage(self.driver)
     header = main_page.get_text_article_5_header()
     assert "Welcome home" in header
   
   # Test that the orbit containers are being switched to correctly
   # ALSO test that the video overlay opens on each slide
+  @pytest.mark.logan
   @pytest.mark.parametrize('data_slide', ['0', '1', '2', '3', '4', '5', '6', '7'])
-  def test_orbit_slides(self, data_slide, driver_settings):
+  def test_article_5_orbit_slides(self, data_slide, driver_settings):
     main_page = MainPage(self.driver)
     main_page.close_cookies()
     current_slide = main_page.get_element_article_5_orbit_slide(data_slide)
     
-    for i in range(int(data_slide)):
-      main_page.click_element_article_5_right_button()
-      time.sleep(.5)
+    if data_slide != '0':
+      for i in range(int(data_slide)):
+        main_page.click_element_article_5_right_button()
+        time.sleep(.75)
 
     main_page.click_element_article_5_orbit_video(int(data_slide))
     youtube_overlay = main_page.get_element_article_5_youtube_overlay()
@@ -254,9 +262,8 @@ class Test_Main_Page(BasicTest):
     assert result
   
   # Test that each orbit slide contains the correct text content -- BOTH quote and attribution. As opposed to the test above, we get the orbit slide AFTER clicking and check that the current slide has the correct info. Whereas in the last test we got the slide we needed first and then clicked to make sure that the clicks brought us to the predetermined slide...
-  @pytest.mark.lo
   @pytest.mark.parametrize('data_slide', ['0', '1', '2', '3', '4', '5', '6', '7'])
-  def test_orbit_slides_text(self, data_slide, driver_settings):
+  def test_article_5_orbit_slides_text(self, data_slide, driver_settings):
     main_page = MainPage(self.driver)
     main_page.close_cookies()
 
@@ -287,3 +294,82 @@ class Test_Main_Page(BasicTest):
         assert "Meritage is an awesome builder" in quote and "Sylvia" in attribution
       case _:
         assert False
+      
+  # Test that the correct header is displayed in article 6
+  def test_article_6_header(self, driver_settings):
+    main_page = MainPage(self.driver)
+    header = main_page.get_element_article_6_header()
+    assert "Awards & Accolades" in header
+
+  # Test that the partner image is displayed in article 6
+  def test_article_6_partner_image(self, driver_settings):
+    main_page = MainPage(self.driver)
+    partner_image = main_page.get_element_article_6_partner_image()
+    result = self.driver.execute_script("return arguments[0].complete && " + "arguments[0].width > 0", partner_image)
+    assert result
+  
+  # Test thatthe avid image is displayed in article 6
+  def test_article_6_avid_image(self, driver_settings):
+    main_page = MainPage(self.driver)
+    avid_image = main_page.get_element_article_6_avid_image()
+    result = self.driver.execute_script("return arguments[0].complete && " + "arguments[0].width > 0", avid_image)
+    assert result
+  
+  # Test that the correct header is displayed in article 7
+  def test_article_7_header(self, driver_settings):
+    main_page = MainPage(self.driver)
+    header = main_page.get_text_article_7_header()
+    assert "Your search just got smarter" in header
+  
+  # Test that the correct header is in the first image container
+  def test_article_7_image_1_header(self, driver_settings):
+    main_page = MainPage(self.driver)
+    header = main_page.get_text_article_7_image_container_1_header()
+    assert "Financing your new home" in header
+  
+  # Test that the correct header is in the second image container
+  def test_article_7_image_2_header(self, driver_settings):
+    main_page = MainPage(self.driver)
+    header = main_page.get_text_article_7_image_container_2_header()
+    assert "Guide to homebuying" in header
+  
+  # Test that clicking the first container take the user to the correct page
+  def test_article_7_container_1_navigation(self, driver_settings):
+    main_page = MainPage(self.driver)
+    main_page.close_cookies()
+    main_page.click_element_article_7_image_container_1()
+    assert "New Home Builder - Energy-Efficient New Homes | Meritage Homes" in self.driver.title
+  
+  # Test that clicking the second container take the user to the correct page
+  def test_article_7_container_2_navigation(self, driver_settings):
+    main_page = MainPage(self.driver)
+    main_page.close_cookies()
+    main_page.click_element_article_7_image_container_2()
+    assert "Buying a Home in 2022" in self.driver.title
+  
+  # Test that the button navigates to the correct page
+  def test_article_7_button(self, driver_settings):
+    main_page = MainPage(self.driver)
+    main_page.close_cookies()
+    main_page.click_element_article_7_button()
+    assert "Buyer Resources & Tools For New Homeowners | Meritage Homes" in self.driver.title
+  
+  # Test that the correct header appears in aside 2
+  def test_aside_2_header(self, driver_settings):
+    main_page = MainPage(self.driver)
+    header = main_page.get_text_aside_2_header()
+    assert "Ready to find your home" in header
+  
+  # Test that the correct sub-header is displayed in aside 2
+  def test_aside_2_sub_header(self, driver_settings):
+    main_page = MainPage(self.driver)
+    sub_header = main_page.get_text_aside_2_subtext()
+    assert "There are many great homes" in sub_header
+  
+  # Test that the button in aside 2 navigates to the correct page
+  def tests_aside_2_button(self, driver_settings):
+    main_page = MainPage(self.driver)
+    main_page.close_cookies()
+    main_page.click_element_aside_2_button()
+    assert "" == self.driver.title # Title is missing on contact us page
+  

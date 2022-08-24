@@ -1,4 +1,5 @@
 from curses import window
+from http import cookies
 from selenium.webdriver.support.relative_locator import locate_with
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
@@ -18,7 +19,8 @@ class BasePage(object):
   def __init__(self, driver):
     self.driver = driver
   
-  def get_html(self): # get the DOM of the current page, use when testing links and navigation
+  # get the DOM of the current page, use when testing links and navigation
+  def get_html(self): 
     return self.driver.find_element(By.TAG_NAME, 'html')
   
   def get_title(self):
@@ -26,13 +28,13 @@ class BasePage(object):
   
   def close_cookies(self):
     cookies_bottom_banner = self.driver.find_element(By.ID, "onetrust-banner-sdk")
-    WebDriverWait(self.driver, timeout=5).until(EC.visibility_of(cookies_bottom_banner))
+    WebDriverWait(self.driver, timeout=10).until(EC.visibility_of(cookies_bottom_banner))
     result = self.driver.execute_script("return arguments[0].style.display != \"none\"", cookies_bottom_banner)
     if result:
       close_cookies = self.driver.find_element(By.XPATH, "//*[@id='onetrust-close-btn-container']/a")
-      WebDriverWait(self.driver, timeout=5).until(EC.element_to_be_clickable(close_cookies))
+      WebDriverWait(self.driver, timeout=10).until(EC.element_to_be_clickable(close_cookies))
       close_cookies.click()
-      WebDriverWait(self.driver, timeout=5).until(EC.invisibility_of_element(cookies_bottom_banner))
+      WebDriverWait(self.driver, timeout=10).until(EC.invisibility_of_element(cookies_bottom_banner))
 
   def header_get_element_meritage_image_container(self):
     return self.driver.find_element(By.CSS_SELECTOR, "body > nav > div.row.full-width.diff.nav--bottom > div > a > div.logo--dark")
@@ -209,6 +211,7 @@ class BasePage(object):
   def footer_get_element_energy_star_image(self):
     return self.driver.find_element(By.XPATH, "/html/body/footer/div[2]/div/div/div[1]/div[2]/ul/li[2]/img")
   
+
 class MainPage(BasePage):
   def get_element_meritage_video(self):
     return self.driver.find_element(By.XPATH, "/html/body/header/div[3]/video")
@@ -274,7 +277,8 @@ class MainPage(BasePage):
   
   def get_text_article_2_header(self):
     article_2 = self.get_element_article_2_communities()
-    return article_2.find_element(By.XPATH, "/html/body/main/article[2]/div/div/div[1]/div/h2").text
+    header = article_2.find_element(By.XPATH, "/html/body/main/article[2]/div/div/div[1]/div/h2")
+    return header.text
   
   def get_text_article_2_subtext(self):
     article_2 = self.get_element_article_2_communities()
@@ -308,7 +312,8 @@ class MainPage(BasePage):
   
   def get_text_article_3_header(self):
     article_3 = self.get_element_article_3_military()
-    return article_3.find_element(By.XPATH, "/html/body/main/article[3]/div/div[2]/p/span").text
+    header = article_3.find_element(By.XPATH, "/html/body/main/article[3]/div/div[2]/p/span")
+    return header.text
 
   def click_element_article_3_button(self):
     article_3 = self.get_element_article_3_military()
@@ -320,7 +325,8 @@ class MainPage(BasePage):
   
   def get_text_article_4_header(self):
     article_4 = self.get_element_article_4_expect_more()
-    return article_4.find_element(By.XPATH, "/html/body/main/article[4]/div/div/div[1]/div/h2").text
+    header = article_4.find_element(By.XPATH, "/html/body/main/article[4]/div/div/div[1]/div/h2")
+    return header.text
   
   def get_text_article_4_subtext(self):
     article_4 = self.get_element_article_4_expect_more()
@@ -340,7 +346,8 @@ class MainPage(BasePage):
 
   def get_text_article_4_container_header(self, element):
     container = self.get_element_article_4_container(element)
-    return container.find_element(By.TAG_NAME, "h3").text
+    header = container.find_element(By.TAG_NAME, "h3")
+    return header.text
   
   def get_text_article_4_container_description(self, element):
     container = self.get_element_article_4_container(element)
@@ -358,11 +365,12 @@ class MainPage(BasePage):
   
   def get_element_article_5_image_in_carousel(self, number):
     carousel = self.get_element_article_5_image_carousel()
-    return carousel.find_element(By.XPATH, f"//div[@data-slide='{number}']")
+    return carousel.find_element(By.XPATH, f"//div[@data-slide='{number}']/img")
 
   def get_text_article_5_header(self):
     article_5 = self.get_element_article_5_welcome_home()
-    return article_5.find_element(By.TAG_NAME, "h2").text
+    header = article_5.find_element(By.XPATH, "/html/body/main/article[5]/div/div[2]/div/div[2]/h2")
+    return header.text
   
   def get_element_article_5_orbit_container(self):
     article_5 = self.get_element_article_5_welcome_home()
@@ -404,61 +412,82 @@ class MainPage(BasePage):
   
   def get_element_article_6_header(self):
     article_6 = self.get_element_article_6_awards()
-    return article_6.find_element(By.TAG_NAME, "h2")
-  
+    header = article_6.find_element(By.TAG_NAME, "h2")
+    return header.text
+
   def get_element_article_6_partner_image(self):
     article_6 = self.get_element_article_6_awards()
-    return article_6.find_element(By.XPATH, "/div/div/div[2]/div[1]/img")
+    return article_6.find_element(By.XPATH, "/html/body/main/article[6]/div/div/div[2]/div[1]/img")
   
   def get_element_article_6_avid_image(self):
     article_6 = self.get_element_article_6_awards()
-    return article_6.find_element(By.XPATH, "/div/div/div[2]/div[2]/img")
+    return article_6.find_element(By.XPATH, "/html/body/main/article[6]/div/div/div[2]/div[2]/img")
 
   def get_element_article_7_search_smarter(self):
     return self.driver.find_element(By.XPATH, "/html/body/main/article[7]")
 
-  def get_element_article_7_h2(self):
+  def get_text_article_7_header(self):
     article_7 = self.get_element_article_7_search_smarter()
-    return article_7.find_element(By.TAG_NAME, "h2")
+    header = article_7.find_element(By.TAG_NAME, "h2")
+    return header.text
 
   def get_element_article_7_image_container_1(self):
     article_7 = self.get_element_article_7_search_smarter()
-    return article_7.find_element(By.XPATH, "/div/div[2]/div/div[1]")
+    return article_7.find_element(By.XPATH, "/html/body/main/article[7]/div/div[2]/div/div[1]")
 
   def get_element_article_7_image_container_2(self):
     article_7 = self.get_element_article_7_search_smarter()
-    return article_7.find_element(By.XPATH, "/div/div[2]/div/div[2]")
+    return article_7.find_element(By.XPATH, "/html/body/main/article[7]/div/div[2]/div/div[2]")
   
   # Should I paramaterize the above two functions into one???
-  def get_text_article_7_image_container_header(self):
+  def get_text_article_7_image_container_1_header(self):
     container = self.get_element_article_7_image_container_1()
-    return container.find_element(By.TAG_NAME, "h4")
+    header = container.find_element(By.TAG_NAME, "h4")
+    return header.text
+
+  def get_text_article_7_image_container_2_header(self):
+    container = self.get_element_article_7_image_container_2()
+    header = container.find_element(By.TAG_NAME, "h4")
+    return header.text
 
   def click_element_article_7_image_container_1(self):
-    self.get_element_article_7_image_container_1().click()
+    html = BasePage(self.driver).get_html()
+    image_container_1 = self.get_element_article_7_image_container_1()
+    image_container_1.click()
+    WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))
 
   def click_element_article_7_image_container_2(self):
-    self.get_element_article_7_image_container_2().click()
+    html = BasePage(self.driver).get_html()
+    image_container_2 = self.get_element_article_7_image_container_2()
+    image_container_2.click()
+    WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))
   
   def click_element_article_7_button(self):
+    html = BasePage(self.driver).get_html()
     article_7 = self.get_element_article_7_search_smarter()
-    article_7.find_element(By.XPATH, "/div/div[1]/a")
+    button = article_7.find_element(By.XPATH, "/html/body/main/article[7]/div/div[1]/a")
+    button.click()
+    WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))
 
   def get_element_aside_2_ready_to_find(self):
     return self.driver.find_element(By.XPATH, "/html/body/main/aside[2]")
   
-  def get_element_aside_2_header(self):
+  def get_text_aside_2_header(self):
     aside_2 = self.get_element_aside_2_ready_to_find()
-    return aside_2.find_element(By.TAG_NAME, "h2")
+    header = aside_2.find_element(By.TAG_NAME, "h2")
+    return header.text
   
-  def get_element_aside_2_subtext(self):
+  def get_text_aside_2_subtext(self):
     aside_2 = self.get_element_aside_2_ready_to_find()
-    return aside_2.find_element(By.TAG_NAME, "p")
-  
+    header = aside_2.find_element(By.TAG_NAME, "p")
+    return header.text
+
   def click_element_aside_2_button(self):
+    html = BasePage(self.driver).get_html()
     aside_2 = self.get_element_aside_2_ready_to_find()
     button = aside_2.find_element(By.TAG_NAME, "a")
     button.click()
+    WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))
 
 class MetroPage(BasePage):
   def placeholder(self):
