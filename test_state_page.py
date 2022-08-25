@@ -1,3 +1,4 @@
+from sre_parse import State
 from page_state import StatePage
 from page_base import BasePage
 from header_tests import Test_Header_Element_Visibility as test_header
@@ -101,6 +102,12 @@ class BasicTest():
     sub_header = state_page.get_text_aside_sub_header()
     assert 'Find a community to call home' in sub_header
 
+  @pytest.mark.parametrize('div',  ) # NEED to find a way to paramaterize based on the current driver session (Arizona, California, or etc...) since each page has a different number of metro containers...
+  def test_metro_container(self, driver_settings):
+    state_page = StatePage(self.driver)
+
+
+
 class Test_Arizona_Page(BasicTest):
   @pytest.fixture()
   def driver_settings(self):
@@ -114,3 +121,5 @@ class Test_California_Page(BasicTest):
     self.driver.get("https://www.meritagehomes.com/state/ca")
     self.driver.set_window_position(0,0)
     return "California"
+
+ 
