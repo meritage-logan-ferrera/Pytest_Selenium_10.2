@@ -2,7 +2,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
-from base_page import BasePage  
+from page_base import BasePage  
 
 class MainPage(BasePage):
   def get_element_meritage_video(self):

@@ -1,4 +1,4 @@
-import pageAndroid as page
+import page_android_base as page
 import pytest
 
 @pytest.mark.usefixtures("driver_android_init")

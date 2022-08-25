@@ -1,5 +1,5 @@
-from main_page import MainPage
-from base_page import BasePage
+from page_main import MainPage
+from page_base import BasePage
 from header_tests import Test_Header_Element_Visibility as test_header
 from footer_tests import Test_Footer_Element_Visibility as test_footer
 import pytest

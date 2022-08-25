@@ -1,6 +1,5 @@
-from sre_parse import State
-from state_page import StatePage
-from base_page import BasePage
+from page_state import StatePage
+from page_base import BasePage
 from header_tests import Test_Header_Element_Visibility as test_header
 from footer_tests import Test_Footer_Element_Visibility as test_footer
 import pytest
