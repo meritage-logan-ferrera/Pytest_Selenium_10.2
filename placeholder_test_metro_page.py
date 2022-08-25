@@ -1,10 +1,8 @@
-from page import MainPage
 import pytest
-import header_tests
-import footer_tests
-
+from header_tests import Test_Header_Element_Visibility as test_header
+from footer_tests import Test_Footer_Element_Visibility as test_footer
 @pytest.mark.usefixtures("init__driver")
-class BasicTest(footer_tests.Test_Footer_Element_Visibility, header_tests.Test_Header_Element_Visibility):
+class BasicTest(test_footer, test_header):
   pass
 
 class Test_Metro_Phoenix(BasicTest):

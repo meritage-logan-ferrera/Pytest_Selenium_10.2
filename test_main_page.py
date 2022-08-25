@@ -1,13 +1,14 @@
-from page import BasePage, MainPage
+from main_page import MainPage
+from base_page import BasePage
+from header_tests import Test_Header_Element_Visibility as test_header
+from footer_tests import Test_Footer_Element_Visibility as test_footer
 import pytest
-import header_tests
-import footer_tests
 import time
 
 URL = 'https://www.meritagehomes.com/'
 
 @pytest.mark.usefixtures("init__driver")
-class BasicTest():
+class BasicTest(test_footer, test_header):
   pass
 
 class Test_Main_Page(BasicTest):

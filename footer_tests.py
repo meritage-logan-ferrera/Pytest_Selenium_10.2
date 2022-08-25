@@ -1,4 +1,4 @@
-import page as page
+from base_page import BasePage
 import pytest
 import time
 
@@ -6,7 +6,7 @@ class Test_Footer_Element_Visibility:
   # Test that the elements under the Company banner in the footer navigate to the correct page
   @pytest.mark.parametrize('element', ['1', '2', '3', '4', '5'])
   def test_footer_company_element(self, element, driver_settings):
-    base_page = page.BasePage(self.driver)
+    base_page = BasePage(self.driver)
     base_page.close_cookies()
     base_page.footer_click_element_company_element(element)
     match element:
@@ -26,7 +26,7 @@ class Test_Footer_Element_Visibility:
   # Test that the elements under the contact banner in the footer navigate to the correct page
   @pytest.mark.parametrize('element', ['1', '2', '3', '4'])
   def test_footer_contact_element(self, element, driver_settings):
-    base_page = page.BasePage(self.driver)
+    base_page = BasePage(self.driver)
     base_page.close_cookies()
     base_page.footer_click_element_contact_element(element)
     match element:
@@ -43,7 +43,7 @@ class Test_Footer_Element_Visibility:
 
   # Test that the error triangle image appears in the email form when an invalid email is entered
   def test_footer_enter_email_error_image(self, driver_settings):
-    base_page = page.BasePage(self.driver)
+    base_page = BasePage(self.driver)
     base_page.close_cookies()
     base_page.footer_enter_keys_email_form_input()
     base_page.footer_click_element_email_form_enter()
@@ -53,7 +53,7 @@ class Test_Footer_Element_Visibility:
   
   # Test that the error message appears in the email form when an invalid email is entered
   def test_footer_enter_email_error_field(self, driver_settings):
-    base_page = page.BasePage(self.driver)
+    base_page = BasePage(self.driver)
     base_page.close_cookies()
     base_page.footer_enter_keys_email_form_input()
     base_page.footer_click_element_email_form_enter()
@@ -64,7 +64,7 @@ class Test_Footer_Element_Visibility:
   # Test that all of the social media navigable images all navigate to the correct pages when clicked
   @pytest.mark.parametrize('element', ['1', '2', '3', '4', '5'])
   def test_footer_social_media(self, element, driver_settings):
-    base_page = page.BasePage(self.driver)
+    base_page = BasePage(self.driver)
     base_page.close_cookies()
     base_page.footer_click_element_social_media_link(element)
     match element:
@@ -84,7 +84,7 @@ class Test_Footer_Element_Visibility:
   # Test the help link navigable elements in the footer all navigate to the correct page when clicked
   @pytest.mark.parametrize('element', ['1', '2', '3', '4'])
   def test_footer_privacy_links(self, element, driver_settings):
-    base_page = page.BasePage(self.driver)
+    base_page = BasePage(self.driver)
     base_page.close_cookies()
     base_page.footer_click_element_privacy_policy_links(element)
     match element:
@@ -99,14 +99,14 @@ class Test_Footer_Element_Visibility:
   
   # Test that the block disclaimer text appears when the page is loaded
   def test_footer_uncollapsable_text(self, driver_settings):
-    base_page = page.BasePage(self.driver)
+    base_page = BasePage(self.driver)
     base_page.close_cookies()
     text = base_page.footer_get_text_uncollapsable_disclaimer()
     assert "Pictures and other images are modified or edited representative" in text
   
   # Test that clicking the read more arrow opens up the rest of the disclaimer message
   def test_footer_read_more(self, driver_settings):
-    base_page = page.BasePage(self.driver)
+    base_page = BasePage(self.driver)
     base_page.close_cookies()
     read_more = base_page.footer_get_element_read_more()
     self.driver.execute_script("arguments[0].scrollIntoView()", read_more) # The bottom scroll progres sbar on the apge is getting in the way of read more...
@@ -117,7 +117,7 @@ class Test_Footer_Element_Visibility:
   
   # Test that pressing the green Read More button at the bottom of the footer opens up the OneTrust overlay
   def test_footer_onetrust_overlay_on_green_read_more_click(self, driver_settings):
-    base_page = page.BasePage(self.driver)
+    base_page = BasePage(self.driver)
     base_page.close_cookies()
     green_read_more = base_page.footer_get_element_green_read_more_button()
     self.driver.execute_script("arguments[0].scrollIntoView()", green_read_more)
@@ -128,7 +128,7 @@ class Test_Footer_Element_Visibility:
   
   # Test that the Equal Housing Opportunity image appears on the page in the footer
   def test_footer_eho_image(self, driver_settings):
-    base_page = page.BasePage(self.driver)
+    base_page = BasePage(self.driver)
     base_page.close_cookies()
     eho_image = base_page.footer_get_element_eho_image()
     result = self.driver.execute_script("return arguments[0].complete && " + "arguments[0].width > 0", eho_image)
@@ -136,7 +136,7 @@ class Test_Footer_Element_Visibility:
   
   # Test that the Energy Star image appears on the page in the footer
   def test_footer_energy_star_image(self, driver_settings):
-    base_page = page.BasePage(self.driver)
+    base_page = BasePage(self.driver)
     base_page.close_cookies()
     energy_star_image = base_page.footer_get_element_energy_star_image()
     result = self.driver.execute_script("return arguments[0].complete && " + "arguments[0].width > 0", energy_star_image)
