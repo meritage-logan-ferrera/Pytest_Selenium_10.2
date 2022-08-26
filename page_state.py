@@ -41,4 +41,10 @@ class StatePage(BasePage):
     sub_header = aside.find_element(By.CSS_SELECTOR, "p:nth-child(3)")
     return sub_header.text
 
+  def get_element_metro_div(self, number):
+    return self.driver.find_element(By.XPATH, f"/html/body/main/div[{number}]")
   
+  def get_text_metro_header(self, number):
+    metro_div = self.get_element_metro_div(number)
+    header = metro_div.find_element(By.TAG_NAME, "a")
+    return header.text
