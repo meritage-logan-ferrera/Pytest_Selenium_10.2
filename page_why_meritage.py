@@ -30,7 +30,7 @@ class WhyMeritagePage(BasePage):
 
   def get_text_article_1_text(self):
     article_1 = self.get_element_article_1()
-    return article_1.find_element(By.XPATH, "/html/body/main/article[1]/div/div[1]/p[1]")
+    return article_1.find_element(By.XPATH, "/html/body/main/article[1]/div/div[1]/p[1]").text
   
   def click_element_article_1_button(self):
     html = BasePage(self.driver).get_html()
@@ -50,9 +50,9 @@ class WhyMeritagePage(BasePage):
     container = self.get_element_section_1_drop_down_container(number)
     return container.find_element(By.TAG_NAME, "img")
   
-  def get_element_section_1_drop_down_container_header(self, number):
+  def get_text_section_1_drop_down_container_header(self, number):
     container = self.get_element_section_1_drop_down_container(number)
-    return container.find_element(By.TAG_NAME, "span")
+    return container.find_element(By.TAG_NAME, "span").text
   
   def click_element_section_1_drop_down(self, number):
     container = self.get_element_section_1_drop_down_container(number)
@@ -85,24 +85,130 @@ class WhyMeritagePage(BasePage):
     tab = self.get_element_section_1_responsive_tab(number)
     return tab.find_element(By.TAG_NAME, "img")
   
-  # Need to write code similar to this from now on it is much easier
-  def get_elements_chat_articles(self):
-    return self.driver.find_elements(By.ID, "chat") # change to contains class = thing
+  def get_element_chat_articles(self, number):
+    return self.driver.find_element(By.CSS_SELECTOR, f'article.large-two-column:nth-child({number + 4})')
   
   def get_text_article_chat_header(self, number):
-    chat_articles = self.get_elements_chat_articles()
-    header = chat_articles[number].find_element(By.TAG_NAME, "h2")
+    chat_article = self.get_element_chat_articles(number)
+    header = chat_article.find_element(By.TAG_NAME, "h2")
     return header.text
 
   def get_text_article_chat_sub_header(self, number):
-    chat_articles = self.get_elements_chat_articles()
-    sub_header = chat_articles[number].find_element(By.TAG_NAME, "p")
+    chat_article = self.get_element_chat_articles(number)
+    sub_header = chat_article.find_element(By.CSS_SELECTOR, 'div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > p:nth-child(3)')
     return sub_header.text
-  
-  def get_text_article_chat_image(self, number):
-    chat_articles = self.get_elements_chat_articles()
-    return chat_articles[number].find_element(By.TAG_NAME, "img")
+
+  def get_element_article_chat_image(self, number):
+    chat_article = self.get_element_chat_articles(number)
+    return chat_article.find_element(By.TAG_NAME, "img")
   
   def click_element_article_chat_button(self, number):
-    chat_articles = self.get_elements_chat_articles()
-    chat_articles[number].find_element(By.CLASS_NAME, "button.button--blue")
+    html = BasePage(self.driver).get_html()
+    chat_article = self.get_element_chat_articles(number)
+    button = chat_article.find_element(By.CLASS_NAME, "button.button--blue")
+    button.click()
+    WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))
+  
+  def get_element_article_6_meritage_cares(self):
+    return self.driver.find_element(By.XPATH, '/html/body/main/article[6]')
+  
+  def get_text_article_6_header_1(self):
+    article_6 = self.get_element_article_6_meritage_cares()
+    return article_6.find_element(By.TAG_NAME, 'h2').text
+  
+  def get_text_article_6_sub_header_1(self):
+    article_6 = self.get_element_article_6_meritage_cares()
+    return article_6.find_element(By.CSS_SELECTOR, 'header:nth-child(1) > div:nth-child(1) > p:nth-child(2)').text
+
+  def get_text_article_6_header_2(self):
+    article_6 = self.get_element_article_6_meritage_cares()
+    return article_6.find_element(By.TAG_NAME, 'h4').text
+  
+  def get_text_article_6_sub_header_2(self):
+    article_6 = self.get_element_article_6_meritage_cares()
+    return article_6.find_element(By.CSS_SELECTOR, 'div:nth-child(2) > div:nth-child(1) > p:nth-child(2)').text
+  
+  def get_element_article_6_image(self):
+    article_6 = self.get_element_article_6_meritage_cares()
+    return article_6.find_element(By.TAG_NAME, 'img')
+  
+  def click_element_article_6_button(self):
+    html = BasePage(self.driver).get_html()
+    article_6 = self.get_element_article_6_meritage_cares()
+    article_6.find_element(By.TAG_NAME, 'a').click()
+    WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))
+  
+  def get_element_article_7(self):
+    return self.driver.find_element(By.XPATH, '/html/body/main/article[7]')
+  
+  def get_text_article_7_header(self):
+    article_7 = self.get_element_article_7()
+    header = article_7.find_element(By.TAG_NAME, 'h2')
+    return header.text
+  
+  def get_text_article_7_sub_header(self):
+    article_7 = self.get_element_article_7()
+    sub_header = article_7.find_element(By.CSS_SELECTOR, 'div:nth-child(2) > div:nth-child(1) > p:nth-child(2)')
+    return sub_header.text
+  
+  def get_elements_article_7_list(self):
+    article_7 = self.get_element_article_7()
+    return article_7.find_elements(By.TAG_NAME, 'li')
+  
+  def click_element_article_7_button(self):
+    html = BasePage(self.driver).get_html()
+    article_7 = self.get_element_article_7()
+    button = article_7.find_element(By.TAG_NAME, 'a')
+    button.click()
+    WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))
+  
+  def get_element_article_7_image(self):
+    article_7 = self.get_element_article_7()
+    return article_7.find_element(By.TAG_NAME, 'img')
+  
+  def get_element_article_8(self):
+    return self.driver.find_element(By.XPATH, '/html/body/main/article[8]')
+
+  def get_text_article_8_header(self):
+    article_8 = self.get_element_article_8()
+    header = article_8.find_element(By.TAG_NAME, 'h4')
+    return header.text
+  
+  def get_text_article_8_sub_header(self):
+    article_8 = self.get_element_article_8()
+    sub_header = article_8.find_element(By.CSS_SELECTOR, 'div:nth-child(1) > div:nth-child(1) > p:nth-child(2)')
+    return sub_header.text
+  
+  def click_element_article_8_button(self):
+    html = BasePage(self.driver).get_html()
+    article_8 = self.get_element_article_8()
+    button = article_8.find_element(By.TAG_NAME, 'a')
+    button.click()
+    WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))
+
+  def get_element_article_8_image(self):
+    article_8 = self.get_element_article_8()
+    return article_8.find_element(By.TAG_NAME, 'img')
+  
+  def get_element_aside(self):
+    return self.driver.find_element(By.TAG_NAME, "aside")
+
+  def get_text_aside_header(self):
+    aside = self.get_element_aside()
+    header = aside.find_element(By.TAG_NAME, 'h2')
+    return header.text
+  
+  def get_text_aside_sub_header(self):
+    aside = self.get_element_aside()
+    sub_header = aside.find_element(By.TAG_NAME, 'p')
+    return sub_header.text
+  
+  def click_element_aside_button_1(self):
+    aside = self.get_element_aside()
+    aside.find_element(By.XPATH, "/html/body/main/aside/div/div/div[2]/a[1]").click()
+  
+  def click_element_aside_button_2(self):
+    aside = self.get_element_aside()
+    aside.find_element(By.XPATH, "/html/body/main/aside/div/div/div[2]/a[2]").click()
+  
+  # I can definitely cut some of this code down by using some common functions. Will begin to do this for later pages. I will add the functions ot BasePage.
