@@ -31,7 +31,7 @@ class BasePage(object):
       WebDriverWait(self.driver, timeout=10).until(EC.element_to_be_clickable(close_cookies))
       close_cookies.click()
       WebDriverWait(self.driver, timeout=10).until(EC.invisibility_of_element(cookies_bottom_banner))
-  
+      
 
 class BasePageHeader(BasePage):
   def header_get_element_meritage_image_container(self):
@@ -91,7 +91,7 @@ class BasePageHeader(BasePage):
     if self.driver.title == '':
       time.sleep(5) # Firefox takes longer to load the title for some reason
     
-    
+
 class BasePageFooter(BasePage):
   def footer_get_element_footer(self):
     return self.driver.find_element(By.XPATH, "/html/body/footer")
