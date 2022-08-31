@@ -32,6 +32,14 @@ class BasePage(object):
       close_cookies.click()
       WebDriverWait(self.driver, timeout=10).until(EC.invisibility_of_element(cookies_bottom_banner))
       
+  def new_tab(self, original_window):
+    WebDriverWait(self.driver, timeout=3).until(EC.number_of_windows_to_be(2))
+    for window_handle in self.driver.window_handles:
+      if window_handle != original_window:
+        self.driver.switch_to.window(window_handle)
+        break
+      if self.driver.title == '':
+        time.sleep(1)
 
 class BasePageHeader(BasePage):
   def header_get_element_meritage_image_container(self):
