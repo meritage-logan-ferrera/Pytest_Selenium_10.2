@@ -2,7 +2,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
-from page_base import BasePage  
+from page_base import BasePage
+import time  
 
 class TestimonialsPage(BasePage):
   def get_text_main_header(self):
@@ -29,7 +30,7 @@ class TestimonialsPage(BasePage):
   
   def click_element_section_button(self, section):
     section.find_element(By.TAG_NAME, 'a').click()
-  
+
   def get_element_section_placeholder_image(self, section):
     return section.find_element(By.TAG_NAME, "img")
     
@@ -89,10 +90,19 @@ class TestimonialsPage(BasePage):
     aside = self.get_element_aside_2()
     return self.get_element_section_placeholder_image(aside)
   
+  #opens new tab to avid site
   def click_element_avid_button(self):
+    original_window = self.driver.current_window_handle
     aside = self.get_element_aside_2()
-    self.click_element_section_button(aside)
-  
+    aside.find_element(By.TAG_NAME, 'a').click()
+    WebDriverWait(self.driver, timeout=3).until(EC.number_of_windows_to_be(2))
+    for window_handle in self.driver.window_handles:
+      if window_handle != original_window:
+        self.driver.switch_to.window(window_handle)
+        break
+      if self.driver.title == '':
+        time.sleep(1)
+
   def get_element_section_local_lowdown(self):
     return self.driver.find_element(By.ID, 'testimonial-dropdown-display')
 
@@ -122,7 +132,7 @@ class TestimonialsPage(BasePage):
     return homeowner_quotes
 
   def get_element_section_testimonial_submission(self):
-    return self.driver.find_element(By.ID, 'form-area')
+    return self.driver.find_element(By.XPATH, '/html/body/main/section/div/div/div/div/div[3]/div/form')
 
   def get_text_testimonial_submission_header(self):
     submission_form = self.get_element_section_testimonial_submission()
@@ -130,8 +140,46 @@ class TestimonialsPage(BasePage):
   
   def get_text_testimonial_submission_body(self):
     submission_form = self.get_element_section_testimonial_submission()
-    return self.get_text_section_body(submission_form)
+    body_text = submission_form.find_element(By.XPATH, '/html/body/main/section/div/div/div/div/div[3]/div/form/div[1]')
+    return body_text.text
   
+  def get_input_into_form(self, form):
+    form.send_keys('test_input')
+    return form.get_attribute('value')
+
+  def get_input_first_name(self):
+    first_name = self.driver.find_element(By.ID, 'FormModel_FirstName')
+    return self.get_input_into_form(first_name)
+
+  def get_input_last_name(self):
+    last_name = self.driver.find_element(By.ID, 'FormModel_LastName')
+    return self.get_input_into_form(last_name)
+
+  def get_input_email_address(self):
+    email_address = self.driver.find_element(By.ID, 'FormModel_EmailAddress')
+    return self.get_input_into_form(email_address)
+
+  def get_input_phone_number(self):
+    phone_number = self.driver.find_element(By.ID, 'FormModel_PhoneNumber')
+    return self.get_input_into_form(phone_number)
+  
+  def get_input_your_story(self):
+    your_story = self.driver.find_element(By.ID, 'FormModel_YourStory')
+    return self.get_input_into_form(your_story)
+  
+  def get_element_agree_to_terms(self):
+    return self.driver.find_element(By.XPATH, '/html/body/main/section/div/div/div/div/div[3]/div/form/div[2]/div[11]/span/label')
+    
+  def click_element_agree_to_terms(self):
+    agree_box = self.get_element_agree_to_terms()
+    agree_box.click()
+
+  def check_element_testimonial_submission_button_is_clickable(self):
+    element = self.driver.find_element(By.XPATH, '/html/body/main/section/div/div/div/div/div[3]/div/form/div[2]/div[15]/button')
+    bool = False
+    bool = WebDriverWait(self.driver, timeout=3).until(EC.element_to_be_clickable(element))
+    return bool
+
   def get_element_aside_3(self):
     return self.driver.find_element(By.XPATH, '/html/body/main/aside[3]')
   
