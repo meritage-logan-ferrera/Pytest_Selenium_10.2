@@ -40,6 +40,23 @@ class BasePage(object):
         break
       if self.driver.title == '':
         time.sleep(1)
+      
+  def get_text_section_header(self, section):
+    header = section.find_element(By.TAG_NAME, 'h2')
+    return header.text
+  
+  def get_text_section_body(self, section):
+    body = section.find_element(By.TAG_NAME, 'p')
+    return body.text
+  
+  def click_element_section_button(self, section):
+    section.find_element(By.TAG_NAME, 'a').click()
+
+  def get_element_section_placeholder_image(self, section):
+    return section.find_element(By.TAG_NAME, "img")
+    
+  def click_element_section_play_button(self, section):
+    section.find_element(By.CLASS_NAME, "video-trigger").click()
 
 class BasePageHeader(BasePage):
   def header_get_element_meritage_image_container(self):

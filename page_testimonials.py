@@ -20,23 +20,6 @@ class TestimonialsPage(BasePage):
     return self.driver.find_element(By.XPATH, "/html/body/div[4]")
     #display block
 
-  def get_text_section_header(self, section):
-    header = section.find_element(By.TAG_NAME, 'h2')
-    return header.text
-  
-  def get_text_section_body(self, section):
-    body = section.find_element(By.TAG_NAME, 'p')
-    return body.text
-  
-  def click_element_section_button(self, section):
-    section.find_element(By.TAG_NAME, 'a').click()
-
-  def get_element_section_placeholder_image(self, section):
-    return section.find_element(By.TAG_NAME, "img")
-    
-  def click_element_section_play_button(self, section):
-    section.find_element(By.CLASS_NAME, "video-trigger").click()
-
   def get_element_aside_1(self):
     return self.driver.find_element(By.XPATH, "/html/body/main/aside[1]")
 
