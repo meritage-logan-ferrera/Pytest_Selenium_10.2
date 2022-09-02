@@ -29,7 +29,7 @@ class Test_Testimonials_Page(BasicTest):
     sub_header = test_page.get_text_main_sub_header()
     assert "Alex and Catherine describe" in sub_header
   
-  # Test whether the plauy button opens youtube overlay on click
+  # Test whether the play button opens youtube overlay on click
   def test_main_video_button(self, driver_settings):
     test_page = TestimonialsPage(self.driver)
     test_page.click_element_play_button()
@@ -56,7 +56,7 @@ class Test_Testimonials_Page(BasicTest):
     test_page.click_element_aside_1_button()
     assert "" == self.driver.title
   
-  # Test whether the header's of each testimonial row contains the correct text
+  # Test whether the headers of each testimonial row contain the correct text
   @pytest.mark.parametrize('row', [1, 2, 3, 4, 5, 6])
   def test_row_headers(self, row, driver_settings):
     test_page = TestimonialsPage(self.driver)
@@ -75,7 +75,7 @@ class Test_Testimonials_Page(BasicTest):
       case 6:
         assert "Nick & Stephanie" in header
   
-  # Test whether the bodies of each testimonial row contains the correct text
+  # Test whether the bodies of each testimonial row contain the correct text
   @pytest.mark.parametrize('row', [1, 2, 3, 4, 5, 6])
   def test_row_bodies(self, row, driver_settings):
     test_page = TestimonialsPage(self.driver)
@@ -94,7 +94,7 @@ class Test_Testimonials_Page(BasicTest):
       case 6:
         assert "Nick and Stephanie" in body
   
-  # Test whether the buttons for each testimonials row navigates to the correct page
+  # Test whether the buttons for each testimonials row navigate to the correct page
   @pytest.mark.parametrize('row', [1, 2, 3, 4, 5, 6])
   def test_row_buttons(self, row, driver_settings):
     test_page = TestimonialsPage(self.driver)
@@ -112,7 +112,7 @@ class Test_Testimonials_Page(BasicTest):
     result = self.driver.execute_script("return arguments[0].complete && " + "arguments[0].width > 0", image)
     assert result
   
-  # Test whether the play buttons on the testimonial rows open the yotubue ovelray when pressed
+  # Test whether the play buttons on the testimonial rows open the youtube overlay when pressed
   @pytest.mark.parametrize('row', [1, 2, 3, 4, 5, 6])
   def test_row_overlay_on_play_button_press(self, row, driver_settings):
     test_page = TestimonialsPage(self.driver)

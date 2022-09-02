@@ -158,13 +158,19 @@ class ReviewsPage(BasePage):
   #############################################################
   
   def get_elements_all_reviews(self):
-    self.driver.switch_to.frame('bfpublish')
+    self.driver.switch_to.frame("bfpublish")
     all_reviews = self.driver.find_element(By.ID, 'allReviews')
     reviews = all_reviews.find_elements(By.CLASS_NAME, "reviewblock")
+    self.driver.switch_to.default_content() # since this method is called twice in test_more_reviews_on_scroll we need to reset the driver back to the main page so that the second time we call this function we do not look for the iframe inside the iframe.
     return reviews
   
+  # Cross origin policy makes scrolling inside of an iFrame that is in a web page a pain. Get the scrollable element in the iframe using WebDriver then scroll. This scrolls just the iFrame.
   def scroll_down(self):
-    self.driver.execute_script("window.scrollBy(0, 5000)")
+    self.driver.switch_to.frame('bfpublish')
+    scrollable_element = self.driver.find_element(By.XPATH, '/html/body')
+    self.driver.execute_script("arguments[0].scrollBy(0, 5000)", scrollable_element)
+    time.sleep(2)
+    self.driver.switch_to.default_content()
   
   def get_element_aside(self):
     return self.driver.find_element(By.XPATH, '/html/body/main/aside')
