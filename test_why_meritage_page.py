@@ -65,7 +65,7 @@ class Test_Why_Meritage_Page(BasicTest):
   
   # Test that the drop down containers have the correct image and header
   @pytest.mark.parametrize('drop_down', ['1', '2', '3', '4'])
-  def test_section_1_image(self, drop_down, driver_settings):
+  def test_section_1_tabs(self, drop_down, driver_settings):
     why_page = WhyMeritagePage(self.driver)
     image = why_page.get_element_section_1_drop_down_container_image(drop_down)
     header = why_page.get_text_section_1_drop_down_container_header(drop_down)

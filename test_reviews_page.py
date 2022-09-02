@@ -1,7 +1,7 @@
-from page_reviews import ReviewsPage
-from page_base import BasePage
 from header_tests import Test_Header_Element_Visibility as test_header
 from footer_tests import Test_Footer_Element_Visibility as test_footer
+from page_reviews import ReviewsPage
+from page_base import BasePage
 import pytest
 import time
 
