@@ -76,4 +76,34 @@ class EnergyEfficiencyPage(BasePage):
     article_1 = self.get_element_article_1()
     return self.get_element_section_placeholder_image(article_1)
   
-  # ee-cutaway next
+  def get_element_donut_section_donut_container(self):
+    return self.driver.find_element(By.ID, 'ee-donut-slider')
+
+  def get_element_donut_section_slides_container(self):
+    return self.driver.find_element(By.ID, 'donut-slider--slides')
+
+  def get_element_donut_section_current_slick_slide(self):
+    # slides_container = self.get_element_donut_section_slides_container()
+    # does not get a subset of only the elements with slick-slide
+    # when I do slides_container.find_element(By.XPATH, '//li[contains(@class, "slick-slide") and not(contains(@class, "slick-cloned"))]')
+    # Theoretically that should do the same thing as what I have now...
+    return self.driver.find_element(By.XPATH, f'/html/body/main/div[1]/div[1]/div/div/div/div[2]/div/ul[1]/div/div//li[contains(@class, "slick-active") and contains(@class, "slick-current")]')
+  
+  def get_text_donut_section_slide_header(self):
+    current_slide = self.get_element_donut_section_current_slick_slide()
+    return current_slide.find_element(By.TAG_NAME, 'strong').text
+  
+  def get_text_donut_section_slide_sub_header(self):
+    current_slide = self.get_element_donut_section_current_slick_slide()
+    return current_slide.find_element(By.TAG_NAME, 'h4').text
+  
+  def get_text_donut_section_slide_body(self):
+    current_slide = self.get_element_donut_section_current_slick_slide()
+    return current_slide.find_element(By.TAG_NAME, 'p').text
+    
+  def click_element_donut_section_right_arrow(self):
+    self.driver.find_element(By.XPATH, '/html/body/main/div[1]/div[1]/div/div/div/div[2]/div/div/button[2]').click()
+  
+  def get_elements_donut_current_slide_buttons(self):
+    current_slide = self.get_element_donut_section_current_slick_slide()
+    return current_slide.find_elements(By.TAG_NAME, 'li')

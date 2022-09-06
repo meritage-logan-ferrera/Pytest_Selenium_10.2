@@ -54,7 +54,6 @@ class Test_Energy_Efficiency_Page(BasicTest):
 # Test that the drop down containers open the correct tabs when clicked and that all the information within the respective tabs are correct.
 # SIMILAR to the same method in test_why_meritage_page.py
 # It is only used test in all the website so I am not going to make anotehr shared function for these.
-  @pytest.mark.energy
   @pytest.mark.parametrize('tab', ['1', '2', '3', '4'])
   def test_section_1_tab_everything(self, tab, driver_settings):
     energy_page = EnergyEfficiencyPage(self.driver)
@@ -113,20 +112,50 @@ class Test_Energy_Efficiency_Page(BasicTest):
     assert correct_tab and tab_header_bool and tab_body_bool and correct_image and button_nav_bool
 
   # Test whether correct header appears in article 1
-  def test_article_1_header(self):
+  def test_article_1_header(self, driver_settings):
     energy_page = EnergyEfficiencyPage(self.driver)
     header = energy_page.get_text_article_1_header()
     assert 'Cleaner Air' in header
 
   # Test whether correct body appears in article 1
-  def test_article_1_body(self):
+  def test_article_1_body(self, driver_settings):
     energy_page = EnergyEfficiencyPage(self.driver)
     body = energy_page.get_text_article_1_body()
     assert 'leading the way in health-concious homebuilding. In September 2020' in body
   
   # Test whether correct image appears in article 1
-  def test_article_1_image(self):
+  def test_article_1_image(self, driver_settings):
     energy_page = EnergyEfficiencyPage(self.driver)
     image = energy_page.get_element_article_1_image()
     result = self.driver.execute_script("return arguments[0].complete && " + "arguments[0].width > 0", image)
     assert result
+  
+  # Test whether the correct headers, subheaders, and body appear in the donut slides
+  @pytest.mark.parametrize('slide', ['0', '1', '2', '3'])
+  def test_donut_slides_header(self, slide, driver_settings):
+    energy_page = EnergyEfficiencyPage(self.driver)
+    energy_page.close_cookies()
+    for i in range(int(slide)):
+      energy_page.click_element_donut_section_right_arrow()
+      time.sleep(1)
+    header = energy_page.get_text_donut_section_slide_header()
+    sub_header = energy_page.get_text_donut_section_slide_sub_header()
+    body = energy_page.get_text_donut_section_slide_body()
+    match slide:
+      case '0':
+        assert 'MORE SAVINGS' in header and 'BUILT SMARTER' in sub_header and 'From the first step' in body
+      case '1':
+        assert 'BETTER HEALTH' in header and 'FRESHER AIR' in sub_header and 'We know your home holds the people' in body
+      case '2':
+        assert 'REAL COMFORT' in header and 'COZY RETREAT' in sub_header and 'We design with you in mind' in body
+      case '3':
+        assert 'PEACE OF MIND' in header and 'AN INDUSTRY' in sub_header and 'been building better for more than' in body
+  
+  @pytest.mark.energy
+  def test_donut_slides_buttons(self, driver_settings):
+    energy_page = EnergyEfficiencyPage(self.driver)
+    energy_page.close_cookies()
+    buttons = energy_page.get_elements_donut_current_slide_buttons()
+    assert len(buttons) == 4
+
+    
