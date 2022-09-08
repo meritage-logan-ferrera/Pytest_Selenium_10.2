@@ -15,8 +15,8 @@ class Test_Energy_Efficiency_Page(BasicTest):
   @pytest.fixture()
   def driver_settings(self):
     self.driver.get(URL)
-    # self.driver.set_window_position(0,0)
-    # self.driver.set_window_size(1920,1080)
+    self.driver.set_window_position(0,0)
+    self.driver.set_window_size(1920,1080)
   
   # Test that youtube overlay pop up after clicking play button
   def test_overlay_on_play_button_click(self, driver_settings):
@@ -286,4 +286,116 @@ class Test_Energy_Efficiency_Page(BasicTest):
     energy_page.click_element_article_2_button()
     assert "Meritage Homes Awards and Accolades | Meritage Homes" == self.driver.title
 
-# Up to HERS
+  # Test whether the correct header appears in article 3
+  def test_article_3_header(self, driver_settings):
+    energy_page = EnergyEfficiencyPage(self.driver)
+    header = energy_page.get_element_article_3_hers_header()
+    assert "Introducing the Home Energy Rsting System" in header
+  
+  
+  # Test whether the correct body appears in article 3
+  def test_article_3_body(self, driver_settings):
+    energy_page = EnergyEfficiencyPage(self.driver)
+    body = energy_page.get_elements_article_3_hers_body()
+    assert (
+      "What defines a home as energy efficient" in body[0] and
+      "The lower the HERS score" in body[1] and
+      "Use the slider to learn how a HERS" in body[2]
+    )
+  
+  # Test that on dragging the HERS slider, the container relative to the sliders position displays the correct HERS rating, $'s saved compared to existing and new homes, and the correct body
+  # @pytest.mark.parametrize('rating', [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150])
+  @pytest.mark.energy
+  @pytest.mark.parametrize('rating', [0])
+  def test_hers_dynamic(self, rating, driver_settings):
+    energy_page = EnergyEfficiencyPage(self.driver)
+    # Need to scroll so the HERS slider is in view
+    self.driver.execute_script("window.scrollTo(0, 5350)")
+    energy_page.slide_to_rating(rating)
+    time.sleep(10)
+    rating_value_dom = int((rating/10) + 1)
+    header = energy_page.get_text_current_hers_header(rating_value_dom)
+    sub_header = energy_page.get_text_current_hers_sub_header(rating_value_dom)
+    compare_existing = energy_page.get_text_current_hers_compare_existing_price(rating_value_dom)
+    compare_new = energy_page.get_text_current_hers_compare_new_price(rating_value_dom)
+    
+    # Circle transforms
+    # Circle 1 annual savings
+    if rating <= 50:
+      expected_circle1_left = 0
+      expected_circle1_right = 180 - int(36*(5 - (rating/10)))
+    elif rating <= 90:
+      expected_circle1_right = 180
+      expected_circle1_left = int(36*((rating/10) - 5))
+    else:
+      expected_circle1_right = 180
+      expected_circle1_left = 180
+
+    # Circle 2 Crabon footprint
+    if rating <= 70:
+      expected_circle2_left = 12 + int(24*(7-(rating/10)))
+      expected_circle2_right = 180
+    else:
+      expected_circle2_left = 0
+      expected_circle2_right = 168 - int(24*((rating/10) - 8))
+    
+    # Circle 3 Crabon footprint
+    if rating <= 70:
+      expected_circle3_left = 0
+      expected_circle3_right = 168 - int(24* (7 - (rating/10)))
+    else:
+      expected_circle3_left = 12 + int(24 * ((rating/10) - 8))
+      expected_circle3_right = 180
+    
+    # Get current values of each circle form the DOMafter sliding
+    current_circle1_left = energy_page.get_element_circle_left_half(1)
+    current_circle1_right = energy_page.get_element_circle_right_half(1)
+    current_circle2_left = energy_page.get_element_circle_left_half(2)
+    current_circle2_right = energy_page.get_element_circle_right_half(2)
+    current_circle3_left = energy_page.get_element_circle_left_half(3)
+    current_circle3_right = energy_page.get_element_circle_right_half(3)
+
+    rotate_value_circle_1_left = self.driver.execute_script('return arguments[0].style.transform', current_circle1_left)
+    rotate_value_circle_1_right = self.driver.execute_script('return arguments[0].style.transform', current_circle1_right)
+    rotate_value_circle_2_left = self.driver.execute_script('return arguments[0].style.transform', current_circle2_left)
+    rotate_value_circle_2_right = self.driver.execute_script('return arguments[0].style.transform', current_circle2_right)
+    rotate_value_circle_3_left = self.driver.execute_script('return arguments[0].style.transform', current_circle3_left)
+    rotate_value_circle_3_right = self.driver.execute_script('return arguments[0].style.transform', current_circle3_right)
+    
+    # DOM is not giving back correct values for circle2 left and circle 2 right
+    print("from my math: ", expected_circle2_left)
+    print("from dom: ", rotate_value_circle_2_left)
+    print("from my math: ", expected_circle2_right)
+    print("from dom: ", rotate_value_circle_2_right)
+    print(str(len(energy_page.get_elements_grafe_circles())))
+    
+    # calculate the correct price savings compared to existing and new for the respective rating
+    if rating <= 100:
+      base_existing_savings = 2335.3
+      base_new_savings = 1796.3
+      existing_savings = round(base_existing_savings - (179.66*(rating/10)))
+      new_savings = round(base_new_savings - (179.66*(rating/10)))
+
+      assert (
+        (str(rating) in header) and
+        ('ANNUAL ENERGY SAVINGS' in sub_header) and
+        (str(existing_savings) in compare_existing) and
+        (str(new_savings) in compare_new) and
+        (f'rotate({expected_circle1_left}deg)' in rotate_value_circle_1_left) and
+        (f'rotate({expected_circle1_right}deg)' in rotate_value_circle_1_right) and
+        (f'rotate({expected_circle2_left}deg)' in rotate_value_circle_2_left) and
+        (f'rotate({expected_circle2_right}deg)' in rotate_value_circle_2_right) and
+        (f'rotate({expected_circle3_left}deg)' in rotate_value_circle_3_left) and
+        (f'rotate({expected_circle3_right}deg)' in rotate_value_circle_3_right)
+      )
+    
+    else: # No savings for any house with HERS rating above 100
+      assert (
+        (rating in header) and
+        (f'rotate({expected_circle1_left}deg)' in rotate_value_circle_1_left) and
+        (f'rotate({expected_circle1_right}deg)' in rotate_value_circle_1_right) and
+        (f'rotate({expected_circle2_left}deg)' in rotate_value_circle_2_left) and
+        (f'rotate({expected_circle2_right}deg)' in rotate_value_circle_2_right) and
+        (f'rotate({expected_circle3_left}deg)' in rotate_value_circle_3_left) and
+        (f'rotate({expected_circle3_right}deg)' in rotate_value_circle_3_right)
+        )

@@ -262,7 +262,7 @@ class MainPage(BasePage):
     WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))
 
   def get_element_aside_2_ready_to_find(self):
-    return self.driver.find_element(By.XPATH, "/html/body/main/aside[2]")
+    return self.driver.find_element(By.XPATH, "/html/body/main/aside")
   
   def get_text_aside_2_header(self):
     aside_2 = self.get_element_aside_2_ready_to_find()

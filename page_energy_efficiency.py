@@ -230,3 +230,67 @@ class EnergyEfficiencyPage(BasePage):
     article_2 = self.get_element_article_2_confidence_builder()
     return self.click_element_section_button(article_2)
   
+  def get_element_article_3_hers_header(self):
+    return self.driver.find_element(By.XPATH, '/html/body/main/article[3]/header/div/h2').text
+  
+  def get_elements_article_3_hers_body(self):
+    return self.driver.find_elements(By.XPATH, '/html/body/main/article[3]/header/div/p')
+  
+  def get_element_hers_slider(self):
+    return self.driver.find_element(By.XPATH, '/html/body/main/div[3]/div/div/div/div[1]/div/a')
+  
+  def slide_to_rating(self, rating):
+    rating = rating/10
+    slider = self.get_element_hers_slider()
+    slide_amount = 0
+    if rating > 10:
+      y_offset_up_from_100 = rating - 10
+      slide_amount = y_offset_up_from_100 * -40
+    elif rating < 10:
+      y_offset_down_from_100 = 10 - rating
+      slide_amount = y_offset_down_from_100 * 40
+    else:
+      slide_amount = 0
+    action = ActionChains(self.driver)
+    action.move_to_element(slider).pause(.5).click_and_hold(slider).pause(.5).move_by_offset(0, slide_amount).release().perform()
+    time.sleep(5)
+  
+  #wanted to get it by style block to get correct elmeent after scorlling to it but this does not work in sleneium
+  def get_element_current_hers_rating_data(self, number):
+    container = self.driver.find_element(By.XPATH, '/html/body/main/div[3]/div/div/div/div[2]')
+    return container.find_element(By.XPATH, f"//div[contains(@class, 'rating_value{number}')]")
+
+  def get_text_current_hers_header(self, number):
+    current_hers = self.get_element_current_hers_rating_data(number)
+    return current_hers.find_element(By.TAG_NAME, 'span').text
+  
+  def get_text_current_hers_sub_header(self, number):
+    current_hers = self.get_element_current_hers_rating_data(number)
+    return current_hers.find_element(By.TAG_NAME, 'h3').text
+  
+  def get_text_current_hers_compare_existing_price(self, number):
+    current_hers = self.get_element_current_hers_rating_data(number)
+    return current_hers.find_element(By.CSS_SELECTOR, 'div:nth-child(1) > div:nth-child(3) > div:nth-child(1)').text
+    
+  def get_text_current_hers_compare_new_price(self, number):
+    current_hers = self.get_element_current_hers_rating_data(number)
+    return current_hers.find_element(By.CSS_SELECTOR, 'div:nth-child(1) > div:nth-child(4) > div:nth-child(1)').text
+  
+  def get_text_current_hers_body(self, number):
+    current_hers = self.get_element_current_hers_rating_data(number)
+    return current_hers.find_element(By.TAG_NAME, 'p').text
+  
+  def get_elements_grafe_circles(self):
+    return self.driver.find_elements(By.XPATH, '/html/body/main/div[3]/div/div/div/div[2]/div[1]/div')
+  
+  def get_element_circle_left_half(self, number):
+    circles = self.get_elements_grafe_circles()
+    circle = circles[number-1]
+    return circle.find_element(By.XPATH, "//div[@class='left_half']/div")
+  
+  def get_element_circle_right_half(self, number):
+    circles = self.get_elements_grafe_circles()
+    circle = circles[number-1]
+    return circle.find_element(By.XPATH, "//div[@class='right_half']/div")
+  
+

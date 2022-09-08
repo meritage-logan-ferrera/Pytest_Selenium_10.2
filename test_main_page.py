@@ -46,26 +46,27 @@ class Test_Main_Page(BasicTest):
     result = self.driver.execute_script("return arguments[0].scrollTop > 100", html)
     assert result
   
-  # Test that the save the rate image is present 
-  def test_save_the_rate_image(self, driver_settings):
-    main_page = MainPage(self.driver)
-    main_page.close_cookies()
-    save_the_rate_image = main_page.get_element_save_the_rate_image()
-    result = self.driver.execute_script("return arguments[0].complete && " + "arguments[0].width > 0", save_the_rate_image)
-    assert result
+  # TESTS FOR SAVE THE RATE PROMOTION WHICH ENDED
+  # # Test that the save the rate image is present 
+  # def test_save_the_rate_image(self, driver_settings):
+  #   main_page = MainPage(self.driver)
+  #   main_page.close_cookies()
+  #   save_the_rate_image = main_page.get_element_save_the_rate_image()
+  #   result = self.driver.execute_script("return arguments[0].complete && " + "arguments[0].width > 0", save_the_rate_image)
+  #   assert result
 
-  # Test that the save the rate header contains correct text
-  def test_aside_1_save_the_rate_header(self, driver_settings):
-    main_page = MainPage(self.driver)
-    save_the_rate_header = main_page.get_text_aside_1_save_the_rate_h2()
-    assert "Save the Rate and buy with confidence" in save_the_rate_header
+  # # Test that the save the rate header contains correct text
+  # def test_aside_1_save_the_rate_header(self, driver_settings):
+  #   main_page = MainPage(self.driver)
+  #   save_the_rate_header = main_page.get_text_aside_1_save_the_rate_h2()
+  #   assert "Save the Rate and buy with confidence" in save_the_rate_header
   
-  # Test that the see details button in aside 1 navigates to correct page
-  def test_aside_1_button(self, driver_settings):
-    main_page = MainPage(self.driver)
-    main_page.close_cookies()
-    main_page.click_element_aside_1_save_the_rate_button()
-    assert "Save the Rate | Meritage Homes" == self.driver.title
+  # # Test that the see details button in aside 1 navigates to correct page
+  # def test_aside_1_button(self, driver_settings):
+  #   main_page = MainPage(self.driver)
+  #   main_page.close_cookies()
+  #   main_page.click_element_aside_1_save_the_rate_button()
+  #   assert "Save the Rate | Meritage Homes" == self.driver.title
   
   # Test that that the image placeholder for the video is present in article 1
   def test_article_1_video_image(self, driver_settings):
