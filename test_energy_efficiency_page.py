@@ -2,6 +2,7 @@ from header_tests import Test_Header_Element_Visibility as test_header
 from footer_tests import Test_Footer_Element_Visibility as test_footer
 from page_energy_efficiency import EnergyEfficiencyPage
 from page_base import BasePage
+import math
 import pytest
 import time
 
@@ -121,7 +122,7 @@ class Test_Energy_Efficiency_Page(BasicTest):
   def test_article_1_body(self, driver_settings):
     energy_page = EnergyEfficiencyPage(self.driver)
     body = energy_page.get_text_article_1_body()
-    assert 'leading the way in health-concious homebuilding. In September 2020' in body
+    assert 'leading the way in health-conscious homebuilding' in body
   
   # Test whether correct image appears in article 1
   def test_article_1_image(self, driver_settings):
@@ -163,8 +164,13 @@ class Test_Energy_Efficiency_Page(BasicTest):
     
     time.sleep(0.5)
 
+    if int(slide) == 3:
+      number_of_buttons = 3
+    else:
+      number_of_buttons = 4
+
     final_result = False
-    for i in range(4): 
+    for i in range(number_of_buttons): 
       energy_page.click_element_current_slide_button(i+1)
       popup = energy_page.get_element_current_slide_button_popup(i+1)
       result = self.driver.execute_script("return arguments[0].style.display != 'none'", popup)
@@ -180,13 +186,13 @@ class Test_Energy_Efficiency_Page(BasicTest):
     assert final_result
   
   # Test whether the correct header is displayed in the house drawing icons section
-  def test_house_drawing_section_header(self):
+  def test_house_drawing_section_header(self, driver_settings):
     energy_page = EnergyEfficiencyPage(self.driver)
     header = energy_page.get_text_house_icon_section_header()
     assert "Click on any icon or scroll through" in header
   
   # Test whether the correct image is displayed in the house drawing icons section
-  def test_house_drawing_section_image(self):
+  def test_house_drawing_section_image(self, driver_settings):
     energy_page = EnergyEfficiencyPage(self.driver)
     image = energy_page.get_element_house_icon_section_image()
     result = self.driver.execute_script("return arguments[0].complete && " + "arguments[0].width > 0", image)
@@ -245,8 +251,23 @@ class Test_Energy_Efficiency_Page(BasicTest):
     clickable = energy_page.check_icons_gallery_section_current_slide_are_clickable()
     assert clickable
   
+  ############################# ABOUT ICON TESTS ##############################
+  # The circular icons in the gallery and in the home drawing section above
+  # Are able to be clicked. They each have their own popups that display
+  # unique headers, bodies, button, etc.
+  
+  # Also, clicking the button in the drawing scrolls the window down and opens
+  # the correct correspodnig button in the gallery.
+
+  # For now we ARE NOT testing that deep into these iconsm whether it be the 
+  # info in the popups or the scrolling to the gallery.
+
+  # These test cases can be implemented later if necessary, for now we are just
+  # checking that each is displayed on the page and is clickable...
+  ############################################################################
+  
   # Test whether the correct footer text is appearing in the gallery section
-  def test_gallery_section_footer(self):
+  def test_gallery_section_footer(self, driver_settings):
     energy_page = EnergyEfficiencyPage(self.driver)
     footer = energy_page.get_text_gallery_slider_section_footer()
     assert "M.Connected Home" in footer
@@ -271,7 +292,7 @@ class Test_Energy_Efficiency_Page(BasicTest):
   def test_article_2_body(self, driver_settings):
     energy_page = EnergyEfficiencyPage(self.driver)
     body = energy_page.get_text_article_2_body()
-    assert "A real confidence builder" in body
+    assert "It may be our" in body
 
   # Test whether the correct image appears in article 2 a real confidence builder section
   def test_article_2_image(self, driver_settings):
@@ -281,8 +302,9 @@ class Test_Energy_Efficiency_Page(BasicTest):
     assert result
   
   # Test whether the button in the a real confidence builder sections takes the usert ot the correct page when clicked
-  def test_article_2_image(self, driver_settings):
+  def test_article_2_button(self, driver_settings):
     energy_page = EnergyEfficiencyPage(self.driver)
+    energy_page.close_cookies()
     energy_page.click_element_article_2_button()
     assert "Meritage Homes Awards and Accolades | Meritage Homes" == self.driver.title
 
@@ -290,36 +312,34 @@ class Test_Energy_Efficiency_Page(BasicTest):
   def test_article_3_header(self, driver_settings):
     energy_page = EnergyEfficiencyPage(self.driver)
     header = energy_page.get_element_article_3_hers_header()
-    assert "Introducing the Home Energy Rsting System" in header
-  
+    assert "Introducing the Home Energy Rating System" in header
   
   # Test whether the correct body appears in article 3
   def test_article_3_body(self, driver_settings):
     energy_page = EnergyEfficiencyPage(self.driver)
     body = energy_page.get_elements_article_3_hers_body()
     assert (
-      "What defines a home as energy efficient" in body[0] and
-      "The lower the HERS score" in body[1] and
-      "Use the slider to learn how a HERS" in body[2]
+      "What defines a home as energy efficient" in body[0].text and
+      "The lower the HERS score" in body[1].text and
+      "Use the slider to learn how a lower HERS" in body[2].text
     )
   
-  # Test that on dragging the HERS slider, the container relative to the sliders position displays the correct HERS rating, $'s saved compared to existing and new homes, and the correct body
-  # @pytest.mark.parametrize('rating', [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150])
-  @pytest.mark.energy
-  @pytest.mark.parametrize('rating', [0])
+  # Test that on dragging the HERS slider, the container relative to the sliders position (1) displays the correct HERS rating, (2) the correct ANNUAL ENRGY SAVINGS sub header, $'s saved compared to (3) existing and (4) new homes, (5) the correct body, and that the progress circles for (6) annual savings, (7) carbon footprint, and (8) comfort all display the correct progress.
+  # @pytest.mark.parametrize('rating', [100])
+  @pytest.mark.parametrize('rating', [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150])
   def test_hers_dynamic(self, rating, driver_settings):
     energy_page = EnergyEfficiencyPage(self.driver)
-    # Need to scroll so the HERS slider is in view
-    self.driver.execute_script("window.scrollTo(0, 5350)")
+    self.driver.execute_script("window.scrollTo(0, 5350)")  # Need to scroll so the HERS slider is in view
     energy_page.slide_to_rating(rating)
     time.sleep(10)
     rating_value_dom = int((rating/10) + 1)
+    # TEST 1 -- grab HERS rating for this slide for future assertion
     header = energy_page.get_text_current_hers_header(rating_value_dom)
-    sub_header = energy_page.get_text_current_hers_sub_header(rating_value_dom)
-    compare_existing = energy_page.get_text_current_hers_compare_existing_price(rating_value_dom)
-    compare_new = energy_page.get_text_current_hers_compare_new_price(rating_value_dom)
-    
-    # Circle transforms
+    # TEST 2 -- grab body element of this slide for future assertion
+    body = energy_page.get_text_current_hers_body(rating_value_dom)
+
+    ##########################################################################
+    # ##########################Circle transforms ############################
     # Circle 1 annual savings
     if rating <= 50:
       expected_circle1_left = 0
@@ -339,7 +359,7 @@ class Test_Energy_Efficiency_Page(BasicTest):
       expected_circle2_left = 0
       expected_circle2_right = 168 - int(24*((rating/10) - 8))
     
-    # Circle 3 Crabon footprint
+    # Circle 3 Carbon footprint
     if rating <= 70:
       expected_circle3_left = 0
       expected_circle3_right = 168 - int(24* (7 - (rating/10)))
@@ -347,7 +367,7 @@ class Test_Energy_Efficiency_Page(BasicTest):
       expected_circle3_left = 12 + int(24 * ((rating/10) - 8))
       expected_circle3_right = 180
     
-    # Get current values of each circle form the DOMafter sliding
+    # Get current values of each circle from the DOM after sliding
     current_circle1_left = energy_page.get_element_circle_left_half(1)
     current_circle1_right = energy_page.get_element_circle_right_half(1)
     current_circle2_left = energy_page.get_element_circle_left_half(2)
@@ -355,32 +375,99 @@ class Test_Energy_Efficiency_Page(BasicTest):
     current_circle3_left = energy_page.get_element_circle_left_half(3)
     current_circle3_right = energy_page.get_element_circle_right_half(3)
 
+    # Get the CSS transform values in each circle, will compare these to the ones we calculated ourselves above.
     rotate_value_circle_1_left = self.driver.execute_script('return arguments[0].style.transform', current_circle1_left)
     rotate_value_circle_1_right = self.driver.execute_script('return arguments[0].style.transform', current_circle1_right)
     rotate_value_circle_2_left = self.driver.execute_script('return arguments[0].style.transform', current_circle2_left)
     rotate_value_circle_2_right = self.driver.execute_script('return arguments[0].style.transform', current_circle2_right)
     rotate_value_circle_3_left = self.driver.execute_script('return arguments[0].style.transform', current_circle3_left)
     rotate_value_circle_3_right = self.driver.execute_script('return arguments[0].style.transform', current_circle3_right)
-    
-    # DOM is not giving back correct values for circle2 left and circle 2 right
-    print("from my math: ", expected_circle2_left)
-    print("from dom: ", rotate_value_circle_2_left)
-    print("from my math: ", expected_circle2_right)
-    print("from dom: ", rotate_value_circle_2_right)
-    print(str(len(energy_page.get_elements_grafe_circles())))
-    
-    # calculate the correct price savings compared to existing and new for the respective rating
+    #############################################################################
+    #############################################################################
+
+    # Calculate the correct price savings compared to existing and new for the respective rating. Do this only when the rating is <= 100 since the ratings above that on the slider do not have these values.
     if rating <= 100:
-      base_existing_savings = 2335.3
-      base_new_savings = 1796.3
-      existing_savings = round(base_existing_savings - (179.66*(rating/10)))
-      new_savings = round(base_new_savings - (179.66*(rating/10)))
+      # HERS ratings aboce 100 do not contain these three next elements. So we grab them here and not at the top of the page with the header and body which are common between all rating.
+      # For TEST 2
+      sub_header = energy_page.get_text_current_hers_sub_header(rating_value_dom)
+      # For TEST 3
+      compare_existing = energy_page.get_text_current_hers_compare_existing_price(rating_value_dom)
+      # For TEST 4
+      compare_new = energy_page.get_text_current_hers_compare_new_price(rating_value_dom)
+
+      base_existing_savings = 2335
+      base_new_savings = 1796
+      existing_savings = base_existing_savings - (179.66*(rating/10))
+      new_savings = base_new_savings - (179.66*(rating/10))
+      
+      # TEST 5 -- ensure correct body is on each slide (also, the code above is not 100% accurate in getting the right numbers, so sometimes we need to simply round or do math.ceil to get the right number in this same section)
+      correct_body = False
+      match rating:
+        case 0:
+          if 'this home produces as much energy' in body:
+            correct_body = True
+          existing_savings = round(existing_savings)
+          new_savings = round(new_savings)
+        case 10:
+          if 'Tremendous effort has gone' in body:
+            correct_body = True
+          existing_savings = round(existing_savings)
+          new_savings = round(new_savings)
+        case 20:
+          if 'well on its way to becoming a Zero Energy Home' in body:
+            correct_body = True
+          existing_savings = round(existing_savings)
+          new_savings = round(new_savings)
+        case 30:
+          if 'benefits from low energy costs' in body:
+            correct_body = True
+          existing_savings = round(existing_savings)
+          new_savings = round(new_savings)
+        case 40:
+          if 'The builder has done a lot of' in body:
+            correct_body = True
+          existing_savings = round(existing_savings)
+          new_savings = math.ceil(new_savings)
+        case 50:
+          if '50% more energy' in body:
+            correct_body = True
+          existing_savings = round(existing_savings)
+          new_savings = round(new_savings)
+        case 60:
+          if 'good progress towards optimizing' in body:
+            correct_body = True
+          existing_savings = round(existing_savings)
+          new_savings = round(new_savings)
+        case 70:
+          if 'admirable score' in body:
+            correct_body = True
+          existing_savings = math.ceil(existing_savings)
+          new_savings = math.ceil(new_savings)
+        case 80:
+          if 'You might think this house is doing okay' in body:
+            correct_body = True
+          existing_savings = round(existing_savings)
+          new_savings = round(new_savings)
+        case 90:
+          if '40% more energy efficient' in body:
+            correct_body = True
+          existing_savings = round(existing_savings)
+          new_savings = math.ceil(new_savings)
+        case 100:
+          if 'standard new home' in body:
+            correct_body = True
+          existing_savings = math.ceil(existing_savings)
+          new_savings = 0
+        case _:
+          correct_body = False
 
       assert (
-        (str(rating) in header) and
-        ('ANNUAL ENERGY SAVINGS' in sub_header) and
-        (str(existing_savings) in compare_existing) and
-        (str(new_savings) in compare_new) and
+        (str(rating) in header) and # TEST 1
+        ('ANNUAL ENERGY SAVINGS' in sub_header) and #TEST 2
+        (str(existing_savings) in compare_existing) and # TEST 3
+        (str(new_savings) in compare_new) and # TEST 4
+        (correct_body) and # TEST 5
+        # TESTS 6 - 8
         (f'rotate({expected_circle1_left}deg)' in rotate_value_circle_1_left) and
         (f'rotate({expected_circle1_right}deg)' in rotate_value_circle_1_right) and
         (f'rotate({expected_circle2_left}deg)' in rotate_value_circle_2_left) and
@@ -390,8 +477,29 @@ class Test_Energy_Efficiency_Page(BasicTest):
       )
     
     else: # No savings for any house with HERS rating above 100
+      correct_body = False
+      match rating:
+        case 110:
+          if 'home in line with' in body:
+            correct_body = True
+        case 120:
+          if 'less energy efficient' in body:
+            correct_body = True
+        case 130:
+          if 'typical resale home' in body:
+            correct_body = True
+        case 140:
+          if 'very top of the HERS' in body:
+            correct_body = True
+        case 150:
+          if 'financial drain' in body:
+            correct_body = True
+        case _:
+          correct_body = False
+
       assert (
-        (rating in header) and
+        (str(rating) in header) and
+        (correct_body) and
         (f'rotate({expected_circle1_left}deg)' in rotate_value_circle_1_left) and
         (f'rotate({expected_circle1_right}deg)' in rotate_value_circle_1_right) and
         (f'rotate({expected_circle2_left}deg)' in rotate_value_circle_2_left) and
@@ -399,3 +507,34 @@ class Test_Energy_Efficiency_Page(BasicTest):
         (f'rotate({expected_circle3_left}deg)' in rotate_value_circle_3_left) and
         (f'rotate({expected_circle3_right}deg)' in rotate_value_circle_3_right)
         )
+  
+  def test_aside_disclaimer_2(self, driver_settings):
+    energy_page = EnergyEfficiencyPage(self.driver)
+    body = energy_page.get_elements_aside_disclaimer_2_body()
+    assert(
+      'Meritage is not responsible for the operation of the slider.' in body[0].text and
+      'HERS scale developed by, and used with permission from' in body[1].text
+    )
+  
+  def test_aside_3_header(self, driver_settings):
+    energy_page = EnergyEfficiencyPage(self.driver)
+    header = energy_page.get_text_aside_3_header()
+    assert 'Ready to make your move' in header
+  
+  def test_aside_3_body(self, driver_settings):
+    energy_page = EnergyEfficiencyPage(self.driver)
+    body = energy_page.get_text_aside_3_body()
+    assert 'Whether you just need a little help' in body
+  
+  def test_aside_3_button_1(self, driver_settings):
+    energy_page = EnergyEfficiencyPage(self.driver)
+    energy_page.close_cookies()
+    energy_page.click_element_aside_3_button_1()
+    assert 'Find a Home | Meritage Homes' == self.driver.title
+
+  def test_aside_3_button_2(self, driver_settings):
+    energy_page = EnergyEfficiencyPage(self.driver)
+    energy_page.close_cookies()
+    energy_page.click_element_aside_3_button_2()
+    assert '' == self.driver.title
+  

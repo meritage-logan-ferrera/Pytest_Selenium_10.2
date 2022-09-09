@@ -65,12 +65,12 @@ class EnergyEfficiencyPage(BasePage):
   # h4 not h2
   def get_text_article_1_header(self):
     article_1 = self.get_element_article_1()
-    return article_1.find_element(By.TAG_NAME, 'h4')
+    return article_1.find_element(By.TAG_NAME, 'h4').text
   
   # text is innerText on div not a p tag
   def get_text_article_1_body(self):
     article_1 = self.get_element_article_1()
-    return article_1.find_element(By.XPATH, '/html/body/main/article[1]/div/div[1]')
+    return article_1.find_element(By.XPATH, '/html/body/main/article[1]/div/div[1]').text
   
   def get_element_article_1_image(self):
     article_1 = self.get_element_article_1()
@@ -252,8 +252,13 @@ class EnergyEfficiencyPage(BasePage):
     else:
       slide_amount = 0
     action = ActionChains(self.driver)
-    action.move_to_element(slider).pause(.5).click_and_hold(slider).pause(.5).move_by_offset(0, slide_amount).release().perform()
-    time.sleep(5)
+    
+    if rating != 10:
+      action.move_to_element(slider).pause(.5).click_and_hold(slider).pause(.5).move_by_offset(0, slide_amount).release().perform()
+    else: # need to slide and then slide back fro 100 to activate some DOM
+      action.move_to_element(slider).pause(.5).click_and_hold(slider).pause(.5).move_by_offset(0, 40).pause(.5).move_by_offset(0, -40).pause(.5).release().perform()
+    
+    time.sleep(2)
   
   #wanted to get it by style block to get correct elmeent after scorlling to it but this does not work in sleneium
   def get_element_current_hers_rating_data(self, number):
@@ -280,17 +285,40 @@ class EnergyEfficiencyPage(BasePage):
     current_hers = self.get_element_current_hers_rating_data(number)
     return current_hers.find_element(By.TAG_NAME, 'p').text
   
-  def get_elements_grafe_circles(self):
-    return self.driver.find_elements(By.XPATH, '/html/body/main/div[3]/div/div/div/div[2]/div[1]/div')
+  def get_element_grafe_circle(self, number):
+    return self.driver.find_element(By.CLASS_NAME, f'grafe_circle{number}')
   
   def get_element_circle_left_half(self, number):
-    circles = self.get_elements_grafe_circles()
-    circle = circles[number-1]
-    return circle.find_element(By.XPATH, "//div[@class='left_half']/div")
+    circle = self.get_element_grafe_circle(number)
+    return circle.find_element(By.XPATH, ".//div[@class='left_half']/div") # NEED the "." at start or else the XPATH ignores the circle in circle.find_element and searches through the entire DOM anyway....
   
   def get_element_circle_right_half(self, number):
-    circles = self.get_elements_grafe_circles()
-    circle = circles[number-1]
-    return circle.find_element(By.XPATH, "//div[@class='right_half']/div")
+    circle = self.get_element_grafe_circle(number)
+    return circle.find_element(By.XPATH, ".//div[@class='right_half']/div")
   
+  def get_element_aside_disclaimer_2(self):
+    return self.driver.find_element(By.XPATH, '/html/body/main/aside[2]')
+  
+  def get_elements_aside_disclaimer_2_body(self):
+    aside_disclaimer_2 = self.get_element_aside_disclaimer_2()
+    return aside_disclaimer_2.find_elements(By.TAG_NAME, 'span')
+  
+  def get_element_aside_3(self):
+    return self.driver.find_element(By.XPATH, '/html/body/main/aside[3]')
+  
+  def get_text_aside_3_header(self):
+    aside_3 = self.get_element_aside_3()
+    return self.get_text_section_header(aside_3)
 
+  def get_text_aside_3_body(self):
+    aside_3 = self.get_element_aside_3()
+    return self.get_text_section_body(aside_3)
+  
+  def click_element_aside_3_button_1(self):
+    aside_3 = self.get_element_aside_3()
+    aside_3.find_element(By.XPATH, './/div/div/div[2]/a[1]').click()
+
+  def click_element_aside_3_button_2(self):
+    aside_3 = self.get_element_aside_3()
+    aside_3.find_element(By.XPATH, './/div/div/div[2]/a[2]').click()
+  
