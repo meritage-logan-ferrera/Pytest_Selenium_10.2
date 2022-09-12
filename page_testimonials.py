@@ -17,7 +17,7 @@ class TestimonialsPage(BasePage):
 
   # One overlay is used for every video. How to distinguish?
   def get_element_youtube_overlay(self):
-    return self.driver.find_element(By.XPATH, "/html/body/div[4]")
+    return self.driver.find_element(By.ID, "youtube-video")
     #display block
 
   def get_element_aside_1(self):
@@ -32,9 +32,12 @@ class TestimonialsPage(BasePage):
     return self.get_text_section_body(aside_1)
   
   def click_element_aside_1_button(self):
+    html = self.get_html()
     aside_1 = self.get_element_aside_1()
+    self.driver.execute_script("window.scrollTo(0,100)")
     self.click_element_section_button(aside_1)
-  
+    WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))
+
   def get_element_section_1_row(self, number):
     return self.driver.find_element(By.XPATH, f"/html/body/main/article[1]/div/div/div[{number}]")
 
@@ -126,26 +129,6 @@ class TestimonialsPage(BasePage):
     body_text = submission_form.find_element(By.XPATH, '/html/body/main/section/div/div/div/div/div[3]/div/form/div[1]')
     return body_text.text
   
-  def get_input_into_form(self, form):
-    form.send_keys('test_input')
-    return form.get_attribute('value')
-
-  def get_input_first_name(self):
-    first_name = self.driver.find_element(By.ID, 'FormModel_FirstName')
-    return self.get_input_into_form(first_name)
-
-  def get_input_last_name(self):
-    last_name = self.driver.find_element(By.ID, 'FormModel_LastName')
-    return self.get_input_into_form(last_name)
-
-  def get_input_email_address(self):
-    email_address = self.driver.find_element(By.ID, 'FormModel_EmailAddress')
-    return self.get_input_into_form(email_address)
-
-  def get_input_phone_number(self):
-    phone_number = self.driver.find_element(By.ID, 'FormModel_PhoneNumber')
-    return self.get_input_into_form(phone_number)
-  
   def get_input_your_story(self):
     your_story = self.driver.find_element(By.ID, 'FormModel_YourStory')
     return self.get_input_into_form(your_story)
@@ -175,5 +158,7 @@ class TestimonialsPage(BasePage):
     return self.get_text_section_body(aside_3)
   
   def click_element_aside_3_button(self):
+    html = self.get_html()
     aside_3 = self.get_element_aside_3()
     self.click_element_section_button(aside_3)
+    WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))

@@ -4,7 +4,7 @@ from header_tests import Test_Header_Element_Visibility as test_header
 from footer_tests import Test_Footer_Element_Visibility as test_footer
 import pytest
 
-URL = 'https://www.meritagehomes.com/why-meritage/testimonials'
+URL = 'https://www.meritagehomes.com/why-meritage/testimonials#'
 
 @pytest.mark.usefixtures("init__driver")
 class BasicTest():
@@ -50,6 +50,7 @@ class Test_Testimonials_Page(BasicTest):
     assert "the place we yearn for" in body
   
   # Test whether the aside 1 button navigates to correct page on click
+  @pytest.mark.nlog
   def test_aside_1_button(self, driver_settings):
     test_page = TestimonialsPage(self.driver)
     test_page.close_cookies()
@@ -95,6 +96,7 @@ class Test_Testimonials_Page(BasicTest):
         assert "Nick and Stephanie" in body
   
   # Test whether the buttons for each testimonials row navigate to the correct page
+  @pytest.mark.testimonials
   @pytest.mark.parametrize('row', [1, 2, 3, 4, 5, 6])
   def test_row_buttons(self, row, driver_settings):
     test_page = TestimonialsPage(self.driver)
@@ -200,25 +202,25 @@ class Test_Testimonials_Page(BasicTest):
   # Test whether user can input into first name field
   def test_first_name_input(self, driver_settings):
     test_page = TestimonialsPage(self.driver)
-    input_value = test_page.get_input_first_name()
+    input_value = test_page.get_input_first_name(self.driver)
     assert 'test_input' == input_value 
   
   # Test whether user can input into last name field
   def test_last_name_input(self, driver_settings):
     test_page = TestimonialsPage(self.driver)
-    input_value = test_page.get_input_last_name()
+    input_value = test_page.get_input_last_name(self.driver)
     assert 'test_input' == input_value 
   
   # Test whether user can input into email address field
   def test_email_address_input(self, driver_settings):
     test_page = TestimonialsPage(self.driver)
-    input_value = test_page.get_input_email_address()
+    input_value = test_page.get_input_email_address(self.driver)
     assert 'test_input' == input_value 
   
   # Test whether user can input into phone number field
   def test_phone_number_input(self, driver_settings):
     test_page = TestimonialsPage(self.driver)
-    input_value = test_page.get_input_phone_number()
+    input_value = test_page.get_input_phone_number(self.driver)
     assert 'test_input' == input_value 
   
   # Test whether user can input into your story field

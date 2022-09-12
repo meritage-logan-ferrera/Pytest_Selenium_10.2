@@ -57,7 +57,72 @@ class BasePage(object):
     
   def click_element_section_play_button(self, section):
     section.find_element(By.CLASS_NAME, "video-trigger").click()
+  
+  def get_input_into_form(self, form):
+    form.send_keys('test_input')
+    return form.get_attribute('value')
 
+  def get_input_first_name(self, form):
+    first_name = form.find_element(By.ID, 'FormModel_FirstName')
+    return self.get_input_into_form(first_name)
+
+  def get_input_last_name(self, form):
+    last_name = form.find_element(By.ID, 'FormModel_LastName')
+    return self.get_input_into_form(last_name)
+
+  # FOR SIGN IN
+  def get_input_sign_in_email(self, form):
+    email_address = form.find_element(By.ID, 'FormModel_Email')
+    return self.get_input_into_form(email_address)
+
+  # FOR CREATE ACCOUNT
+  def get_input_create_account_email_address(self, form):
+    email_address = form.find_element(By.ID, 'FormModel_EmailAddress')
+    return self.get_input_into_form(email_address)
+
+  def get_input_phone_number(self, form):
+    phone_number = form.find_element(By.ID, 'FormModel_PhoneNumber')
+    return self.get_input_into_form(phone_number)
+
+  # FOR SIGN IN
+  def get_input_sign_in_password(self, form):
+    password = form.find_element(By.ID, 'FormModel_Password')
+    return self.get_input_into_form(password)
+
+  # FOR CREATE ACCOUNT
+  def get_input_create_account_password(self, form):
+    password = form.find_element(By.ID, 'create_password')
+    return self.get_input_into_form(password)
+  
+  def get_input_confirm_password(self, form):
+    confirm_password = form.find_element(By.ID, 'confirm_password')
+    return self.get_input_into_form(confirm_password)
+
+  def get_input_company_name(self, form):
+    company_name = form.find_element(By.ID, 'FormModel_CompanyName')
+    return self.get_input_into_form(company_name)
+  
+  def get_input_address_1(self, form):
+    address_1 = form.find_element(By.ID, 'FormModel_AddressLine1')
+    return self.get_input_into_form(address_1)
+  
+  def get_input_address_2(self, form):
+    address_2 = form.find_element(By.ID, 'FormModel_AddressLine2')
+    return self.get_input_into_form(address_2)
+
+  def get_input_city(self, form):
+    city = form.find_element(By.ID, 'FormModel_City')
+    return self.get_input_into_form(city)
+  
+  def get_input_zip(self, form):
+    zip = form.find_element(By.ID, 'FormModel_Zip')
+    return self.get_input_into_form(zip)
+  
+  def button_is_clickable(self, button):
+    bool = False
+    bool = WebDriverWait(self.driver, timeout=3).until(EC.element_to_be_clickable(button))
+    return bool
+  
 class BasePageHeader(BasePage):
   def header_get_element_meritage_image_container(self):
     return self.driver.find_element(By.CSS_SELECTOR, "body > nav > div.row.full-width.diff.nav--bottom > div > a > div.logo--dark")
