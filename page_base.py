@@ -118,10 +118,17 @@ class BasePage(object):
     zip = form.find_element(By.ID, 'FormModel_Zip')
     return self.get_input_into_form(zip)
   
+  def get_input_your_question(self, form):
+    your_question = form.find_element(By.ID, 'FormModel_YourQuestion')
+    return self.get_input_into_form(your_question)
+  
   def button_is_clickable(self, button):
     bool = False
     bool = WebDriverWait(self.driver, timeout=3).until(EC.element_to_be_clickable(button))
     return bool
+  
+  def get_element_youtube_overlay(self):
+    return self.driver.find_element(By.ID, 'youtube-video')
   
 class BasePageHeader(BasePage):
   def header_get_element_meritage_image_container(self):

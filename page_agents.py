@@ -1,4 +1,3 @@
-from venv import create
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
@@ -17,11 +16,11 @@ class AgentsPage(BasePage):
     return self.driver.find_element(By.XPATH, '/html/body/main/header/div/div/p').text
   
   def click_elemenet_main_button_1(self):
-    self.driver.find_element(By.XPATH, '/html/body/main/header/div/div/a[1]')
+    self.driver.find_element(By.XPATH, '/html/body/main/header/div/div/a[1]').click()
   
   def click_elemenet_main_button_2(self):
-    self.driver.find_element(By.XPATH, '/html/body/main/header/div/div/a[2]')
-  
+    self.driver.find_element(By.XPATH, '/html/body/main/header/div/div/a[2]').click()
+
   def get_element_aside_1_when_you_sell_with_us(self):
     return self.driver.find_element(By.XPATH, '/html/body/main/aside[1]')
   
@@ -231,3 +230,132 @@ class AgentsPage(BasePage):
     create_account = self.get_element_create_account_form()
     return create_account.find_element(By.XPATH, ".//div/div/div/form/fieldset/div[3]/div[2]/button")
   
+  def get_element_article_lets_work(self):
+    return self.driver.find_element(By.XPATH, "//article[@aria-label=\"Let's work together.\"]")
+  
+  def get_text_lets_work_header(self):
+    lets_work = self.get_element_article_lets_work()
+    return self.get_text_section_header(lets_work)
+  
+  def get_text_lets_work_body(self):
+    lets_work = self.get_element_article_lets_work()
+    return self.get_text_section_body(lets_work)
+  
+  def get_element_list_div(self):
+    return self.driver.find_element(By.XPATH, "/html/body/main/div")
+  
+  def get_elements_list_div_list(self):
+    list_div = self.get_element_list_div()
+    list_elements = list_div.find_elements(By.TAG_NAME, 'li')
+    list_text = []
+    for i in range(len(list_elements)):
+      list_text.append(list_elements[i].text)
+    return list_text
+  
+  def get_element_article_sell_your_client(self):
+    return self.driver.find_element(By.XPATH, "//article[@aria-label='Sell your client their dream home.']")
+  
+  def get_text_sell_your_client_header(self):
+    sell_your_client = self.get_element_article_sell_your_client()
+    return self.get_text_section_header(sell_your_client)
+  
+  def get_text_sell_your_client_body(self):
+    sell_your_client = self.get_element_article_sell_your_client()
+    return self.get_text_section_body(sell_your_client)
+  
+  def get_elements_chat_articles(self):
+    return self.driver.find_elements(By.ID, "chat")
+  
+  def get_text_chat_article_header(self, number):
+    articles = self.get_elements_chat_articles()
+    return self.get_text_section_header(articles[number])
+
+  def get_text_chat_article_body(self, number):
+    articles = self.get_elements_chat_articles()
+    return articles[number].find_element(By.XPATH, './/p[2]').text
+
+  def get_element_chat_article_image(self, number):
+    articles = self.get_elements_chat_articles()
+    return self.get_element_section_placeholder_image(articles[number])
+  
+  def click_element_chat_artilcle_button(self, number):
+    html = self.get_html()
+    articles = self.get_elements_chat_articles()
+    self.click_element_section_button(articles[number])
+    WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))
+  
+  def get_element_article_agents_rock(self):
+    return self.driver.find_element(By.CLASS_NAME, 'description.no-margin-top.no-margin-top')
+  
+  def get_text_agents_rock_header(self):
+    agents_rock = self.get_element_article_agents_rock()
+    return agents_rock.find_element(By.TAG_NAME, 'h4').text
+
+  def get_text_agents_rock_body(self):
+    agents_rock = self.get_element_article_agents_rock()
+    return self.get_text_section_body(agents_rock)
+  
+  def get_element_agents_rock_image(self):
+    agents_rock = self.get_element_article_agents_rock()
+    return self.get_element_section_placeholder_image(agents_rock)
+  
+  def click_element_agents_rock_button(self):
+    agents_rock = self.get_element_article_agents_rock()
+    self.click_element_section_button(agents_rock)
+  
+  def click_element_agents_rock_play_button(self):
+    agents_rock = self.get_element_article_agents_rock()
+    self.click_element_section_play_button(agents_rock)
+
+  def get_element_article_rock_the_process(self):
+    return self.driver.find_element(By.XPATH, "//article[@aria-label='Rock the process from start to close.']")
+  
+  def get_text_rock_the_process_header(self):
+    rock_process = self.get_element_article_rock_the_process()
+    return self.get_text_section_header(rock_process)
+  
+  def get_text_rock_the_process_body(self):
+    rock_process = self.get_element_article_rock_the_process()
+    return self.get_text_section_body(rock_process)
+  
+  def get_element_article_columns_section(self):
+    return self.driver.find_element(By.CLASS_NAME, 'four-column.background--gray.no-pad-top.no-pad-top')
+  
+  def get_elements_columns_section_containers(self):
+    column_section = self.get_element_article_columns_section()
+    return column_section.find_elements(By.CLASS_NAME, 'small-12.medium-6.large-3.column')
+  
+  def get_text_columns_section_container_header(self, number):
+    containers = self.get_elements_columns_section_containers()
+    return containers[number].find_element(By.TAG_NAME, 'h3').text
+  
+  def get_text_columns_section_container_body(self, number):
+    containers = self.get_elements_columns_section_containers()
+    return containers[number].find_element(By.XPATH, './/p[2]').text
+  
+  def get_text_columns_section_container_image(self, number):
+    containers = self.get_elements_columns_section_containers()
+    return containers[number].find_element(By.CLASS_NAME, 'numbered-text-counter').text
+
+  def get_element_aside_start_home_search(self):
+    return self.driver.find_element(By.XPATH, "//aside[@aria-label='Start the home search.']")
+  
+  def get_text_start_home_search_header(self):
+    start_home = self.get_element_aside_start_home_search()
+    return self.get_text_section_header(start_home)
+  
+  def get_text_start_home_search_body(self):
+    start_home = self.get_element_aside_start_home_search()
+    return self.get_text_section_body(start_home)
+  
+  def click_element_start_home_search_button_1(self):
+    html = self.get_html()
+    start_home = self.get_element_aside_start_home_search()
+    start_home.find_element(By.XPATH, './/a[1]').click()
+    WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))
+  
+  def click_element_start_home_search_button_2(self):
+    html = self.get_html()
+    start_home = self.get_element_aside_start_home_search()
+    start_home.find_element(By.XPATH, './/a[2]').click()
+    WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))
