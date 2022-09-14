@@ -49,23 +49,37 @@ class ContactUsPage(BasePage):
 
   def get_text_new_buyers_tab_header(self):
     new_buyers = self.get_element_new_buyers_tab()
-    return new_buyers.find_element(By.TAG_NAME, 'span')
+    return new_buyers.find_element(By.XPATH, './/div/section/div/div/div/div/div[3]/div/form/div[1]/div[1]/p/span').text
   
+  def get_element_new_buyers_metro_dropdown(self):
+    new_buyers = self.get_element_new_buyers_tab()
+    return new_buyers.find_element(By.ID, 'contact-metro-area-select')
+  
+  def get_element_new_buyers_community_dropdown(self):
+    new_buyers = self.get_element_new_buyers_tab()
+    return new_buyers.find_element(By.ID, 'contact-community-select')
+
   def get_text_new_buyers_tab_location(self):
     new_buyers = self.get_element_new_buyers_tab()
     return new_buyers.find_element(By.XPATH, './/h5[1]').text
   
+  def click_element_new_buyers_metro_dropdown(self):
+    metro_dropdown = self.get_element_new_buyers_metro_dropdown()
+    metro_dropdown.click()
+    metro_area = metro_dropdown.find_element(By.XPATH, './/option[2]')
+    metro_area.click()
+
   def get_text_new_buyers_tab_your_question(self):
     new_buyers = self.get_element_new_buyers_tab()
-    return new_buyers.find_element(By.XPATH, './/h5[2]').text
+    return new_buyers.find_element(By.XPATH, './/div/section/div/div/div/div/div[3]/div/form/div[1]/div[11]/h5').text
   
   def get_text_new_buyers_tab_SMS_disclaimer(self):
     new_buyers = self.get_element_new_buyers_tab()
     return new_buyers.find_element(By.XPATH, ".//div[@class='SMSOptInDisclaimer']/p").text
   
-  def click_element_new_buyers_tab_submit_button(self):
+  def get_element_new_buyers_tab_submit_button(self):
     new_buyers = self.get_element_new_buyers_tab()
-    new_buyers.find_element(By.CLASS_NAME, 'button.button--blue--solid.button--large-top').click()
+    return new_buyers.find_element(By.CLASS_NAME, 'button.button--blue--solid.button--large-top')
   
   def get_text_warranty_claims_tab_header(self):
     warranty_claims = self.get_element_warranty_claims_tab()
@@ -78,36 +92,50 @@ class ContactUsPage(BasePage):
   def click_element_warranty_claims_tab_button(self):
     original_window = self.driver.current_window_handle
     warranty_claims = self.get_element_warranty_claims_tab()
-    self.click_element_section_button(warranty_claims)
+    warranty_claims.find_element(By.CLASS_NAME, 'button.button--blue--solid.button--large-top').click()
     self.new_tab(original_window)
   
   def get_text_warranty_claims_tab_number(self):
     warranty_claims = self.get_element_warranty_claims_tab()
-    return warranty_claims.find_element(By.TAG_NAME, 'span').text
+    return warranty_claims.find_element(By.XPATH, './/div/article/header/div/span').text
 
   def get_text_agent_tab_header(self):
     agent_tab = self.get_element_agent_tab()
-    return agent_tab.find_element(By.TAG_NAME, 'span')
+    return agent_tab.find_element(By.XPATH, './/div/section/div/div/div/div/div[3]/div/form/div[1]/div[1]/p/span').text
   
+  def get_element_agent_tab_metro_dropdown(self):
+    agent_tab = self.get_element_agent_tab()
+    return agent_tab.find_element(By.ID, 'contact-metro-area-select')
+  
+  def get_element_agent_tab_community_dropdown(self):
+    agent_tab = self.get_element_agent_tab()
+    return agent_tab.find_element(By.ID, 'contact-community-select')
+
   def get_text_agent_tab_location(self):
     agent_tab = self.get_element_agent_tab()
     return agent_tab.find_element(By.XPATH, './/h5[1]').text
 
+  def click_element_agent_tab_metro_dropdown(self):
+    metro_dropdown = self.get_element_agent_tab_metro_dropdown()
+    metro_dropdown.click()
+    metro_area = metro_dropdown.find_element(By.XPATH, './/option[2]')
+    metro_area.click()
+
   def get_text_agent_tab_company_information(self):
     agent_tab = self.get_element_agent_tab()
-    return agent_tab.find_element(By.XPATH, './/h5[2]').text
+    return agent_tab.find_element(By.XPATH, './/div/section/div/div/div/div/div[3]/div/form/div[1]/div[11]/div[1]/h5').text
 
   def get_text_agent_tab_your_question(self):
     agent_tab = self.get_element_agent_tab()
-    return agent_tab.find_element(By.XPATH, './/h5[3]').text
+    return agent_tab.find_element(By.XPATH, './/div/section/div/div/div/div/div[3]/div/form/div[1]/div[12]/h5').text
   
   def get_text_agent_tab_SMS_disclaimer(self):
     agent_tab = self.get_element_agent_tab()
     return agent_tab.find_element(By.XPATH, ".//div[@class='SMSOptInDisclaimer']/p").text
   
-  def click_element_agent_tab_submit_button(self):
+  def get_element_agent_tab_submit_button(self):
     agent_tab = self.get_element_agent_tab()
-    agent_tab.find_element(By.CLASS_NAME, 'button.button--blue--solid.button--large-top').click()
+    return agent_tab.find_element(By.CLASS_NAME, 'button.button--blue--solid.button--large-top')
 
   def get_element_article_careers_at_meritage(self):
     return self.driver.find_element(By.XPATH, "//article[@aria-label='Careers at Meritage']")
@@ -118,16 +146,18 @@ class ContactUsPage(BasePage):
   
   def get_text_careers_meritage_body(self):
     careers_meritage = self.get_element_article_careers_at_meritage()
-    return self.get_text_section_body(careers_meritage)
+    return careers_meritage.find_element(By.XPATH, './/p[2]').text
   
   def get_element_careers_meritage_image(self):
     careers_meritage = self.get_element_article_careers_at_meritage()
     return self.get_element_section_placeholder_image(careers_meritage)
   
   def click_element_careers_meritage_button(self):
+    html = self.get_html()
     careers_meritage = self.get_element_article_careers_at_meritage()
     self.click_element_section_button(careers_meritage)
-  
+    WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))
+
   def get_element_aside_ready_to_make_your_move(self):
     return self.driver.find_element(By.XPATH, "//aside[@aria-label=' Ready to make your move?']")
   
@@ -140,7 +170,8 @@ class ContactUsPage(BasePage):
     return self.get_text_section_body(ready_move_aside)
   
   def click_element_ready_move_aside_button(self):
+    html = self.get_html()
     ready_move_aside = self.get_element_aside_ready_to_make_your_move()
     self.click_element_section_button(ready_move_aside)
-  
+    WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))
   

@@ -23,15 +23,17 @@ class BasePage(object):
     return self.driver.title
   
   def close_cookies(self):
-    cookies_bottom_banner = self.driver.find_element(By.ID, "onetrust-banner-sdk")
-    WebDriverWait(self.driver, timeout=10).until(EC.visibility_of(cookies_bottom_banner))
-    result = self.driver.execute_script("return arguments[0].style.display != \"none\"", cookies_bottom_banner)
-    if result:
-      close_cookies = self.driver.find_element(By.XPATH, "//*[@id='onetrust-close-btn-container']/a")
-      WebDriverWait(self.driver, timeout=10).until(EC.element_to_be_clickable(close_cookies))
-      close_cookies.click()
-      WebDriverWait(self.driver, timeout=10).until(EC.invisibility_of_element(cookies_bottom_banner))
-      
+    cookies_bottom_banner = self.driver.find_elements(By.ID, "onetrust-banner-sdk")
+    if len(cookies_bottom_banner) != 0:
+      time.sleep(2)
+      WebDriverWait(self.driver, timeout=10).until(EC.visibility_of(cookies_bottom_banner[0]))
+      result = self.driver.execute_script("return arguments[0].style.display != \"none\"", cookies_bottom_banner[0])
+      if result:
+        close_cookies = self.driver.find_element(By.XPATH, "//*[@id='onetrust-close-btn-container']/a")
+        WebDriverWait(self.driver, timeout=10).until(EC.visibility_of(close_cookies))
+        close_cookies.click()
+        WebDriverWait(self.driver, timeout=10).until(EC.invisibility_of_element(cookies_bottom_banner[0]))
+        
   def new_tab(self, original_window):
     WebDriverWait(self.driver, timeout=3).until(EC.number_of_windows_to_be(2))
     for window_handle in self.driver.window_handles:
@@ -129,6 +131,10 @@ class BasePage(object):
   
   def get_element_youtube_overlay(self):
     return self.driver.find_element(By.ID, 'youtube-video')
+  
+  def javascript_image(self, image):
+    result = self.driver.execute_script("return arguments[0].complete && " + "arguments[0].width > 0", image)
+    return result
   
 class BasePageHeader(BasePage):
   def header_get_element_meritage_image_container(self):
