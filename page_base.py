@@ -126,7 +126,7 @@ class BasePage(object):
   
   def button_is_clickable(self, button):
     bool = False
-    bool = WebDriverWait(self.driver, timeout=3).until(EC.element_to_be_clickable(button))
+    bool = WebDriverWait(self.driver, timeout=4).until(EC.element_to_be_clickable(button))
     return bool
   
   def get_element_youtube_overlay(self):
@@ -135,6 +135,9 @@ class BasePage(object):
   def javascript_image(self, image):
     result = self.driver.execute_script("return arguments[0].complete && " + "arguments[0].width > 0", image)
     return result
+  
+  def get_section_by_aria_label(self, tag_name, aria_label):
+    return self.driver.find_element(By.XPATH, f"//{tag_name}[@aria-label='{aria_label}']")
   
 class BasePageHeader(BasePage):
   def header_get_element_meritage_image_container(self):

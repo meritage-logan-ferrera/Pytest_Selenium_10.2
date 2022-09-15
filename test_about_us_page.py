@@ -6,7 +6,7 @@ import math
 import pytest
 import time
 
-URL = 'https://www.meritagehomes.com/about-us'
+URL = 'https://cd-sit.meritageweb.dev/about-us'
 
 @pytest.mark.usefixtures("init__driver")
 class BasicTest():
@@ -52,6 +52,7 @@ class Test_About_Us_Page(BasicTest):
     assert result
   
   # Test that the each container in building section has the correct pre-header
+  @pytest.mark.about
   @pytest.mark.parametrize('element', ['1', '2', '3', '4'])
   def test_building_section_containers_pre_heading(self, element, driver_settings):
     about_page = AboutUsPage(self.driver)
@@ -65,13 +66,13 @@ class Test_About_Us_Page(BasicTest):
     container_header = about_page.get_text_building_section_container_header(element)
     match element:
       case '1':
-        assert 'MORE SAVINGS' == container_header
+        assert 'More Savings' == container_header
       case '2':
-        assert 'BETTER HEALTH' == container_header
+        assert 'Better Health' == container_header
       case '3':
-        assert 'REAL COMFORT' == container_header
+        assert 'Real Comfort' == container_header
       case '4':
-        assert 'PEACE OF MIND' == container_header
+        assert 'Peace of Mind' == container_header
       case _:
         assert False
   
@@ -115,13 +116,13 @@ class Test_About_Us_Page(BasicTest):
   def test_earning_body(self, driver_settings):
     about_page = AboutUsPage(self.driver)
     body = about_page.get_text_earning_body()
-    assert 'Earning the right to be your builder' in body
+    assert 'delivered more than 155' in body
 
   # Tets whether the correct image appears in the earning the right section
   def test_earning_image(self, driver_settings):
     about_page = AboutUsPage(self.driver)
     image = about_page.get_element_earning_image()
-    result =  self.driver.execute_script("return arguments[0].complete && " + "argumnts[0].width > 0", image)
+    result =  self.driver.execute_script("return arguments[0].complete && " + "arguments[0].width > 0", image)
     assert result
   
   # Test wheter the button in the earning section takes the user to the correct page when clicked
@@ -129,7 +130,7 @@ class Test_About_Us_Page(BasicTest):
     about_page = AboutUsPage(self.driver)
     about_page.close_cookies()
     about_page.click_element_earning_button()
-    assert 'Tour a Meritage Home' == self.driver.title
+    assert 'Tour A Meritage Home' == self.driver.title
 
   # Test wheter the play button in the earning section opens the youtube overlay
   def test_earning_play_button(self, driver_settings):
@@ -137,7 +138,7 @@ class Test_About_Us_Page(BasicTest):
     about_page.close_cookies()
     about_page.click_element_earning_play_button()
     youtube_overlay = about_page.get_element_youtube_overlay()
-    result = self.driver.execute_script("return arguments[0].style.display != 'none", youtube_overlay)
+    result = self.driver.execute_script("return arguments[0].style.display != 'none'", youtube_overlay)
     assert result
   
   # Test whether correct header appears in "Building a track record" section
@@ -166,7 +167,7 @@ class Test_About_Us_Page(BasicTest):
     image_exists = False
     if len(images) == 7:
       for i in range(len(images)):
-        result = self.driver.execute_script("return arguments[0].compelte && " + "argumnets[0].width > 0", images[i])
+        result = self.driver.execute_script("return arguments[0].complete && " + "arguments[0].width > 0", images[i])
         if result:
           image_exists = True
         else:

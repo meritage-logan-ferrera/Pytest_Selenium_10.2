@@ -102,7 +102,7 @@ class AboutUsPage(BasePage):
     return images
   
   def get_element_section_giving_back(self):
-    return self.driver.find_element(By.XPATH, "//article[@aria-label='Giving back where we build.'")
+    return self.driver.find_element(By.XPATH, "//article[@aria-label='Giving back where we build.']")
   
   def get_text_giving_back_header(self):
     giving_section = self.get_element_section_giving_back()
@@ -152,7 +152,7 @@ class AboutUsPage(BasePage):
     return self.get_element_section_placeholder_image(great_careers_section)
   
   def get_element_section_building_where_you_want(self):
-    return self.driver.find_element(By.XPATH, "//article[@aria-label='Building where you want to live.']")
+    return self.driver.find_element(By.XPATH, "//aside[@aria-label='Building where you want to live.']")
   
   def get_text_building_where_header(self):
     building_where_section = self.get_element_section_building_where_you_want()

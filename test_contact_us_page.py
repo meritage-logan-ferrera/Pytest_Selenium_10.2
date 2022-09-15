@@ -109,6 +109,7 @@ class Test_Contact_Us_Page(BasicTest):
     contact_page.button_is_clickable(metro_dropdown)
 
   # Test whether community dropdown is clickable after clicking a metro area in the metro dropdown
+  @pytest.mark.contact
   def test_new_buyers_community_dropdown(self, driver_settings):
     contact_page = ContactUsPage(self.driver)
     contact_page.close_cookies()
@@ -201,7 +202,6 @@ class Test_Contact_Us_Page(BasicTest):
     result = self.driver.execute_script("return arguments[0].classList.contains('is-active')", agent_tab)
     assert result
 
-  @pytest.mark.contact
   def test_agent_header(self, driver_settings):
     contact_page = ContactUsPage(self.driver)
     contact_page.close_cookies()
