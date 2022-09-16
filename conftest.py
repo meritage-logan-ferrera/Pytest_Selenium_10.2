@@ -4,6 +4,7 @@ from appium import webdriver as appium_webdriver
 from selenium import webdriver
 import pytest
 
+# @pytest.fixture(params=["firefox", "chrome", "edge"], scope='class')
 # @pytest.fixture(params=["firefox", "chrome", "edge"])
 # @pytest.fixture(params=["firefox", "chrome"])
 @pytest.fixture(params=["firefox"])
@@ -22,8 +23,12 @@ def init__driver(request):
       options=browser_options
     ) 
   request.cls.driver = web_driver
-  yield
+  yield 
+  # web_driver.close()
   web_driver.quit()
+  # web_driver = None
+  # request.addfinalizer(web_driver.quit())
+  
 
 # @pytest.fixture(scope="class")
 # def driver_android_init(request):
