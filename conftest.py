@@ -26,7 +26,7 @@ def init__driver(request):
   yield 
   # web_driver.close()
   web_driver.quit()
-  # web_driver = None
+  web_driver = None
   # request.addfinalizer(web_driver.quit())
   
 
