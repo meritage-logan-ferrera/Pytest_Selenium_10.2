@@ -4,7 +4,7 @@ from header_tests import Test_Header_Element_Visibility as test_header
 from footer_tests import Test_Footer_Element_Visibility as test_footer
 import pytest
 
-URL = 'https://www.meritagehomes.com/why-meritage/testimonials#'
+URL = 'https://cd-sit.meritageweb.dev/why-meritage/testimonials'
 
 @pytest.mark.usefixtures("init__driver")
 class BasicTest():

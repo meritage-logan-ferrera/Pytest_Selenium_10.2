@@ -6,7 +6,7 @@ import math
 import pytest
 import time
 
-URL = 'https://www.meritagehomes.com/why-meritage/energy-efficiency'
+URL = 'https://cd-sit.meritageweb.dev/why-meritage/energy-efficiency'
 
 @pytest.mark.usefixtures("init__driver")
 class BasicTest():

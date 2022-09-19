@@ -7,7 +7,7 @@ import time
 
 # This page has IFRAMES on it. Check out page_reviews.py please...
 # I could have just made to Test_ classes in this file, one testing the meritage page and one testing the iframe (they have their own URLs). I think I will do that next time...
-URL = 'https://www.meritagehomes.com/why-meritage/reviews'
+URL = 'https://cd-sit.meritageweb.dev/why-meritage/reviews'
 
 @pytest.mark.usefixtures("init__driver")
 class BasicTest():
