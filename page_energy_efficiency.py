@@ -8,9 +8,6 @@ import time
 class EnergyEfficiencyPage(BasePage):
   def click_element_play_button(self):
     return self.driver.find_element(By.XPATH, "//*[@id='quick-home-search-hero']/div[1]/div/div/div/a")
-
-  def get_element_youtube_overlay(self):
-    return self.driver.find_element(By.XPATH, "/html/body/div[4]")
   
   def get_element_section_1(self):
     return self.driver.find_element(By.XPATH, "/html/body/main/section")
@@ -145,8 +142,15 @@ class EnergyEfficiencyPage(BasePage):
 
     return self.driver.find_element(By.XPATH, f'/html/body/main/div[1]/div[1]/div/div/div/div[2]/div/ul[2]/li[{final_number}]')
   
-  def click_element_empty_space(self):
-    self.driver.find_element(By.XPATH, '/html/body/main/article[1]/div/div[2]/div').click()
+  def click_element_empty_space(self, slide):
+    if int(slide) == 3:
+      slide = int(slide) + 1
+    elif int(slide) == 4:
+      slide = int(slide) - 1
+    
+    button = self.driver.find_element(By.XPATH, f'/html/body/main/div[1]/div[1]/div/div/div/div[1]/div/ul[1]/li[{str(slide)}]/a')
+    self.driver.execute_script("arguments[0].scrollIntoView(true); window.scrollBy(0, -250)", button)
+    button.click()
   
   def get_text_house_icon_section_header(self):
     return self.driver.find_element(By.XPATH, '/html/body/main/div[1]/div[2]/div[1]/p/strong').text

@@ -214,7 +214,7 @@ class Test_Testimonials_Page(BasicTest):
   # Test whether user can input into email address field
   def test_email_address_input(self, driver_settings):
     test_page = TestimonialsPage(self.driver)
-    input_value = test_page.get_input_email_address(self.driver)
+    input_value = test_page.get_input_create_account_email_address(self.driver)
     assert 'test_input' == input_value 
   
   # Test whether user can input into phone number field

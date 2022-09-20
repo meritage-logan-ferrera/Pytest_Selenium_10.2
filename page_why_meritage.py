@@ -13,9 +13,6 @@ class WhyMeritagePage(BasePage):
 
   def click_element_play_button(self):
     self.driver.find_element(By.XPATH, "/html/body/main/header/div[1]/div/div/div/h1").click()
-  
-  def get_element_youtube_overlay(self):
-    return self.driver.find_element(By.XPATH, "/html/body/div[4]")
 
   def get_element_article_1(self):
     return self.driver.find_element(By.XPATH, "/html/body/main/article[1]")

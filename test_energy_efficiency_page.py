@@ -153,6 +153,7 @@ class Test_Energy_Efficiency_Page(BasicTest):
         assert 'PEACE OF MIND' in header and 'AN INDUSTRY' in sub_header and 'been building better for more than' in body
   
   # Test that clicking the buttons in each slide opens the respective popups
+  @pytest.mark.donut
   @pytest.mark.parametrize('slide', ['1', '2', '3', '4'])
   def test_donut_slides_buttons(self, slide, driver_settings):
     energy_page = EnergyEfficiencyPage(self.driver)
@@ -176,7 +177,7 @@ class Test_Energy_Efficiency_Page(BasicTest):
       result = self.driver.execute_script("return arguments[0].style.display != 'none'", popup)
       if result:
         final_result = True
-        energy_page.click_element_empty_space()
+        energy_page.click_element_empty_space(slide)
         time.sleep(1)
         continue
       else:
