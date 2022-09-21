@@ -1,5 +1,8 @@
-from page_base import BasePage
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
+from page_base import BasePage
+
 
 class StatePage(BasePage):
   def get_element_breadcrumbs_house(self):
@@ -46,5 +49,99 @@ class StatePage(BasePage):
   
   def get_text_metro_header(self, number):
     metro_div = self.get_element_metro_div(number)
-    header = metro_div.find_element(By.TAG_NAME, "a")
+    header = metro_div.find_element(By.TAG_NAME, "h3")
     return header.text
+  
+  def get_text_metro_cities_build(self, number):
+    metro_div = self.get_element_metro_div(number)
+    cities_build = metro_div.find_element(By.XPATH, "(.//p[@class='community--description'])[1]")
+    return cities_build.text
+  
+  def get_text_metro_city_areas(self, number):
+    metro_div = self.get_element_metro_div(number)
+    city_areas = metro_div.find_element(By.XPATH, "(.//p[@class='community--description'])[2]")
+    return city_areas.text
+  
+  def get_text_metro_stats(self, number):
+    metro_div = self.get_element_metro_div(number)
+    return metro_div.find_element(By.CLASS_NAME, 'community--community-count').text
+
+  def get_element_metro_button(self, number):
+    metro_div = self.get_element_metro_div(number)
+    button = metro_div.find_element(By.CLASS_NAME, 'button.button--black.view')
+    return button
+  
+  def click_element_metro_next_arrow(self, number):
+    metro_div = self.get_element_metro_div(number)
+    metro_div.find_element(By.CLASS_NAME, 'orbit-next.slick-arrow').click()
+  
+  def get_element_metro_current_slide(self, number):
+    metro_div = self.get_element_metro_div(number)
+    return metro_div.find_element(By.XPATH, ".//li[contains(@class, 'slick-current')]")
+  
+  def get_element_metro_current_slide_image(self, number):
+    current_slide = self.get_element_metro_current_slide(number)
+    return current_slide.find_element(By.TAG_NAME, 'img')
+  
+  def get_element_section_metro_testimonial(self, number):
+    return self.driver.find_element(By.XPATH, f"(.//article[@class='testimonial'])[{number}]")
+  
+  def get_text_testimonial_header(self, number):
+    testimonial_section = self.get_element_section_metro_testimonial(number)
+    return self.get_text_section_header(testimonial_section)
+
+  def get_text_testimonial_quote(self, number):
+    testimonial_section = self.get_element_section_metro_testimonial(number)
+    return testimonial_section.find_element(By.TAG_NAME, 'blockquote').text
+
+  def get_text_testimonial_attribution(self, number):
+    testimonial_section = self.get_element_section_metro_testimonial(number)
+    return testimonial_section.find_element(By.CLASS_NAME, 'attribution').text
+  
+  def get_element_section_why_meritage(self):
+    return self.get_section_by_aria_label('article', 'Why Meritage Homes')
+  
+  def get_text_why_meritage_header(self):
+    why_section = self.get_element_section_why_meritage()
+    return why_section.find_element(By.TAG_NAME, 'h4')
+  
+  def get_text_why_meritage_body(self):
+    why_section = self.get_element_section_why_meritage()
+    return self.get_text_section_body(why_section)
+  
+  def get_element_why_meritage_image(self):
+    why_section = self.get_element_section_why_meritage()
+    return self.get_element_section_placeholder_image(why_section)
+  
+  def click_element_why_meritage_button(self):
+    html = self.get_html()
+    why_section = self.get_element_section_why_meritage()
+    self.click_element_section_button(why_section)
+    WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))
+    
+  def get_element_aside_know_florida(self):
+    return self.get_section_by_aria_label('aside', 'Want to get to know Florida better?')
+  
+  def get_text_aside_know_florida_header(self):
+    aside_know_florida = self.get_element_aside_know_florida()
+    return self.get_text_section_header(aside_know_florida)
+
+  def get_text_aside_know_florida_body(self):
+    aside_know_florida = self.get_element_aside_know_florida()
+    return self.get_text_section_body(aside_know_florida)
+  
+  def click_element_aside_know_florida_button_1(self):
+    html = self.get_html()
+    aside_know_florida = self.get_element_aside_know_florida()
+    aside_know_florida.find_element(By.XPATH, './/div/div/div[2]/a[1]').click()
+    WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))
+
+  def click_element_aside_know_florida_button_2(self):
+    html = self.get_html()
+    aside_know_florida = self.get_element_aside_know_florida()
+    aside_know_florida.find_element(By.XPATH, './/div/div/div[2]/a[2]').click()
+    WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))
+
+  def get_text_aside_know_florida_number(self):
+    aside_know_florida = self.get_element_aside_know_florida()
+    return aside_know_florida.find_element(By.XPATH, './/div/div/div[3]').text

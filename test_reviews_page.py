@@ -100,83 +100,82 @@ class Test_Reviews_Page(BasicTest):
     assert 'Sign in - Google Accounts' or '' == self.driver.title
   
   # Test whether the pencil button opens view 3 in this container
+  @pytest.mark.review
   def test_view_2_to_view_3_on_pencil_press(self, driver_settings):
     review_page = ReviewsPage(self.driver)
     review_page.click_element_review_summary_view_1_write_review_button()
     review_page.click_element_review_summary_view_2_pencil_button()
-    view_3 = review_page.get_element_review_summary_view_3()
-    result = self.driver.execute_script("return arguments[0].classList.contains('hidden') == false", view_3)
-    assert result
+    assert 'Meritage Homes Corporation | Better Business Bureau® Profile' or '' == self.driver.title
   
-  # Test whether correct header appears in view 3
-  def test_view_3_header(self, driver_settings):
-    review_page = ReviewsPage(self.driver)
-    review_page.click_element_review_summary_view_1_write_review_button()
-    review_page.click_element_review_summary_view_2_pencil_button()
-    header = review_page.get_text_review_summary_view_3_header()
-    assert 'Write a Review' in header
+  # iFrame for view 3 changed. Now opens a new tab to third party...
+  # # Test whether correct header appears in view 3
+  # def test_view_3_header(self, driver_settings):
+  #   review_page = ReviewsPage(self.driver)
+  #   review_page.click_element_review_summary_view_1_write_review_button()
+  #   review_page.click_element_review_summary_view_2_pencil_button()
+  #   header = review_page.get_text_review_summary_view_3_header()
+  #   assert 'Write a Review' in header
   
-  # Test whether clicking each star in view 3 changes it to orange
-  @pytest.mark.parametrize('star', [0, 1, 2, 3, 4])
-  def test_view_3_stars(self, star, driver_settings):
-    review_page = ReviewsPage(self.driver)
-    review_page.click_element_review_summary_view_1_write_review_button()
-    review_page.click_element_review_summary_view_2_pencil_button()
-    stars = review_page.get_elements_review_summary_view_3_stars()
-    review_page.click_element_review_summary_view_3_star(star)
-    result = self.driver.execute_script("return arguments[0].classList.contains('be-star-on')", stars[star])
-    assert result
+  # # Test whether clicking each star in view 3 changes it to orange
+  # @pytest.mark.parametrize('star', [0, 1, 2, 3, 4])
+  # def test_view_3_stars(self, star, driver_settings):
+  #   review_page = ReviewsPage(self.driver)
+  #   review_page.click_element_review_summary_view_1_write_review_button()
+  #   review_page.click_element_review_summary_view_2_pencil_button()
+  #   stars = review_page.get_elements_review_summary_view_3_stars()
+  #   review_page.click_element_review_summary_view_3_star(star)
+  #   result = self.driver.execute_script("return arguments[0].classList.contains('be-star-on')", stars[star])
+  #   assert result
   
-  # Test whether the user can input text into the text area in view 3
-  def test_view_3_input(self, driver_settings):
-    review_page = ReviewsPage(self.driver)
-    review_page.click_element_review_summary_view_1_write_review_button()
-    review_page.click_element_review_summary_view_2_pencil_button()
-    input_text = review_page.get_input_review_summary_view_3_describe_experience()
-    assert "test_input" == input_text
+  # # Test whether the user can input text into the text area in view 3
+  # def test_view_3_input(self, driver_settings):
+  #   review_page = ReviewsPage(self.driver)
+  #   review_page.click_element_review_summary_view_1_write_review_button()
+  #   review_page.click_element_review_summary_view_2_pencil_button()
+  #   input_text = review_page.get_input_review_summary_view_3_describe_experience()
+  #   assert "test_input" == input_text
   
-  # Test whether the correct sub text appears below the text area in view 3
-  def test_view_3_sub_text(self, driver_settings):
-    review_page = ReviewsPage(self.driver)
-    review_page.click_element_review_summary_view_1_write_review_button()
-    review_page.click_element_review_summary_view_2_pencil_button()
-    sub_text = review_page.get_text_review_summary_view_3_sub_text()
-    assert 'We recommend reviews to be at least 50 characters' in sub_text
+  # # Test whether the correct sub text appears below the text area in view 3
+  # def test_view_3_sub_text(self, driver_settings):
+  #   review_page = ReviewsPage(self.driver)
+  #   review_page.click_element_review_summary_view_1_write_review_button()
+  #   review_page.click_element_review_summary_view_2_pencil_button()
+  #   sub_text = review_page.get_text_review_summary_view_3_sub_text()
+  #   assert 'We recommend reviews to be at least 50 characters' in sub_text
   
-  # Test whether the correct text appears beneath the sub text in view 3
-  def test_view_3_sub_sub_text(self, driver_settings):
-    review_page = ReviewsPage(self.driver)
-    review_page.click_element_review_summary_view_1_write_review_button()
-    review_page.click_element_review_summary_view_2_pencil_button()
-    sub_sub_text = review_page.get_text_review_summary_view_3_sub_sub_text()
-    assert 'Your review may be shared publicly on the web' in sub_sub_text
+  # # Test whether the correct text appears beneath the sub text in view 3
+  # def test_view_3_sub_sub_text(self, driver_settings):
+  #   review_page = ReviewsPage(self.driver)
+  #   review_page.click_element_review_summary_view_1_write_review_button()
+  #   review_page.click_element_review_summary_view_2_pencil_button()
+  #   sub_sub_text = review_page.get_text_review_summary_view_3_sub_sub_text()
+  #   assert 'Your review may be shared publicly on the web' in sub_sub_text
   
-  # Test whether the privacy policy button opens the "birdeye" privacy policy tab when clicked
-  def test_view_3_birdeye_on_privacy_policy_click(self, driver_settings):
-    review_page = ReviewsPage(self.driver)
-    review_page.click_element_review_summary_view_1_write_review_button()
-    review_page.click_element_review_summary_view_2_pencil_button()
-    review_page.click_element_review_summary_view_3_privacy_policy()
-    assert 'New Message' or 'Privacy Policy' in self.driver.title
+  # # Test whether the privacy policy button opens the "birdeye" privacy policy tab when clicked
+  # def test_view_3_birdeye_on_privacy_policy_click(self, driver_settings):
+  #   review_page = ReviewsPage(self.driver)
+  #   review_page.click_element_review_summary_view_1_write_review_button()
+  #   review_page.click_element_review_summary_view_2_pencil_button()
+  #   review_page.click_element_review_summary_view_3_privacy_policy()
+  #   assert 'New Message' or 'Privacy Policy' in self.driver.title
   
-  # Test whether the terms of service button opens the "birdeye" terms of service tab when clicked
-  def test_view_3_birdeye_on_terms_of_service_click(self, driver_settings):
-    review_page = ReviewsPage(self.driver)
-    review_page.click_element_review_summary_view_1_write_review_button()
-    review_page.click_element_review_summary_view_2_pencil_button()
-    review_page.click_element_review_summary_view_3_terms_of_service()
-    assert 'New Message' or 'Terms' in self.driver.title
+  # # Test whether the terms of service button opens the "birdeye" terms of service tab when clicked
+  # def test_view_3_birdeye_on_terms_of_service_click(self, driver_settings):
+  #   review_page = ReviewsPage(self.driver)
+  #   review_page.click_element_review_summary_view_1_write_review_button()
+  #   review_page.click_element_review_summary_view_2_pencil_button()
+  #   review_page.click_element_review_summary_view_3_terms_of_service()
+  #   assert 'New Message' or 'Terms' in self.driver.title
   
-  # Test whether the green submit button in view 3 is clickable. (I do not want to submit anything so do not actually click in the Page Object method)
-  def test_view_3_submit_button_is_clickable(self, driver_settings):
-    review_page = ReviewsPage(self.driver)
-    review_page.click_element_review_summary_view_1_write_review_button()
-    review_page.click_element_review_summary_view_2_pencil_button()
-    is_clickable = review_page.check_element_review_summary_view_3_button_is_clickable()
-    assert is_clickable
+  # # Test whether the green submit button in view 3 is clickable. (I do not want to submit anything so do not actually click in the Page Object method)
+  # def test_view_3_submit_button_is_clickable(self, driver_settings):
+  #   review_page = ReviewsPage(self.driver)
+  #   review_page.click_element_review_summary_view_1_write_review_button()
+  #   review_page.click_element_review_summary_view_2_pencil_button()
+  #   is_clickable = review_page.check_element_review_summary_view_3_button_is_clickable()
+  #   assert is_clickable
   
   # Test whether more reviews populate when the user scrolls down
-  @pytest.mark.review
   def test_more_reviews_on_scroll(self, driver_settings):
     review_page = ReviewsPage(self.driver)
     default_reviews_displayed = review_page.get_elements_all_reviews()

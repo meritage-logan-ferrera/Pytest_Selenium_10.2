@@ -96,66 +96,69 @@ class ReviewsPage(BasePage):
     # clicking button opens a new tab
 
   def click_element_review_summary_view_2_pencil_button(self):
+    original_window = self.driver.current_window_handle
     view_2 = self.get_element_review_summary_view_2()
     view_2.find_element(By.XPATH, "/html/body/div[1]/div/div[3]/div[2]/div/div[2]/a[2]").click()
+    self.new_tab(original_window)
     # switches to view 3
 
+  # NO LONGER EXISTS
   ######################### View 3 Elements #############################
   # Get view 3 element, run tests on its children elements and on whether this is hidden or not depending on if the pencil button was pressed inside of view 2. This is hidden until thaose buttons are pressed.
-  def get_element_review_summary_view_3(self):
-    self.driver.switch_to.default_content() # from view 2 to view 3 need to switch to default content. If we do not do this we are telling the driver for the iframe to switch to itself. But there is no iframe within the iframe so it breaks.
-    reviews_summary = self.get_element_reviews_summary_section()
-    return reviews_summary.find_element(By.ID, "reviewFormWrapper")
-    # unhidden after the write a review button AND then the pencil button is clicked
+  # def get_element_review_summary_view_3(self):
+  #   self.driver.switch_to.default_content() # from view 2 to view 3 need to switch to default content. If we do not do this we are telling the driver for the iframe to switch to itself. But there is no iframe within the iframe so it breaks.
+  #   reviews_summary = self.get_element_reviews_summary_section()
+  #   return reviews_summary.find_element(By.ID, "reviewFormWrapper")
+  #   # unhidden after the write a review button AND then the pencil button is clicked
   
-  def get_text_review_summary_view_3_header(self):
-    view_3 = self.get_element_review_summary_view_3()
-    return view_3.find_element(By.TAG_NAME, 'h2').text
+  # def get_text_review_summary_view_3_header(self):
+  #   view_3 = self.get_element_review_summary_view_3()
+  #   return view_3.find_element(By.TAG_NAME, 'h2').text
   
-  def get_elements_review_summary_view_3_stars(self):
-    view_3 = self.get_element_review_summary_view_3()
-    span = view_3.find_element(By.XPATH, "/html/body/div[1]/div/div[4]/form/div/div[1]/div[1]/span")
-    stars = span.find_elements(By.TAG_NAME, 'span')
-    return stars
+  # def get_elements_review_summary_view_3_stars(self):
+  #   view_3 = self.get_element_review_summary_view_3()
+  #   span = view_3.find_element(By.XPATH, "/html/body/div[1]/div/div[4]/form/div/div[1]/div[1]/span")
+  #   stars = span.find_elements(By.TAG_NAME, 'span')
+  #   return stars
   
-  def click_element_review_summary_view_3_star(self, star_number):
-    stars = self.get_elements_review_summary_view_3_stars()
-    stars[star_number].click()
-  # star is clicked, assert classList contains be-star-on
+  # def click_element_review_summary_view_3_star(self, star_number):
+  #   stars = self.get_elements_review_summary_view_3_stars()
+  #   stars[star_number].click()
+  # # star is clicked, assert classList contains be-star-on
 
-  def get_input_review_summary_view_3_describe_experience(self):
-    text_area = self.driver.find_element(By.ID, 'review__comments')
-    text_area.send_keys('test_input')
-    return text_area.get_attribute('value')
+  # def get_input_review_summary_view_3_describe_experience(self):
+  #   text_area = self.driver.find_element(By.ID, 'review__comments')
+  #   text_area.send_keys('test_input')
+  #   return text_area.get_attribute('value')
 
-  def get_text_review_summary_view_3_sub_text(self):
-    view_3 = self.get_element_review_summary_view_3()
-    return view_3.find_element(By.XPATH, '/html/body/div[1]/div/div[4]/form/div/div[2]/div/div[1]/div[2]/div/span[1]').text
+  # def get_text_review_summary_view_3_sub_text(self):
+  #   view_3 = self.get_element_review_summary_view_3()
+  #   return view_3.find_element(By.XPATH, '/html/body/div[1]/div/div[4]/form/div/div[2]/div/div[1]/div[2]/div/span[1]').text
   
-  def get_text_review_summary_view_3_sub_sub_text(self):
-    view_3 = self.get_element_review_summary_view_3()
-    return view_3.find_element(By.XPATH, '/html/body/div[1]/div/div[4]/form/div/div[2]/div/div[1]/div[2]/div/span[2]').text
+  # def get_text_review_summary_view_3_sub_sub_text(self):
+  #   view_3 = self.get_element_review_summary_view_3()
+  #   return view_3.find_element(By.XPATH, '/html/body/div[1]/div/div[4]/form/div/div[2]/div/div[1]/div[2]/div/span[2]').text
   
-  # opens new tab
-  def click_element_review_summary_view_3_privacy_policy(self):
-    original_window = self.driver.current_window_handle
-    view_3 = self.get_element_review_summary_view_3()
-    view_3.find_element(By.XPATH, '/html/body/div[1]/div/div[4]/form/div/div[2]/div/div[1]/div[2]/div/span[3]/a[1]').click()
-    self.new_tab(original_window)
+  # # opens new tab
+  # def click_element_review_summary_view_3_privacy_policy(self):
+  #   original_window = self.driver.current_window_handle
+  #   view_3 = self.get_element_review_summary_view_3()
+  #   view_3.find_element(By.XPATH, '/html/body/div[1]/div/div[4]/form/div/div[2]/div/div[1]/div[2]/div/span[3]/a[1]').click()
+  #   self.new_tab(original_window)
   
-  # opens new tab
-  def click_element_review_summary_view_3_terms_of_service(self):
-    original_window = self.driver.current_window_handle
-    view_3 = self.get_element_review_summary_view_3()
-    view_3.find_element(By.XPATH, '/html/body/div[1]/div/div[4]/form/div/div[2]/div/div[1]/div[2]/div/span[3]/a[2]').click()
-    self.new_tab(original_window)
+  # # opens new tab
+  # def click_element_review_summary_view_3_terms_of_service(self):
+  #   original_window = self.driver.current_window_handle
+  #   view_3 = self.get_element_review_summary_view_3()
+  #   view_3.find_element(By.XPATH, '/html/body/div[1]/div/div[4]/form/div/div[2]/div/div[1]/div[2]/div/span[3]/a[2]').click()
+  #   self.new_tab(original_window)
   
-  def check_element_review_summary_view_3_button_is_clickable(self):
-    element = self.driver.find_element(By.ID, 'btnSubmit')
-    bool = False
-    bool = WebDriverWait(self.driver, timeout=3).until(EC.element_to_be_clickable(element))
-    return bool
-  #############################################################
+  # def check_element_review_summary_view_3_button_is_clickable(self):
+  #   element = self.driver.find_element(By.ID, 'btnSubmit')
+  #   bool = False
+  #   bool = WebDriverWait(self.driver, timeout=3).until(EC.element_to_be_clickable(element))
+  #   return bool
+  # #############################################################
   
   def get_elements_all_reviews(self):
     self.driver.switch_to.frame("bfpublish")
