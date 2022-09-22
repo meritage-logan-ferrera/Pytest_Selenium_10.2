@@ -5,7 +5,7 @@ from footer_tests import Test_Footer_Element_Visibility as test_footer
 import pytest
 import time
 
-URL = 'https://www.meritagehomes.com/'
+URL = 'https://cd-sit.meritageweb.dev//'
 
 @pytest.mark.usefixtures("init__driver")
 class BasicTest(test_footer, test_header):
@@ -46,27 +46,27 @@ class Test_Main_Page(BasicTest):
     result = self.driver.execute_script("return arguments[0].scrollTop > 100", html)
     assert result
   
-  # TESTS FOR SAVE THE RATE PROMOTION WHICH ENDED
-  # # Test that the save the rate image is present 
-  # def test_save_the_rate_image(self, driver_settings):
-  #   main_page = MainPage(self.driver)
-  #   main_page.close_cookies()
-  #   save_the_rate_image = main_page.get_element_save_the_rate_image()
-  #   result = self.driver.execute_script("return arguments[0].complete && " + "arguments[0].width > 0", save_the_rate_image)
-  #   assert result
+  #TESTS FOR SAVE THE RATE PROMOTION WHICH ENDED
+  # Test that the save the rate image is present 
+  def test_save_the_rate_image(self, driver_settings):
+    main_page = MainPage(self.driver)
+    main_page.close_cookies()
+    save_the_rate_image = main_page.get_element_save_the_rate_image()
+    result = self.driver.execute_script("return arguments[0].complete && " + "arguments[0].width > 0", save_the_rate_image)
+    assert result
 
-  # # Test that the save the rate header contains correct text
-  # def test_aside_1_save_the_rate_header(self, driver_settings):
-  #   main_page = MainPage(self.driver)
-  #   save_the_rate_header = main_page.get_text_aside_1_save_the_rate_h2()
-  #   assert "Save the Rate and buy with confidence" in save_the_rate_header
+  # Test that the save the rate header contains correct text
+  def test_aside_1_save_the_rate_header(self, driver_settings):
+    main_page = MainPage(self.driver)
+    save_the_rate_header = main_page.get_text_aside_1_save_the_rate_h2()
+    assert "Save the Rate and buy with confidence" in save_the_rate_header
   
-  # # Test that the see details button in aside 1 navigates to correct page
-  # def test_aside_1_button(self, driver_settings):
-  #   main_page = MainPage(self.driver)
-  #   main_page.close_cookies()
-  #   main_page.click_element_aside_1_save_the_rate_button()
-  #   assert "Save the Rate | Meritage Homes" == self.driver.title
+  # Test that the see details button in aside 1 navigates to correct page
+  def test_aside_1_button(self, driver_settings):
+    main_page = MainPage(self.driver)
+    main_page.close_cookies()
+    main_page.click_element_aside_1_save_the_rate_button()
+    assert "Save the Rate | Meritage Homes" == self.driver.title
   
   # Test that that the image placeholder for the video is present in article 1
   def test_article_1_video_image(self, driver_settings):
@@ -259,7 +259,7 @@ class Test_Main_Page(BasicTest):
         time.sleep(.75)
 
     main_page.click_element_article_5_orbit_video(int(data_slide))
-    youtube_overlay = main_page.get_element_article_5_youtube_overlay()
+    youtube_overlay = main_page.get_element_youtube_overlay()
     result = self.driver.execute_script("return arguments[0].classList.contains(\"is-active\") && " + "arguments[1].style.display != \"none\"", current_slide, youtube_overlay)
     assert result
   

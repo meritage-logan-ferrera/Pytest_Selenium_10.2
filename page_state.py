@@ -71,6 +71,12 @@ class StatePage(BasePage):
     button = metro_div.find_element(By.CLASS_NAME, 'button.button--black.view')
     return button
   
+  def click_element_metro_button(self, number):
+    button = self.get_element_metro_button(number)
+    html = self.get_html()
+    button.click()
+    WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))
+  
   def click_element_metro_next_arrow(self, number):
     metro_div = self.get_element_metro_div(number)
     metro_div.find_element(By.CLASS_NAME, 'orbit-next.slick-arrow').click()
@@ -103,7 +109,7 @@ class StatePage(BasePage):
   
   def get_text_why_meritage_header(self):
     why_section = self.get_element_section_why_meritage()
-    return why_section.find_element(By.TAG_NAME, 'h4')
+    return why_section.find_element(By.TAG_NAME, 'h4').text
   
   def get_text_why_meritage_body(self):
     why_section = self.get_element_section_why_meritage()
@@ -119,29 +125,29 @@ class StatePage(BasePage):
     self.click_element_section_button(why_section)
     WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))
     
-  def get_element_aside_know_florida(self):
-    return self.get_section_by_aria_label('aside', 'Want to get to know Florida better?')
+  def get_element_aside_know_state(self, current_state):
+    return self.get_section_by_aria_label('aside', f'Want to get to know {current_state} better?')
   
-  def get_text_aside_know_florida_header(self):
-    aside_know_florida = self.get_element_aside_know_florida()
-    return self.get_text_section_header(aside_know_florida)
+  def get_text_aside_know_state_header(self, current_state):
+    aside_know_state = self.get_element_aside_know_state(current_state)
+    return self.get_text_section_header(aside_know_state)
 
-  def get_text_aside_know_florida_body(self):
-    aside_know_florida = self.get_element_aside_know_florida()
-    return self.get_text_section_body(aside_know_florida)
+  def get_text_aside_know_state_body(self, current_state):
+    aside_know_state = self.get_element_aside_know_state(current_state)
+    return self.get_text_section_body(aside_know_state)
   
-  def click_element_aside_know_florida_button_1(self):
+  def click_element_aside_know_state_button_1(self, current_state):
     html = self.get_html()
-    aside_know_florida = self.get_element_aside_know_florida()
-    aside_know_florida.find_element(By.XPATH, './/div/div/div[2]/a[1]').click()
+    aside_know_state = self.get_element_aside_know_state(current_state)
+    aside_know_state.find_element(By.XPATH, './/div/div/div[2]/a[1]').click()
     WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))
 
-  def click_element_aside_know_florida_button_2(self):
+  def click_element_aside_know_state_button_2(self, current_state):
     html = self.get_html()
-    aside_know_florida = self.get_element_aside_know_florida()
-    aside_know_florida.find_element(By.XPATH, './/div/div/div[2]/a[2]').click()
+    aside_know_state = self.get_element_aside_know_state(current_state)
+    aside_know_state.find_element(By.XPATH, './/div/div/div[2]/a[2]').click()
     WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))
 
-  def get_text_aside_know_florida_number(self):
-    aside_know_florida = self.get_element_aside_know_florida()
-    return aside_know_florida.find_element(By.XPATH, './/div/div/div[3]').text
+  def get_text_aside_know_state_number(self, current_state):
+    aside_know_state = self.get_element_aside_know_state(current_state)
+    return aside_know_state.find_element(By.XPATH, './/div/div/div[3]').text

@@ -101,6 +101,11 @@ class AgentsPage(BasePage):
       disclaimer_text.append(disclaimer[i].text)
     return disclaimer_text
   
+  def get_element_article_2_disclaimer_click_here_button(self):
+    article_2 = self.get_element_article_2_meritage_agent_terms()
+    disclaimer = article_2.find_element(By.XPATH, './/header/div/ul/li[1]')
+    return disclaimer.find_element(By.TAG_NAME, 'a')
+  
   def get_element_section_user_input_account(self):
     return self.driver.find_element(By.XPATH, '/html/body/main/section')
   

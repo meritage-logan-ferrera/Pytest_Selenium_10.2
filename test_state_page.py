@@ -154,6 +154,7 @@ class BasicTest():
   def test_metro_container(self, div, driver_settings):
     current_state_being_tested = driver_settings
     state_page = StatePage(self.driver)
+    state_page.close_cookies()
     match driver_settings:
       case 'Arizona':
         if int(div) > 2:
@@ -182,7 +183,8 @@ class BasicTest():
       case 'Texas':
         if int(div) > 4:
           pytest.skip('Texas only has 4 metro pages')
-      
+    
+    # Check if correct text displayed in header of metro container
     metro_div = state_page.get_text_metro_header(div)
     header_correct = self.cases_metro(
       ['Phoenix', 'Tucson'], 
@@ -199,6 +201,7 @@ class BasicTest():
       current_state_being_tested
     )
   
+    # Check if correct text displayed in cities build body of metro container
     metro_cities_build = state_page.get_text_metro_cities_build(div)
     cities_build_correct = self.cases_metro(
       ['Avondale, Buckeye, Casa Grande', 'Marana, Maricopa'], 
@@ -215,6 +218,7 @@ class BasicTest():
       current_state_being_tested
     )
 
+    # Check if correct text displayed in city areas body of metro container
     metro_city_areas = state_page.get_text_metro_city_areas(div)
     city_areas_correct = self.cases_metro(
       ['East Valley, West Valley', 'North Tucson, Oro Valley, Tucson'], 
@@ -240,70 +244,114 @@ class BasicTest():
     ):  
       stats_correct = True
 
+    image_1 = state_page.get_element_metro_current_slide_image(div)
+    result_1 = state_page.javascript_image(image_1)
+    state_page.click_element_metro_next_arrow(div)
+    time.sleep(1)
+    image_2 = state_page.get_element_metro_current_slide_image(div)
+    result_2 = state_page.javascript_image(image_2)
+
+    # Testimonial sections
     testimonial_div = div
 
-    if current_state_being_tested == "Florida": # South Florida has no quote block
-      testimonial_div = int(div) - 1
+    if current_state_being_tested == "Florida" and (div == '3'):
+      testimonial_header_correct = True
+      testimonial_quote_correct = True
+      testimonial_attribution_correct = True
     
-    if current_state_being_tested == "South Carolina": # SC missing quot elbock from york county and myrtle beach
-      testimonial_div = int(div)-2
-
-    testimonial_header = state_page.get_text_testimonial_header(testimonial_div)
-    testimonial_header_correct = self.cases_metro(
-      ['Phoenix', 'Tucson'], 
-      ['Bay Area', 'Sacramento', 'Southern'], 
-      ['Denver'], 
-      ['Orlando', 'Tampa', 'South Florida'], 
-      ['Atlanta'], 
-      ['Charlotte', 'Raleigh'], 
-      ['Greenville'], 
-      ['Nashville'], 
-      ['Austin', 'Dallas', 'Houston', 'San Antonio'], 
-      int(testimonial_div),
-      testimonial_header,
-      current_state_being_tested
-    )
-
-    testimonial_quote = state_page.get_text_testimonial_quote(testimonial_div)
-    testimonial_quote_correct = self.cases_metro(
-      ['very pleased with our low', 'We loved the energy-efficient'], 
-      ['Every day is a comfortable', 'The home has many wonderful', 'The home is everything'], 
-      ['The temperature is comfortable in all rooms'], 
-      ['Our new home', 'We simply could not be happier'], 
-      ['My utility bills are the lowest'], 
-      ['not only walked us through', 'I love the location'], 
-      ['My experience with Meritage'], 
-      ['were knowledgeable and more importantly'], 
-      ['Our overall experience', 'Working with Meritage', 'have been loving', 'The home lived up to how'], 
-      int(testimonial_div),
-      testimonial_quote,
-      current_state_being_tested
-    )
-  
-    testimonial_attribution = state_page.get_text_testimonial_attribution(testimonial_div)
-    testimonial_attribution_correct = self.cases_metro(
-      ['Cari G.', 'Rita & Glen S.'], 
-      ['Catherine & Alex H.', 'Alan & Kimberly C.', 'John D.'], 
-      ['Brooke W.'], 
-      ['Allison D.', 'Earl & Ellen C.'], 
-      ['Min C.'], 
-      ['Himanshu & Jigna D.', 'Theodora M.'], 
-      ['Flonsel A.'], 
-      ['Kenneth P.'], 
-      ['Tyler L.', 'Michelle & Lee C.', 'Lucy B.', 'Suwaid K.'], 
-      int(testimonial_div),
-      testimonial_attribution,
-      current_state_being_tested
-    )
+    elif current_state_being_tested == "South Carolina" and (div == '2' or '3'): 
+      testimonial_header_correct = True
+      testimonial_quote_correct = True
+      testimonial_attribution_correct = True
     
-    assert (
+    else:
+      # Check if header is testimonial contianer is correct
+      testimonial_header = state_page.get_text_testimonial_header(testimonial_div)
+      testimonial_header_correct = self.cases_metro(
+        ['Phoenix', 'Tucson'], 
+        ['Bay Area', 'Sacramento', 'Southern'], 
+        ['Denver'], 
+        ['Orlando', 'Tampa', 'South Florida'], 
+        ['Atlanta'], 
+        ['Charlotte', 'Raleigh'], 
+        ['Greenville'], 
+        ['Nashville'], 
+        ['Austin', 'Dallas', 'Houston', 'San Antonio'], 
+        int(testimonial_div),
+        testimonial_header,
+        current_state_being_tested
+      )
+
+      # Check if quote in testimonial container is correct
+      testimonial_quote = state_page.get_text_testimonial_quote(testimonial_div)
+      testimonial_quote_correct = self.cases_metro(
+        ['very pleased with our low', 'We loved the energy-efficient'], 
+        ['Every day is a comfortable', 'The home has many wonderful', 'The home is everything'], 
+        ['The temperature is comfortable in all rooms'], 
+        ['Our new home', 'We simply could not be happier'], 
+        ['My utility bills are the lowest'], 
+        ['not only walked us through', 'I love the location'], 
+        ['My experience with Meritage'], 
+        ['were knowledgeable and more importantly'], 
+        ['Our overall experience', 'Working with Meritage', 'have been loving', 'The home lived up to how'], 
+        int(testimonial_div),
+        testimonial_quote,
+        current_state_being_tested
+      )
+
+      # Chcekc if attribution in tesimonial container is correct
+      testimonial_attribution = state_page.get_text_testimonial_attribution(testimonial_div)
+      testimonial_attribution_correct = self.cases_metro(
+        ['Cari G.', 'Rita & Glen S.'], 
+        ['Catherine & Alex H.', 'Alan & Kimberly C.', 'John D.'], 
+        ['Brooke W.'], 
+        ['Allison D.', 'Earl & Ellen C.'], 
+        ['Min C.'], 
+        ['Himanshu & Jigna D.', 'Theodora M.'], 
+        ['Flonsel A.'], 
+        ['Kenneth P.'], 
+        ['Tyler L.', 'Michelle & Lee C.', 'Lucy B.', 'Suwaid K.'], 
+        int(testimonial_div),
+        testimonial_attribution,
+        current_state_being_tested
+      )
+    
+    if (
       header_correct and
       cities_build_correct and
       city_areas_correct and
       stats_correct and
       testimonial_header_correct and
       testimonial_quote_correct and
-      testimonial_attribution_correct
+      testimonial_attribution_correct and
+      result_1 and
+      result_2 and
+      image_1 != image_2
+    ):
+      final_assert_not_button = True
+    else:
+      final_assert_not_button = False
+    
+    # Check if button in metro container nvaigates to correct page
+    state_page.click_element_metro_button(div)
+    new_page = self.cases_metro(
+        ['Phoenix', 'Tucson'], 
+        ['Bay Area', 'Sacramento', 'Southern'], 
+        ['Denver'], 
+        ['Orlando', 'Tampa', 'South Florida'], 
+        ['Atlanta'], 
+        ['Charlotte', 'Raleigh'], 
+        ['Greenville'], 
+        ['Nashville'], 
+        ['Austin', 'Dallas', 'Houston', 'San Antonio'], 
+        int(testimonial_div),
+        self.driver.title,
+        current_state_being_tested
+      )
+
+    assert (
+      final_assert_not_button and
+      new_page
     )
   # These state pages are not fully transfered to the new site yet...
 
@@ -315,7 +363,7 @@ class BasicTest():
   def test_why_meritage_body(self, driver_settings):
     state_page = StatePage(self.driver)
     body = state_page.get_text_why_meritage_body()
-    assert 'Why Meritage Homes' in body
+    assert 'setting the standard for' in body
   
   def test_why_meritage_image(self, driver_settings):
     state_page = StatePage(self.driver)
@@ -329,32 +377,32 @@ class BasicTest():
     state_page.click_element_why_meritage_button()
     assert 'Why Meritage? Energy Efficient Homes | Meritage Homes' == self.driver.title
   
-  def test_aside_know_florida_header(self, driver_settings):
+  def test_aside_know_state_header(self, driver_settings):
     state_page = StatePage(self.driver)
-    header = state_page.get_text_aside_know_florida_header()
-    assert 'Ready to make your move' in header
+    header = state_page.get_text_aside_know_state_header(driver_settings)
+    assert f'Want to get to know {driver_settings}' in header
   
-  def test_aside_know_florida_body(self, driver_settings):
+  def test_aside_know_state_body(self, driver_settings):
     state_page = StatePage(self.driver)
-    body = state_page.get_text_aside_know_florida_body()
-    assert 'Whether you need a little help' in body
+    body = state_page.get_text_aside_know_state_body(driver_settings)
+    assert 'We have a home expert standing by' in body
   
-  def test_aside_know_florida_button_1(self, driver_settings):
+  def test_aside_know_state_button_1(self, driver_settings):
     state_page = StatePage(self.driver)
     state_page.close_cookies()
-    state_page.click_element_aside_know_florida_button_1()
-    assert 'Find a Home | Meritage Homes' == self.driver.title
+    state_page.click_element_aside_know_state_button_1(driver_settings)
+    assert 'Meritage Live Chat | Meritage Homes' == self.driver.title
 
-  def test_aside_know_florida_button_2(self, driver_settings):
+  def test_aside_know_state_button_2(self, driver_settings):
     state_page = StatePage(self.driver)
     state_page.close_cookies()
-    state_page.click_element_aside_know_florida_button_2()
-    assert 'Tour A Meritage Home' == self.driver.title
+    state_page.click_element_aside_know_state_button_2(driver_settings)
+    assert '' == self.driver.title
   
-  def test_aside_know_florida_number(self, driver_settings):
+  def test_aside_know_state_number(self, driver_settings):
     state_page = StatePage(self.driver)
     time.sleep(4)
-    number = state_page.get_text_aside_know_florida_number()
+    number = state_page.get_text_aside_know_state_number(driver_settings)
     assert 'or call' in number
     
   

@@ -180,9 +180,11 @@ class Test_Agents_Page(BasicTest):
     assert 'Meritage reserves the right to provide' in paragraph
 
   # Test whether the correct text is displayed in article 2's disclaimer
+  @pytest.mark.agents
   def test_article_2_disclaimer(self):
     agents_page = AgentsPage(self.driver)
     disclaimer_text = agents_page.get_text_article_2_disclaimer()
+    disclaimer_button = agents_page.get_element_article_2_disclaimer_click_here_button()
     list_correct = False
     if 'Commission limited in all events' in disclaimer_text[0]:
       list_correct = True
@@ -193,7 +195,13 @@ class Test_Agents_Page(BasicTest):
     else:
       assert False
     
-    assert list_correct
+    # The button needs to have a certain class to recieve some properties
+    result = self.driver.execute_script("return arguments[0].classList.contains('plain') && " + "getComputedStyle(arguments[0]).textDecoration.includes('underline')", disclaimer_button)
+    
+    assert (
+      list_correct and 
+      result
+    )
   
   # Test that clicking the sing in tab opens the correct form
   def test_sign_in_form_on_sign_in_tab_click(self):
