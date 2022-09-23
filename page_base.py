@@ -39,10 +39,12 @@ class BasePage(object):
     for window_handle in self.driver.window_handles:
       if window_handle != original_window:
         self.driver.switch_to.window(window_handle)
-        break
-      if self.driver.title == '':
-        time.sleep(1)
-      
+        if self.driver.title == '':
+          time.sleep(2)
+          break
+        else:
+          break
+
   def get_text_section_header(self, section):
     header = section.find_element(By.TAG_NAME, 'h2')
     return header.text
@@ -138,6 +140,9 @@ class BasePage(object):
   
   def get_section_by_aria_label(self, tag_name, aria_label):
     return self.driver.find_element(By.XPATH, f"//{tag_name}[@aria-label='{aria_label}']")
+  
+  def check_plain_button(self, button):
+    return self.driver.execute_script("return arguments[0].classList.contains('plain') && " + "getComputedStyle(arguments[0]).textDecoration.includes('underline')", button)
   
 class BasePageHeader(BasePage):
   def header_get_element_meritage_image_container(self):

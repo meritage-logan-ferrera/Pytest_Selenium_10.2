@@ -228,7 +228,7 @@ class BasicTest():
       [''],  # somone forgot to fill this in??
       ['Fort Mill, Monroe', ''], # not filled 
       ['Downtown, Foothills', 'Fort Mill', 'Conway, Little River'], 
-      [''],  # None
+      ['', '', ''],  # None
       ['Dripping Springs', 'Dallas', 'Northwest Houston, Southeast Houston', 'Cibolo, New Braunfels'], 
       int(div),
       metro_city_areas,
@@ -250,6 +250,9 @@ class BasicTest():
     time.sleep(1)
     image_2 = state_page.get_element_metro_current_slide_image(div)
     result_2 = state_page.javascript_image(image_2)
+
+    button = state_page.get_element_metro_header(div)
+    result_header_button = state_page.button_is_clickable(button)
 
     # Testimonial sections
     testimonial_div = div
@@ -326,7 +329,8 @@ class BasicTest():
       testimonial_attribution_correct and
       result_1 and
       result_2 and
-      image_1 != image_2
+      image_1 != image_2 and
+      result_header_button
     ):
       final_assert_not_button = True
     else:
@@ -410,7 +414,7 @@ class BasicTest():
 class Test_Arizona_Page(BasicTest):
   @pytest.fixture()
   def driver_settings(self):
-    self.driver.get("https://www.meritagehomes.com/state/az")
+    self.driver.get("https://cd-sit.meritageweb.dev/state/az")
     self.driver.set_window_position(0,0)
     return "Arizona"
     
@@ -418,7 +422,7 @@ class Test_Arizona_Page(BasicTest):
 class Test_California_Page(BasicTest):
   @pytest.fixture()
   def driver_settings(self):
-    self.driver.get("https://www.meritagehomes.com/state/ca")
+    self.driver.get("https://cd-sit.meritageweb.dev/state/ca")
     self.driver.set_window_position(0,0)
     return "California"
   
@@ -426,48 +430,48 @@ class Test_California_Page(BasicTest):
 class Test_Colorado_Page(BasicTest):
   @pytest.fixture()
   def driver_settings(self):
-    self.driver.get("https://www.meritagehomes.com/state/co")
+    self.driver.get("https://cd-sit.meritageweb.dev/state/co")
     self.driver.set_window_position(0,0)
     return "Colorado"
 
 class Test_Florida_Page(BasicTest):
   @pytest.fixture()
   def driver_settings(self):
-    self.driver.get("https://www.meritagehomes.com/state/fl")
+    self.driver.get("https://cd-sit.meritageweb.dev/state/fl")
     self.driver.set_window_position(0,0)
     return "Florida"
 
 class Test_Georgia_Page(BasicTest):
   @pytest.fixture()
   def driver_settings(self):
-    self.driver.get("https://www.meritagehomes.com/state/ga")
+    self.driver.get("https://cd-sit.meritageweb.dev/state/ga")
     self.driver.set_window_position(0,0)
     return "Georgia"
   
 class Test_North_Carolina_Page(BasicTest):
   @pytest.fixture()
   def driver_settings(self):
-    self.driver.get("https://www.meritagehomes.com/state/nc")
+    self.driver.get("https://cd-sit.meritageweb.dev/state/nc")
     self.driver.set_window_position(0,0)
     return "North Carolina"
 
 class Test_South_Carolina_Page(BasicTest):
   @pytest.fixture()
   def driver_settings(self):
-    self.driver.get("https://www.meritagehomes.com/state/sc")
+    self.driver.get("https://cd-sit.meritageweb.dev/state/sc")
     self.driver.set_window_position(0,0)
     return "South Carolina"
 
 class Test_Tennessee_Page(BasicTest):
   @pytest.fixture()
   def driver_settings(self):
-    self.driver.get("https://www.meritagehomes.com/state/tn")
+    self.driver.get("https://cd-sit.meritageweb.dev/state/tn")
     self.driver.set_window_position(0,0)
     return "Tennessee"
  
 class Test_Texas_Page(BasicTest):
   @pytest.fixture()
   def driver_settings(self):
-    self.driver.get("https://www.meritagehomes.com/state/tx")
+    self.driver.get("https://cd-sit.meritageweb.dev/state/tx")
     self.driver.set_window_position(0,0)
     return "Texas"

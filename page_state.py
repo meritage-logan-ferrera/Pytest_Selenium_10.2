@@ -52,6 +52,10 @@ class StatePage(BasePage):
     header = metro_div.find_element(By.TAG_NAME, "h3")
     return header.text
   
+  def get_element_metro_header(self, number):
+    metro_div = self.get_element_metro_div(number)
+    return metro_div.find_element(By.TAG_NAME, 'a')
+  
   def get_text_metro_cities_build(self, number):
     metro_div = self.get_element_metro_div(number)
     cities_build = metro_div.find_element(By.XPATH, "(.//p[@class='community--description'])[1]")
@@ -79,8 +83,10 @@ class StatePage(BasePage):
   
   def click_element_metro_next_arrow(self, number):
     metro_div = self.get_element_metro_div(number)
-    metro_div.find_element(By.CLASS_NAME, 'orbit-next.slick-arrow').click()
-  
+    arrow = metro_div.find_element(By.CLASS_NAME, 'orbit-next.slick-arrow')
+    self.driver.execute_script("arguments[0].scrollIntoView(true); window.scrollBy(0, -350)", arrow)
+    arrow.click()
+
   def get_element_metro_current_slide(self, number):
     metro_div = self.get_element_metro_div(number)
     return metro_div.find_element(By.XPATH, ".//li[contains(@class, 'slick-current')]")
