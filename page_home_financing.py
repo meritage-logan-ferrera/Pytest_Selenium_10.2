@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 from page_base import BasePage
 import time  
 
-class HomebuyingPage(BasePage):
+class HomeFinancingPage(BasePage):
   def get_text_main_header(self):
     return self.driver.find_element(By.XPATH, '/html/body/header/div/div/h1').text
   

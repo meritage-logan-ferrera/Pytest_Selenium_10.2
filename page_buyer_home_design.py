@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 from page_base import BasePage
 import time  
 
-class HomebuyingPage(BasePage):
+class BuyerHomeDesignPage(BasePage):
   def get_text_main_header(self):
     return self.driver.find_element(By.XPATH, '/html/body/header/div/div/h1').text
   
@@ -18,7 +18,7 @@ class HomebuyingPage(BasePage):
     WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))
   
   def get_element_section_articles(self):
-    return self.driver.find_element(By.CLASS_NAME, 'resource-center')
+    return self.driver.find_element(By.XPATH, '/html/body/main/article')
 
   def get_text_section_articles_header(self):
     articles_section = self.get_element_section_articles()
@@ -30,16 +30,12 @@ class HomebuyingPage(BasePage):
   
   def get_element_articles_container(self):
     articles_section = self.get_element_section_articles()
-    return articles_section.find_element(By.CLASS_NAME, 'medium-uncollapse.small-collapse.row.align-center')
+    return articles_section.find_element(By.CLASS_NAME, 'row.align-center.small-up-1.medium-up-3 ')
   
+  # all articles on this page show up automatically
   def get_elements_active_articles(self):
     articles_container = self.get_element_articles_container()
-    all_articles = articles_container.find_elements(By.XPATH, './div')
-    active_articles = []
-    for i in range(len(all_articles)):
-      if all_articles[i].value_of_css_property('display') != 'none':
-        active_articles.append(all_articles[i])
-    return active_articles
+    return articles_container.find_elements(By.XPATH, './div')
 
   def get_text_article_header(self, number):
     active_articles = self.get_elements_active_articles()
@@ -48,7 +44,7 @@ class HomebuyingPage(BasePage):
   def click_element_article_button(self, number):
     html = self.get_html()
     active_articles = self.get_elements_active_articles()
-    active_articles[number].find_element(By.XPATH, './/div[2]/h3/a').click()
+    active_articles[number].find_element(By.XPATH, './/h3/a').click()
     WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))
 
   def get_text_new_page_header(self):
@@ -56,15 +52,11 @@ class HomebuyingPage(BasePage):
 
   def get_text_article_article(self, number):
     active_articles = self.get_elements_active_articles()
-    return active_articles[number].find_element(By.TAG_NAME, 'span').text
+    return active_articles[number].find_element(By.TAG_NAME, 'h5').text
   
   def get_element_article_image(self, number):
     active_articles = self.get_elements_active_articles()
     return active_articles[number].find_element(By.TAG_NAME, 'img')
-  
-  def click_element_show_more_button(self):
-    articles_section = self.get_element_section_articles()
-    articles_section.find_element(By.CLASS_NAME, 'button.button--blue').click()
   
   def get_element_section_related_content(self):
     return self.driver.find_element(By.CLASS_NAME, 'related-content.background--gray   ')

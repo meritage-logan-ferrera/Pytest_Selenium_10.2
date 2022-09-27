@@ -5,29 +5,16 @@ from selenium.webdriver.common.by import By
 from page_base import BasePage
 import time  
 
-class HomebuyingPage(BasePage):
+class BuyerEnergyEfficiencyPage(BasePage):
   def get_text_main_header(self):
     return self.driver.find_element(By.XPATH, '/html/body/header/div/div/h1').text
   
   def get_text_main_body(self):
-    return self.driver.find_element(By.XPATH, '/html/body/header/div/div/p').text
-  
-  def click_element_main_button(self):
-    html = self.get_html()
-    self.driver.find_element(By.XPATH, '/html/body/header/div/div/a').click()
-    WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))
+    return self.driver.find_element(By.XPATH, '/html/body/header/div/div/div').text
   
   def get_element_section_articles(self):
     return self.driver.find_element(By.CLASS_NAME, 'resource-center')
 
-  def get_text_section_articles_header(self):
-    articles_section = self.get_element_section_articles()
-    return self.get_text_section_header(articles_section)
-
-  def get_text_section_articles_body(self):
-    articles_section = self.get_element_section_articles()
-    return self.get_text_section_body(articles_section)
-  
   def get_element_articles_container(self):
     articles_section = self.get_element_section_articles()
     return articles_section.find_element(By.CLASS_NAME, 'medium-uncollapse.small-collapse.row.align-center')
@@ -52,7 +39,7 @@ class HomebuyingPage(BasePage):
     WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))
 
   def get_text_new_page_header(self):
-    return self.driver.find_element(By.XPATH, '/html/body/header/div/div/h1').text
+    return self.driver.find_element(By.TAG_NAME, 'h1').text
 
   def get_text_article_article(self, number):
     active_articles = self.get_elements_active_articles()
@@ -66,12 +53,17 @@ class HomebuyingPage(BasePage):
     articles_section = self.get_element_section_articles()
     articles_section.find_element(By.CLASS_NAME, 'button.button--blue').click()
   
+  def click_element_article_play_button(self, number):
+    active_articles = self.get_elements_active_articles()
+    self.click_element_section_play_button(active_articles[number])
+  
   def get_element_section_related_content(self):
     return self.driver.find_element(By.CLASS_NAME, 'related-content.background--gray   ')
   
+  # Header is different on this page compared to other in buyer resources
   def get_text_related_header(self):
     related_section = self.get_element_section_related_content()
-    return self.get_text_section_header(related_section)
+    return related_section.find_element(By.TAG_NAME, 'h4').text
   
   def get_text_related_body(self):
     related_section = self.get_element_section_related_content()
