@@ -257,8 +257,13 @@ class Test_Main_Page(BasicTest):
       for i in range(int(data_slide)):
         main_page.click_element_article_5_right_button()
         time.sleep(.75)
+    else:
+      main_page.click_element_article_5_right_button()
+      time.sleep(.75)
+      main_page.click_element_article_5_left_button()
+      time.sleep(.75)
 
-    main_page.click_element_article_5_orbit_video(int(data_slide))
+    main_page.click_element_article_5_orbit_video()
     youtube_overlay = main_page.get_element_youtube_overlay()
     result = self.driver.execute_script("return arguments[0].classList.contains(\"is-active\") && " + "arguments[1].style.display != \"none\"", current_slide, youtube_overlay)
     assert result

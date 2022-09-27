@@ -176,8 +176,8 @@ class MainPage(BasePage):
     orbit_container = self.get_element_article_5_orbit_container()
     return orbit_container.find_element(By.CLASS_NAME, "orbit-slide.is-active")
   
-  def click_element_article_5_orbit_video(self, number):
-    orbit_slide = self.get_element_article_5_orbit_slide(number)
+  def click_element_article_5_orbit_video(self):
+    orbit_slide = self.get_element_article_5_current_orbit_slide()
     orbit_video = orbit_slide.find_element(By.CLASS_NAME, "video-trigger.plain")
     orbit_video.click()
   
@@ -198,6 +198,10 @@ class MainPage(BasePage):
   def click_element_article_5_right_button(self):
     right_button = self.driver.find_element(By.XPATH, "/html/body/main/article[5]/div/div[2]/div/div[3]/button")
     right_button.click()
+  
+  def click_element_article_5_left_button(self):
+    left_button = self.driver.find_element(By.XPATH, "/html/body/main/article[5]/div/div[2]/div/div[1]/button")
+    left_button.click()
 
   def get_element_article_6_awards(self):
     return self.driver.find_element(By.XPATH, "/html/body/main/article[6]")
@@ -262,7 +266,7 @@ class MainPage(BasePage):
     WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))
 
   def get_element_aside_2_ready_to_find(self):
-    return self.driver.find_element(By.XPATH, "/html/body/main/aside")
+    return self.get_section_by_aria_label('aside', 'Ready to find your home?')
   
   def get_text_aside_2_header(self):
     aside_2 = self.get_element_aside_2_ready_to_find()
