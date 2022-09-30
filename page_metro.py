@@ -22,7 +22,7 @@ class MetroPage(BasePage):
   
   def get_element_slider_1(self):
     top_bar = self.get_element_top_bar()
-    return top_bar.find_element(By.XPATH, './/div/div/div/div/div[4]/div/span/span[1]')
+    return top_bar.find_element(By.CLASS_NAME, 'irs.js-irs-1')
   
   def get_element_slider_1_left_circle(self):
     slider_1 = self.get_element_slider_1()
@@ -42,7 +42,7 @@ class MetroPage(BasePage):
   
   def get_element_slider_2(self):
     top_bar = self.get_element_top_bar()
-    return top_bar.find_element(By.XPATH, './/div/div/div/div/div[5]/div/span/span[1]')
+    return top_bar.find_element(By.CLASS_NAME, 'irs.js-irs-0')
   
   def get_element_slider_2_left_circle(self):
     slider_2 = self.get_element_slider_2()
@@ -82,11 +82,15 @@ class MetroPage(BasePage):
     top_bar = self.get_element_top_bar()
     return top_bar.find_element(By.ID, 'resetFilters')
   
-  def get_element_map_keyboard_shortcuts_button(self):
-    return self.driver(By.XPATH, '/html/body/div[3]/div/div/div[1]/div[1]/div/div[1]/div[1]/div/div/div[16]/div/div[1]/div/div[2]/button')
+  def get_element_zoom_in(self):
+    return self.driver.find_element(By.XPATH, "//button[@aria-label='Zoom in']")
   
+  def click_element_zoom_in(self):
+    zoom_in = self.get_element_zoom_in()
+    zoom_in.click()
+
   def get_element_map(self):
-    return self.driver.find_element(By.XPATH, '/html/body/div[3]/div/div/div[1]/div[1]/div/div[1]/div[1]/div/div/div[2]')
+    return self.driver.find_element(By.ID, 'slideout-map')
   
   def get_element_section_right_side(self):
     return self.driver.find_element(By.CLASS_NAME, 'community-right-side')
@@ -112,3 +116,16 @@ class MetroPage(BasePage):
     return communities[number].find_element(By.TAG_NAME, 'span').text
     # assert != ''
   
+  def get_element_community_name(self, number):
+    communities = self.get_elements_communities()
+    return communities[number].find_element(By.XPATH, ".//a[contains(@href, '/state')]")
+  
+  def get_text_community_name(self, number):
+    name_element = self.get_element_community_name(number)
+    return name_element.text
+
+  def click_element_community_name(self, number):
+    html = self.get_html()
+    name_element = self.get_element_community_name(number)
+    name_element.click()
+    WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))
