@@ -5,9 +5,9 @@ from selenium import webdriver
 import pytest
 
 # @pytest.fixture(params=["firefox", "chrome", "edge"], scope='class')
-# @pytest.fixture(params=["firefox", "chrome", "edge"])
+@pytest.fixture(params=["firefox", "chrome", "edge"])
 # @pytest.fixture(params=["firefox", "chrome"])
-@pytest.fixture(params=["firefox"])
+# @pytest.fixture(params=["firefox"])
 def init__driver(request):
   url = "http://localhost:4444/wd/hub"
   

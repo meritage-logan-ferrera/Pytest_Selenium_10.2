@@ -157,8 +157,17 @@ class CommunityPage(BasePage):
     name_element.click()
     WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))
   
+  def get_text_floorplan_plan(self, number):
+    floorplans = self.get_elements_floorplans()
+    plan_number = floorplans[number].find_element(By.CLASS_NAME, 'plan-number')
+    return plan_number.text
+  
   def get_element_info_tab_qmis(self):
     return self.get_element_active_info_tab(3)
+  
+  def get_text_no_qmis(self):
+    qmis_info_tab = self.get_element_info_tab_qmis()
+    return qmis_info_tab.find_element(By.XPATH, './/div/section/div[1]/div/h2').text
   
   def get_elements_qmis(self):
     qmis_info_tab = self.get_element_info_tab_qmis()
@@ -211,6 +220,10 @@ class CommunityPage(BasePage):
   def get_element_iframe(self):
     homesite_info_tab = self.get_element_info_tab_homesite()
     return homesite_info_tab.find_element(By.XPATH, './/div/section/iframe')
+  
+  def get_element_map_image(self):
+    homesite_info_tab = self.get_element_info_tab_homesite()
+    return homesite_info_tab.find_element(By.XPATH, '/div/section/figure/img')
 
   def get_element_info_tab_video(self):
     return self.get_element_active_info_tab(6)
@@ -224,13 +237,14 @@ class CommunityPage(BasePage):
   
   def click_element_homebuyer_button(self):
     stay_section = self.get_aside_stay_up_to_date()
-    stay_section.find_element(By.XPATH, './/div[1]/div/form/div[1]/div/div[1]/label')
+    stay_section.find_element(By.XPATH, './/div[1]/div/form/div[1]/div/div[1]/label').click()
   
   def click_element_agent_button(self):
     stay_section = self.get_aside_stay_up_to_date()
-    stay_section.find_element(By.XPATH, './/div[1]/div/form/div[1]/div/div[2]/label')
+    stay_section.find_element(By.XPATH, './/div[1]/div/form/div[1]/div/div[2]/label').click()
   
   def check_aside_button_clickable(self):
     stay_section = self.get_aside_stay_up_to_date()
     button = stay_section.find_element(By.XPATH, './/div[1]/div/form/div[3]/div[4]/button')
     return self.button_is_clickable(button)
+
