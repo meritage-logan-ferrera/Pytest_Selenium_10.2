@@ -4,7 +4,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from page_base import BasePage  
 
-class MetroPage(BasePage):
+class QMISearchPage(BasePage):
   def get_element_top_bar(self):
     return self.driver.find_element(By.CLASS_NAME, 'row.full-width.diff.collapse')
   
@@ -99,33 +99,36 @@ class MetroPage(BasePage):
     right_side = self.get_element_section_right_side()
     return right_side.find_element(By.CLASS_NAME, 'page-title').text
   
-  def get_text_communities_and_qmi(self):
+  def get_text_qmis_and_qmi(self):
     right_side = self.get_element_section_right_side()
     return right_side.find_element(By.CLASS_NAME, 'page-title-link').text
   
-  def get_elements_communities(self):
+  def get_elements_qmis(self):
     right_side = self.get_element_section_right_side()
     return right_side.find_elements(By.CLASS_NAME, 'community-horizontal  ')
   
-  def get_element_community_image(self, number):
-    communities = self.get_elements_communities()
-    return communities[number].find_element(By.TAG_NAME, 'img')
+  def get_element_qmi_image(self, number):
+    qmis = self.get_elements_qmis()
+    return qmis[number].find_element(By.TAG_NAME, 'img')
   
-  def get_text_community_snipe_overlay(self, number):
-    communities = self.get_elements_communities()
-    return communities[number].find_element(By.CLASS_NAME, 'snipe.snipe-overlay').text
-    # assert != ''
+  def get_element_qmi_name(self, number):
+    qmis = self.get_elements_qmis()
+    return qmis[number].find_element(By.XPATH, ".//a[contains(@href, '/state')]")
   
-  def get_element_community_name(self, number):
-    communities = self.get_elements_communities()
-    return communities[number].find_element(By.XPATH, ".//a[contains(@href, '/state')]")
-  
-  def get_text_community_name(self, number):
-    name_element = self.get_element_community_name(number)
+  def get_text_qmi_name(self, number):
+    name_element = self.get_element_qmi_name(number)
     return name_element.text
 
-  def click_element_community_name(self, number):
+  def click_element_qmi_name(self, number):
     html = self.get_html()
-    name_element = self.get_element_community_name(number)
+    name_element = self.get_element_qmi_name(number)
     name_element.click()
     WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))
+  
+  def get_text_new_page_qmi_header(self):
+    return self.driver.find_element(By.XPATH, '/html/body/main/div[1]/div/div/article/h1').text
+  
+  def get_text_qmi_plan(self, number):
+    qmis = self.get_elements_qmis()
+    return qmis[number].find_element(By.CLASS_NAME, 'plan-number').text
+  

@@ -113,6 +113,7 @@ class BasicTest():
   @pytest.mark.zoom
   def test_click_community(self, driver_settings):
     metro_page = MetroPage(self.driver)
+    time.sleep(3)
     metro_page.close_cookies()
     name = metro_page.get_text_community_name(0)
     metro_page.click_element_community_name(0)
