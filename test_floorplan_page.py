@@ -53,6 +53,27 @@ class BasicTest():
       'Stories' in info
     )
   
+  def test_floorplan_tab(self, driver_settings):
+    floorplan_page = FloorplanPage(self.driver)
+    image = floorplan_page.get_element_floorplan_image()
+    result = floorplan_page.javascript_image(image)
+    assert result
+  
+  def test_virtual_walkthrough_tab(self, driver_settings):
+    floorplan_page = FloorplanPage(self.driver)
+    floorplan_page.close_cookies()
+    floorplan_page.click_element_virtual_walkthrough_button()
+    time.sleep(2)
+    iframe = floorplan_page.get_element_virtual_walkthrough_iframe()
+    result = self.driver.execute_script("return arguments[0].width == '100%' || arguments[0].width > 0", iframe)
+    assert result
+  
+  def test_download_pdf_tab(self, driver_settings):
+    floorplan_page = FloorplanPage(self.driver)
+    floorplan_page.close_cookies()
+    floorplan_page.click_element_download_pdf()
+    assert (not '') or 'PDF.js viewer' in self.driver.title
+  
   def test_promotion_section(self, driver_settings):
     floorplan_page = FloorplanPage(self.driver)
     floorplan_page.close_cookies()
