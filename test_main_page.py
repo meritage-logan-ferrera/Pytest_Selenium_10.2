@@ -19,6 +19,7 @@ class Test_Main_Page(BasicTest):
     self.driver.set_window_size(1920,1080)
   
   # Test that the Meritage video is playing
+  @pytest.mark.smoketest_main
   def test_meritage_video(self, driver_settings):
     main_page = MainPage(self.driver)
     meritage_video = main_page.get_element_meritage_video()

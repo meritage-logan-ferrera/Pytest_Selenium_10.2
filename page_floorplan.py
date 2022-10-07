@@ -65,7 +65,7 @@ class FloorplanPage(BasePage):
     return floorplan_section.find_element(By.XPATH, './/div[3]/div/div/div[2]/div/iframe')
   
   def click_element_download_pdf(self):
-    original_window = self.driver.current_window_handler
+    original_window = self.driver.current_window_handle
     floorplan_section = self.get_element_section_floorplan()
     floorplan_section.find_element(By.CLASS_NAME, 'floorplan-pdf').click()
     self.new_tab(original_window)
