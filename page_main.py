@@ -82,9 +82,11 @@ class MainPage(BasePage):
   # For now not checking dymanic elements of these containers
   
   def click_element_article_2_state_container_button(self, row, column):
+    html = self.get_html()
     button = self.driver.find_element(By.XPATH, f"/html/body/main/article[2]/div/div/div[{row}]/div[{column}]/div[1]/div/a")
     button.click()
-
+    WebDriverWait(self.driver, timeout=3).until(EC.staleness_of(html))
+    
   def get_element_article_3_military(self):
     return self.driver.find_element(By.XPATH, "/html/body/main/article[3]")
   
